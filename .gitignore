@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Secrets
+.env
+
+# Large data: keep it in the shared Google Drive folder
+data/*
+!data/README.md
+outputs/
+*.tif
+*.tiff
+*.nc
+*.h5
+*.hdf5
+*.zarr/
+*.mp4
+*.mov
+*.avi
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# Small samples are allowed (keep each under about 5 MB)
+!data/samples/
+!data/samples/**
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.idea/
