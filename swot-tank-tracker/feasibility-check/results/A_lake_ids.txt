@@ -1,0 +1,404 @@
+# SWOT Prior Lake Database IDs in the study box 80.40-80.80E, 8.10-8.60N
+# lake_id  # tank name (if matched), SWOT reference area
+4580051323  # Nachchaduwa, 1310.58 ha
+4580013372  # Hurulu wewa, 913.14 ha
+4580009523  # Nuwara Wewa, 746.1 ha
+4580006192  # Mahakanadarawa, 549.79 ha
+4580013332  # Manankattiya, 174.6 ha
+4580012182  # Thuruwilawewa & Nachchaduwa Feeder canal, 154.89 ha
+4580013642  # katiyawa tank, 154.62 ha
+4580012042  # Aluthdiul Wewa, 133.65 ha
+4580045162  # Kudapattiya Divul Wewa, 88.92 ha
+4580009692  # Eru Wewa, 88.38 ha
+4580038812  # Kapirikgama Wewa, 59.49 ha
+4580037112  # Sangilikanadarawa, 55.89 ha
+4580043702  # unnamed, 49.32 ha
+4580012402  # unnamed, 47.61 ha
+4580041352  # unnamed, 38.34 ha
+4580005312  # Kawarakkulama, 33.21 ha
+4580040562  # Medawachchiya Wewa, 32.76 ha
+4580006242  # Kanadara Ratmale Wewa, 32.4 ha
+4580014982  # unnamed, 29.07 ha
+4580006212  # Mahakanadarawa Wewa, 26.73 ha
+4580012902  # Ranpathwila Wewa, 25.83 ha
+4580013402  # unnamed, 25.38 ha
+4580013452  # Manewa Wewa, 25.11 ha
+4580007002  # Maankadawala Wewa, 24.75 ha
+4580044902  # Welimuwa Pothana, 24.12 ha
+4580005552  # unnamed, 23.85 ha
+4580037162  # unnamed, 21.42 ha
+4580007242  # Thannayankulama, 21.33 ha
+4580008272  # unnamed, 20.25 ha
+4580038712  # unnamed, 19.89 ha
+4580005462  # unnamed, 19.44 ha
+4580043192  # unnamed, 19.26 ha
+4580005192  # unnamed, 19.26 ha
+4580043542  # Kandewa Wewa, 18.45 ha
+4580043262  # unnamed, 17.82 ha
+4580012292  # Labunoruwa, 17.55 ha
+4580039552  # Mahadivul Wewa, 17.37 ha
+4580007532  # unnamed, 17.01 ha
+4580010842  # unnamed, 16.74 ha
+4580010552  # Kumbichchan Kulam, 16.47 ha
+4580011422  # unnamed, 16.02 ha
+4580043592  # Kadurugasdamana, 16.02 ha
+4580043172  # unnamed, 16.02 ha
+4580007782  # unnamed, 15.93 ha
+4580005082  # Puliyankulama Wewa, 15.48 ha
+4580005142  # unnamed, 15.3 ha
+4580006932  # unnamed, 14.76 ha
+4580005562  # unnamed, 14.13 ha
+4580011442  # Mankadawala Wewa, 14.04 ha
+4580019082  # unnamed, 13.68 ha
+4580040652  # Thalagaha Wewa, 13.23 ha
+4580045022  # Kirigollewa, 13.14 ha
+4580008142  # unnamed, 12.96 ha
+4580043692  # unnamed, 12.6 ha
+4580016982  # unnamed, 12.42 ha
+4580043532  # Kadahatha Wewa, 12.06 ha
+4580008372  # unnamed, 12.06 ha
+4580008112  # unnamed, 11.97 ha
+4580010482  # unnamed, 11.97 ha
+4580041332  # Mahakiulekada Wewa, 11.88 ha
+4580011492  # Elle Wewa (Huruluwewa), 11.79 ha
+4580011462  # unnamed, 11.79 ha
+4580007582  # unnamed, 11.7 ha
+4580005262  # unnamed, 11.7 ha
+4580009482  # unnamed, 11.7 ha
+4580010542  # unnamed, 11.52 ha
+4580012052  # unnamed, 11.43 ha
+4580038832  # unnamed, 11.34 ha
+4580014352  # Eppawala Tank, 11.34 ha
+4580012082  # unnamed, 11.16 ha
+4580006282  # unnamed, 11.07 ha
+4580043132  # Gonuheddena Wewa, 11.07 ha
+4580039702  # unnamed, 10.62 ha
+4580043632  # unnamed, 10.26 ha
+4580038572  # unnamed, 10.26 ha
+4580010512  # unnamed, 9.63 ha
+4580007602  # unnamed, 9.54 ha
+4580017042  # Maminiyawa, 9.54 ha
+4580045102  # unnamed, 9.54 ha
+4580010742  # belikulama wewa, 9.45 ha
+4580009493  # unnamed, 9.36 ha
+4580007452  # unnamed, 9.36 ha
+4580010692  # unnamed, 9.18 ha
+4580012032  # Tank, 9.09 ha
+4580011762  # unnamed, 8.91 ha
+4580010862  # unnamed, 8.91 ha
+4580012222  # unnamed, 8.82 ha
+4580025632  # unnamed, 8.73 ha
+4580007052  # unnamed, 7.92 ha
+4580005212  # unnamed, 7.92 ha
+4580011402  # unnamed, 7.92 ha
+4580006492  # unnamed, 7.83 ha
+4580036362  # unnamed, 7.83 ha
+4580007282  # unnamed, 7.74 ha
+4580009652  # unnamed, 7.74 ha
+4580006962  # kumbukgollagama wewa, 7.74 ha
+4580010752  # unnamed, 7.65 ha
+4580044992  # unnamed, 7.56 ha
+4580013412  # unnamed, 7.47 ha
+4580039572  # Kidagalegama Wewa, 7.38 ha
+4580008122  # unnamed, 7.38 ha
+4580009592  # unnamed, 7.38 ha
+4580010522  # unnamed, 7.38 ha
+4580044972  # unnamed, 7.29 ha
+4580012322  # unnamed, 7.2 ha
+4580012162  # unnamed, 7.2 ha
+4580009722  # unnamed, 7.2 ha
+4580007392  # Bulankulama Lake, 7.11 ha
+4580012212  # unnamed, 6.93 ha
+4580007272  # unnamed, 6.93 ha
+4580011782  # unnamed, 6.84 ha
+4580008302  # unnamed, 6.84 ha
+4580011742  # unnamed, 6.84 ha
+4580005322  # unnamed, 6.84 ha
+4580010382  # Periyakulama, 6.84 ha
+4580044892  # unnamed, 6.75 ha
+4580013612  # unnamed, 6.75 ha
+4580010392  # unnamed, 6.75 ha
+4580007442  # unnamed, 6.66 ha
+4580011792  # unnamed, 6.66 ha
+4580005512  # unnamed, 6.57 ha
+4580005032  # unnamed, 6.57 ha
+4580006182  # unnamed, 6.48 ha
+4580012282  # unnamed, 6.48 ha
+4580005172  # unnamed, 6.48 ha
+4580005302  # unnamed, 6.39 ha
+4580013382  # unnamed, 6.39 ha
+4580005152  # Weruppankulama, 6.21 ha
+4580043462  # unnamed, 6.21 ha
+4580039782  # unnamed, 6.12 ha
+4580036342  # unnamed, 6.12 ha
+4580011932  # unnamed, 5.94 ha
+4580007482  # unnamed, 5.94 ha
+4580007092  # Panderellewa Wewa, 5.85 ha
+4580009502  # unnamed, 5.76 ha
+4580043362  # unnamed, 5.58 ha
+4580040542  # Maha Wewalkada Wewa, 5.58 ha
+4580005092  # unnamed, 5.58 ha
+4580012232  # unnamed, 5.49 ha
+4580011632  # unnamed, 5.49 ha
+4580011722  # unnamed, 5.49 ha
+4580036492  # unnamed, 5.4 ha
+4580036472  # Maha Halmillewa, 5.4 ha
+4580005372  # unnamed, 5.4 ha
+4580038822  # unnamed, 5.31 ha
+4580008152  # unnamed, 5.22 ha
+4580007542  # Kokewa wewa, 5.13 ha
+4580011642  # unnamed, 5.13 ha
+4580013622  # unnamed, 5.04 ha
+4580043552  # unnamed, 5.04 ha
+4580017012  # unnamed, 4.95 ha
+4580007592  # unnamed, 4.95 ha
+4580041342  # unnamed, 4.86 ha
+4580010532  # unnamed, 4.86 ha
+4580045042  # unnamed, 4.77 ha
+4580007812  # Kele Kumbuk Wewa, 4.77 ha
+4580011962  # unnamed, 4.77 ha
+4580043342  # unnamed, 4.68 ha
+4580007142  # unnamed, 4.59 ha
+4580015012  # unnamed, 4.5 ha
+4580013192  # unnamed, 4.41 ha
+4580041512  # unnamed, 4.41 ha
+4580006442  # unnamed, 4.41 ha
+4580045012  # unnamed, 4.41 ha
+4580006262  # unnamed, 4.32 ha
+4580036332  # unnamed, 4.32 ha
+4580013062  # Kada Panaha Wewa, 4.32 ha
+4580009532  # unnamed, 4.32 ha
+4580036412  # unnamed, 4.23 ha
+4580011352  # unnamed, 4.23 ha
+4580012092  # unnamed, 4.23 ha
+4580013252  # unnamed, 4.14 ha
+4580005652  # unnamed, 4.14 ha
+4580012972  # unnamed, 4.05 ha
+4580038922  # unnamed, 4.05 ha
+4580043392  # unnamed, 3.87 ha
+4580045302  # unnamed, 3.87 ha
+4580007922  # unnamed, 3.78 ha
+4580025692  # unnamed, 3.78 ha
+4580043602  # unnamed, 3.78 ha
+4580040582  # unnamed, 3.78 ha
+4580005622  # unnamed, 3.78 ha
+4580011752  # unnamed, 3.78 ha
+4580009672  # unnamed, 3.78 ha
+4580005352  # unnamed, 3.6 ha
+4580011772  # unnamed, 3.6 ha
+4580008052  # unnamed, 3.51 ha
+4580008012  # unnamed, 3.51 ha
+4580005382  # unnamed, 3.51 ha
+4580007162  # unnamed, 3.51 ha
+4580005202  # unnamed, 3.42 ha
+4580038542  # unnamed, 3.42 ha
+4580011652  # unnamed, 3.42 ha
+4580008222  # unnamed, 3.42 ha
+4580019012  # unnamed, 3.42 ha
+4580006452  # unnamed, 3.33 ha
+4580007152  # unnamed, 3.33 ha
+4580040532  # Rasnaka Wewa, 3.33 ha
+4580007842  # Nachchaduwa Tank, 3.33 ha
+4580039762  # unnamed, 3.24 ha
+4580045132  # unnamed, 3.24 ha
+4580012202  # unnamed, 3.15 ha
+4580007362  # unnamed, 3.15 ha
+4580036282  # unnamed, 3.15 ha
+4580011612  # unnamed, 3.06 ha
+4580005292  # Keerikkulama, 3.06 ha
+4580007112  # unnamed, 3.06 ha
+4580012062  # unnamed, 2.97 ha
+4580008332  # unnamed, 2.97 ha
+4580008082  # unnamed, 2.97 ha
+4580006202  # unnamed, 2.97 ha
+4580023972  # unnamed, 2.97 ha
+4580006462  # unnamed, 2.97 ha
+4580006422  # unnamed, 2.97 ha
+4580008062  # unnamed, 2.97 ha
+4580012122  # unnamed, 2.97 ha
+4580012022  # unnamed, 2.88 ha
+4580039622  # unnamed, 2.88 ha
+4580039672  # Thambalagollewa, 2.88 ha
+4580012262  # unnamed, 2.88 ha
+4580039712  # unnamed, 2.88 ha
+4580005402  # unnamed, 2.88 ha
+4580006092  # unnamed, 2.88 ha
+4580043302  # unnamed, 2.88 ha
+4580007412  # unnamed, 2.88 ha
+4580012142  # unnamed, 2.88 ha
+4580013162  # unnamed, 2.88 ha
+4580039752  # unnamed, 2.79 ha
+4580012372  # Madiyawa Tank, 2.79 ha
+4580013012  # unnamed, 2.79 ha
+4580007212  # unnamed, 2.7 ha
+4580005182  # unnamed, 2.7 ha
+4580012982  # unnamed, 2.7 ha
+4580019052  # unnamed, 2.7 ha
+4580038882  # Wahagahapu Wewa, 2.7 ha
+4580012242  # unnamed, 2.61 ha
+4580010342  # unnamed, 2.61 ha
+4580010772  # unnamed, 2.61 ha
+4580007682  # unnamed, 2.61 ha
+4580006522  # Kayane Wewa, 2.61 ha
+4580013312  # Turuwila Tank, 2.61 ha
+4580011712  # unnamed, 2.61 ha
+4580009632  # unnamed, 2.61 ha
+4580009732  # unnamed, 2.61 ha
+4580013082  # unnamed, 2.52 ha
+4580006322  # unnamed, 2.52 ha
+4580012172  # unnamed, 2.52 ha
+4580008212  # unnamed, 2.52 ha
+4580011372  # unnamed, 2.52 ha
+4580011682  # unnamed, 2.52 ha
+4580006952  # tank, 2.52 ha
+4580007352  # unnamed, 2.52 ha
+4580005362  # unnamed, 2.52 ha
+4580011332  # unnamed, 2.43 ha
+4580012352  # unnamed, 2.43 ha
+4580009642  # Uttimaduwa, 2.43 ha
+4580007862  # unnamed, 2.43 ha
+4580043472  # unnamed, 2.43 ha
+4580044862  # unnamed, 2.34 ha
+4580007312  # unnamed, 2.34 ha
+4580006402  # unnamed, 2.34 ha
+4580006412  # unnamed, 2.34 ha
+4580037012  # unnamed, 2.34 ha
+4580011312  # unnamed, 2.34 ha
+4580007202  # unnamed, 2.34 ha
+4580007522  # unnamed, 2.25 ha
+4580043682  # unnamed, 2.16 ha
+4580043312  # unnamed, 2.16 ha
+4580012362  # unnamed, 2.16 ha
+4580012132  # unnamed, 2.16 ha
+4580008032  # unnamed, 2.16 ha
+4580036962  # unnamed, 2.16 ha
+4580008432  # unnamed, 2.07 ha
+4580011872  # unnamed, 2.07 ha
+4580007832  # unnamed, 2.07 ha
+4580038492  # unnamed, 2.07 ha
+4580040552  # unnamed, 1.98 ha
+4580043512  # unnamed, 1.98 ha
+4580007642  # Meagas wewa, 1.98 ha
+4580038552  # unnamed, 1.98 ha
+4580011602  # unnamed, 1.98 ha
+4580038852  # unnamed, 1.89 ha
+4580015022  # unnamed, 1.89 ha
+4580036942  # unnamed, 1.89 ha
+4580040662  # unnamed, 1.89 ha
+4580005582  # unnamed, 1.89 ha
+4580008132  # unnamed, 1.89 ha
+4580013022  # unnamed, 1.89 ha
+4580016992  # unnamed, 1.89 ha
+4580005222  # unnamed, 1.8 ha
+4580043332  # unnamed, 1.8 ha
+4580006292  # unnamed, 1.8 ha
+4580008282  # unnamed, 1.8 ha
+4580011482  # unnamed, 1.8 ha
+4580038902  # unnamed, 1.8 ha
+4580007342  # unnamed, 1.8 ha
+4580007792  # unnamed, 1.71 ha
+4580036352  # unnamed, 1.71 ha
+4580011702  # unnamed, 1.71 ha
+4580012912  # unnamed, 1.71 ha
+4580037042  # unnamed, 1.71 ha
+4580017032  # unnamed, 1.71 ha
+4580043482  # unnamed, 1.71 ha
+4580038562  # unnamed, 1.71 ha
+4580007422  # unnamed, 1.71 ha
+4580012192  # unnamed, 1.71 ha
+4580012252  # unnamed, 1.71 ha
+4580007932  # unnamed, 1.71 ha
+4580038432  # unnamed, 1.62 ha
+4580009512  # unnamed, 1.62 ha
+4580045222  # Kallanchiya, 1.62 ha
+4580007402  # unnamed, 1.62 ha
+4580040602  # unnamed, 1.62 ha
+4580040642  # unnamed, 1.62 ha
+4580043412  # unnamed, 1.62 ha
+4580011822  # unnamed, 1.53 ha
+4580012272  # unnamed, 1.53 ha
+4580005052  # unnamed, 1.53 ha
+4580006382  # unnamed, 1.53 ha
+4580043142  # unnamed, 1.53 ha
+4580043432  # unnamed, 1.53 ha
+4580037022  # unnamed, 1.53 ha
+4580025662  # unnamed, 1.53 ha
+4580037072  # unnamed, 1.53 ha
+4580013102  # unnamed, 1.53 ha
+4580012942  # unnamed, 1.53 ha
+4580039652  # unnamed, 1.44 ha
+4580007332  # unnamed, 1.44 ha
+4580038422  # unnamed, 1.44 ha
+4580040522  # unnamed, 1.44 ha
+4580009473  # unnamed, 1.44 ha
+4580008252  # unnamed, 1.44 ha
+4580011302  # unnamed, 1.44 ha
+4580011942  # unnamed, 1.44 ha
+4580038792  # unnamed, 1.44 ha
+4580013632  # unnamed, 1.44 ha
+4580012112  # unnamed, 1.35 ha
+4580045092  # unnamed, 1.35 ha
+4580004982  # unnamed, 1.35 ha
+4580043672  # unnamed, 1.35 ha
+4580043112  # unnamed, 1.35 ha
+4580006112  # unnamed, 1.35 ha
+4580038892  # unnamed, 1.35 ha
+4580006332  # unnamed, 1.35 ha
+4580011512  # unnamed, 1.35 ha
+4580019032  # unnamed, 1.35 ha
+4580006142  # Makichchawa Wewa, 1.35 ha
+4580043102  # unnamed, 1.35 ha
+4580023962  # unnamed, 1.26 ha
+4580037182  # unnamed, 1.26 ha
+4580043652  # unnamed, 1.26 ha
+4580007072  # unnamed, 1.26 ha
+4580038632  # unnamed, 1.26 ha
+4580039582  # unnamed, 1.26 ha
+4580011952  # unnamed, 1.26 ha
+4580011892  # unnamed, 1.26 ha
+4580011662  # unnamed, 1.26 ha
+4580045082  # unnamed, 1.26 ha
+4580005072  # unnamed, 1.26 ha
+4580045152  # unnamed, 1.26 ha
+4580043282  # unnamed, 1.26 ha
+4580043272  # unnamed, 1.26 ha
+4580038592  # unnamed, 1.26 ha
+4580013352  # unnamed, 1.26 ha
+4580013432  # unnamed, 1.26 ha
+4580011972  # unnamed, 1.26 ha
+4580012332  # unnamed, 1.26 ha
+4580012072  # unnamed, 1.17 ha
+4580009832  # unnamed, 1.17 ha
+4580010472  # unnamed, 1.17 ha
+4580040702  # unnamed, 1.17 ha
+4580037172  # unnamed, 1.17 ha
+4580036292  # unnamed, 1.17 ha
+4580036982  # unnamed, 1.17 ha
+4580038522  # unnamed, 1.17 ha
+4580014992  # unnamed, 1.17 ha
+4580008102  # unnamed, 1.17 ha
+4580007632  # unnamed, 1.17 ha
+4580013172  # unnamed, 1.17 ha
+4580038772  # Thimbiri wewa, 1.17 ha
+4580019042  # unnamed, 1.17 ha
+4580012962  # unnamed, 1.08 ha
+4580011562  # unnamed, 1.08 ha
+4580011552  # unnamed, 1.08 ha
+4580011732  # unnamed, 1.08 ha
+4580011922  # unnamed, 1.08 ha
+4580013602  # Nabadawawe Tank, 1.08 ha
+4580007232  # unnamed, 1.08 ha
+4580038502  # unnamed, 1.08 ha
+4580017022  # unnamed, 1.08 ha
+4580007762  # unnamed, 1.08 ha
+4580025672  # unnamed, 1.08 ha
+4580025682  # unnamed, 1.08 ha
+4580037142  # unnamed, 1.08 ha
+4580039612  # unnamed, 1.08 ha
+4580006122  # unnamed, 1.08 ha
+4580040572  # unnamed, 1.08 ha
+4580039772  # unnamed, 1.08 ha
+4580006342  # unnamed, 1.08 ha
+4580043322  # Muwatagama, 1.08 ha
+4580043242  # unnamed, 1.08 ha
+4580043162  # Waththe Wewa, 1.08 ha

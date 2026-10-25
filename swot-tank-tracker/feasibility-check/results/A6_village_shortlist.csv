@@ -1,0 +1,9 @@
+no,lake_id,name,osm_name,ref_area_ha,outline_ha,lon,lat,near_big,km_to_big,usable_points,rise_fall_m,jitter_m,outlier_share,s2_date,open_water_share,plant_share,water_type
+1,4580005172,,,6.48,5.2,80.54,8.34,Mahakanadarawa,0.4,73,1.49,0.1,0.04,2026-02-28,0.63,0.19,open water
+2,4580010522,,,7.38,4.6,80.56,8.36,Mahakanadarawa,1.1,73,2.1,0.15,0.0,2026-02-28,0.7,0.08,open water
+3,4580006282,,,11.07,26.6,80.54,8.33,Mahakanadarawa,1.6,73,1.9,0.11,0.0,2026-03-25,0.45,0.25,mixed
+4,4580010542,,,11.52,29.2,80.53,8.32,Mahakanadarawa,2.6,86,2.08,0.15,0.0,2026-03-25,0.36,0.41,mixed
+5,4580011762,,,8.91,15.0,80.57,8.33,Mahakanadarawa,2.7,77,2.6,0.19,0.03,2026-03-25,0.44,0.4,mixed
+6,4580011422,,,16.02,31.1,80.49,8.4,Mahakanadarawa,4.3,90,2.55,0.14,0.0,2026-03-25,0.15,0.75,plant-covered
+7,4580007392,Bulankulama Lake,Bulankulama Lake,7.11,31.7,80.5,8.34,Mahakanadarawa,4.3,47,1.34,0.18,0.02,2026-03-25,0.0,0.98,plant-covered
+8,4580043692,,,12.6,42.6,80.6,8.44,Mahakanadarawa,5.1,89,1.9,0.2,0.01,2026-03-25,0.03,0.67,plant-covered

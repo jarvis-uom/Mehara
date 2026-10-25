@@ -1,0 +1,249 @@
+{
+ "lakes": 402,
+ "with_any_points": 400,
+ "all_points": 26641,
+ "good_points": 664,
+ "usable_points": 24060,
+ "strict_ge25ha": {
+  "n": 23,
+  "ok": 10,
+  "share_ok": 0.435,
+  "median_points": 9.0
+ },
+ "relaxed_ge25ha": {
+  "n": 23,
+  "ok": 23,
+  "share_ok": 1.0,
+  "median_points": 75.0
+ },
+ "mid_strict_ge10good": 6,
+ "mid_relaxed_ge10usable": 103,
+ "mid_n": 104,
+ "small_relaxed_ge10usable": 266,
+ "small_n": 275,
+ "jitter_median_m": {
+  "ge25": 0.16499999999999998,
+  "6.25-25": 0.15,
+  "lt6.25": 0.15
+ },
+ "rise_fall_usable_median_m": {
+  "ge25": 2.98,
+  "6.25-25": 2.34,
+  "lt6.25": 2.12
+ },
+ "date_range": [
+  "2023-07-30",
+  "2026-10-11"
+ ],
+ "big_table": [
+  {
+   "tank_name": "Nachchaduwa",
+   "ref_area_ha": 1310.58,
+   "points": 100,
+   "good_points": 55,
+   "usable_points": 76,
+   "rise_fall_usable_m": 2.9,
+   "jitter_usable_m": 0.18
+  },
+  {
+   "tank_name": "Hurulu wewa",
+   "ref_area_ha": 913.14,
+   "points": 101,
+   "good_points": 71,
+   "usable_points": 77,
+   "rise_fall_usable_m": 4.82,
+   "jitter_usable_m": 0.22
+  },
+  {
+   "tank_name": "Nuwara Wewa",
+   "ref_area_ha": 746.1,
+   "points": 101,
+   "good_points": 53,
+   "usable_points": 62,
+   "rise_fall_usable_m": 4.19,
+   "jitter_usable_m": 0.15
+  },
+  {
+   "tank_name": "Mahakanadarawa",
+   "ref_area_ha": 549.79,
+   "points": 100,
+   "good_points": 63,
+   "usable_points": 85,
+   "rise_fall_usable_m": 4.12,
+   "jitter_usable_m": 0.15
+  },
+  {
+   "tank_name": "Manankattiya",
+   "ref_area_ha": 174.6,
+   "points": 100,
+   "good_points": 57,
+   "usable_points": 71,
+   "rise_fall_usable_m": 2.92,
+   "jitter_usable_m": 0.11
+  },
+  {
+   "tank_name": "Thuruwilawewa & Nachchaduwa Feeder canal",
+   "ref_area_ha": 154.89,
+   "points": 98,
+   "good_points": 2,
+   "usable_points": 79,
+   "rise_fall_usable_m": 5.32,
+   "jitter_usable_m": 0.18
+  },
+  {
+   "tank_name": "katiyawa tank",
+   "ref_area_ha": 154.62,
+   "points": 50,
+   "good_points": 9,
+   "usable_points": 31,
+   "rise_fall_usable_m": 4.42,
+   "jitter_usable_m": NaN
+  },
+  {
+   "tank_name": "Aluthdiul Wewa",
+   "ref_area_ha": 133.65,
+   "points": 101,
+   "good_points": 49,
+   "usable_points": 64,
+   "rise_fall_usable_m": 3.41,
+   "jitter_usable_m": 0.13
+  },
+  {
+   "tank_name": "Kudapattiya Divul Wewa",
+   "ref_area_ha": 88.92,
+   "points": 94,
+   "good_points": 28,
+   "usable_points": 70,
+   "rise_fall_usable_m": 8.65,
+   "jitter_usable_m": 0.19
+  },
+  {
+   "tank_name": "Eru Wewa",
+   "ref_area_ha": 88.38,
+   "points": 100,
+   "good_points": 10,
+   "usable_points": 88,
+   "rise_fall_usable_m": 2.04,
+   "jitter_usable_m": 0.15
+  },
+  {
+   "tank_name": "Kapirikgama Wewa",
+   "ref_area_ha": 59.49,
+   "points": 100,
+   "good_points": 0,
+   "usable_points": 94,
+   "rise_fall_usable_m": 2.74,
+   "jitter_usable_m": 0.19
+  },
+  {
+   "tank_name": "Sangilikanadarawa",
+   "ref_area_ha": 55.89,
+   "points": 100,
+   "good_points": 1,
+   "usable_points": 81,
+   "rise_fall_usable_m": 3.41,
+   "jitter_usable_m": 0.14
+  },
+  {
+   "tank_name": "",
+   "ref_area_ha": 49.32,
+   "points": 69,
+   "good_points": 0,
+   "usable_points": 63,
+   "rise_fall_usable_m": 1.97,
+   "jitter_usable_m": 0.07
+  },
+  {
+   "tank_name": "",
+   "ref_area_ha": 47.61,
+   "points": 96,
+   "good_points": 51,
+   "usable_points": 66,
+   "rise_fall_usable_m": 3.68,
+   "jitter_usable_m": 0.2
+  },
+  {
+   "tank_name": "",
+   "ref_area_ha": 38.34,
+   "points": 47,
+   "good_points": 0,
+   "usable_points": 40,
+   "rise_fall_usable_m": 1.63,
+   "jitter_usable_m": 0.3
+  },
+  {
+   "tank_name": "Kawarakkulama",
+   "ref_area_ha": 33.21,
+   "points": 96,
+   "good_points": 7,
+   "usable_points": 87,
+   "rise_fall_usable_m": 2.95,
+   "jitter_usable_m": 0.19
+  },
+  {
+   "tank_name": "Medawachchiya Wewa",
+   "ref_area_ha": 32.76,
+   "points": 80,
+   "good_points": 0,
+   "usable_points": 75,
+   "rise_fall_usable_m": 2.04,
+   "jitter_usable_m": 0.14
+  },
+  {
+   "tank_name": "Kanadara Ratmale Wewa",
+   "ref_area_ha": 32.4,
+   "points": 90,
+   "good_points": 0,
+   "usable_points": 76,
+   "rise_fall_usable_m": 2.16,
+   "jitter_usable_m": 0.11
+  },
+  {
+   "tank_name": "",
+   "ref_area_ha": 29.07,
+   "points": 85,
+   "good_points": 31,
+   "usable_points": 66,
+   "rise_fall_usable_m": 2.98,
+   "jitter_usable_m": 0.35
+  },
+  {
+   "tank_name": "Mahakanadarawa Wewa",
+   "ref_area_ha": 26.73,
+   "points": 53,
+   "good_points": 31,
+   "usable_points": 39,
+   "rise_fall_usable_m": 3.86,
+   "jitter_usable_m": 0.12
+  },
+  {
+   "tank_name": "Ranpathwila Wewa",
+   "ref_area_ha": 25.83,
+   "points": 92,
+   "good_points": 1,
+   "usable_points": 81,
+   "rise_fall_usable_m": 5.52,
+   "jitter_usable_m": 0.2
+  },
+  {
+   "tank_name": "",
+   "ref_area_ha": 25.38,
+   "points": 46,
+   "good_points": 1,
+   "usable_points": 34,
+   "rise_fall_usable_m": 2.84,
+   "jitter_usable_m": 0.23
+  },
+  {
+   "tank_name": "Manewa Wewa",
+   "ref_area_ha": 25.11,
+   "points": 98,
+   "good_points": 0,
+   "usable_points": 89,
+   "rise_fall_usable_m": 2.21,
+   "jitter_usable_m": 0.1
+  }
+ ],
+ "verdict_strict": "FAIL",
+ "verdict_relaxed": "PASS"
+}

@@ -1,0 +1,140 @@
+{
+ "Nuwara Wewa": {
+  "lake_id": "4580009523",
+  "swot_points": "good",
+  "outline_ha": 1020.7,
+  "s2_dates": 264,
+  "clear_dates": 45,
+  "pairs": 5,
+  "spearman": 0.7
+ },
+ "lake 4580038712": {
+  "lake_id": "4580038712",
+  "swot_points": "usable",
+  "outline_ha": 27.7,
+  "s2_dates": 264,
+  "clear_dates": 52,
+  "pairs": 19,
+  "spearman": 0.4
+ },
+ "lake 4580044972": {
+  "lake_id": "4580044972",
+  "swot_points": "usable",
+  "outline_ha": 20.5,
+  "s2_dates": 264,
+  "clear_dates": 57,
+  "pairs": 21,
+  "spearman": -0.05
+ },
+ "clear_per_month_avg": {
+  "Nuwara Wewa": {
+   "1": 0.2,
+   "2": 0.5,
+   "3": 2.8,
+   "4": 0.8,
+   "5": 0.5,
+   "6": 0.2,
+   "7": 2.0,
+   "8": 0.8,
+   "9": 1.8,
+   "10": 1.0,
+   "11": 0.8,
+   "12": 0.0
+  },
+  "lake 4580038712": {
+   "1": 0.2,
+   "2": 0.8,
+   "3": 1.8,
+   "4": 1.0,
+   "5": 0.8,
+   "6": 0.8,
+   "7": 2.5,
+   "8": 1.5,
+   "9": 1.0,
+   "10": 1.8,
+   "11": 0.2,
+   "12": 0.8
+  },
+  "lake 4580044972": {
+   "1": 0.2,
+   "2": 0.8,
+   "3": 2.5,
+   "4": 1.2,
+   "5": 1.2,
+   "6": 1.0,
+   "7": 2.5,
+   "8": 1.0,
+   "9": 1.5,
+   "10": 1.0,
+   "11": 0.5,
+   "12": 0.8
+  }
+ },
+ "fixed_pairs": {
+  "Nuwara Wewa": {
+   "lake_id": "4580009523",
+   "outline_ha": 1020.7,
+   "pairs": 5,
+   "spearman_buffer100": 0.7,
+   "spearman_outline": 0.7,
+   "area_ha_range": [
+    624.4,
+    891.8
+   ]
+  },
+  "Village tank (lake 4580038712)": {
+   "lake_id": "4580038712",
+   "outline_ha": 27.7,
+   "pairs": 19,
+   "spearman_buffer100": 0.44,
+   "spearman_outline": 0.42,
+   "area_ha_range": [
+    0.0,
+    17.3
+   ]
+  },
+  "Village tank (lake 4580044972)": {
+   "lake_id": "4580044972",
+   "outline_ha": 20.5,
+   "pairs": 21,
+   "spearman_buffer100": 0.22,
+   "spearman_outline": 0.22,
+   "area_ha_range": [
+    0.0,
+    13.4
+   ]
+  }
+ },
+ "outlier_filtered": {
+  "4580009523": {
+   "band_m": [
+    82.98,
+    90.03
+   ],
+   "series_outlier_share": 0.016,
+   "pairs_kept": 5,
+   "pairs_dropped": 0,
+   "spearman_after_filter": 0.7
+  },
+  "4580038712": {
+   "band_m": [
+    115.9,
+    122.65
+   ],
+   "series_outlier_share": 0.033,
+   "pairs_kept": 18,
+   "pairs_dropped": 1,
+   "spearman_after_filter": 0.68
+  },
+  "4580044972": {
+   "band_m": [
+    114.29,
+    120.08
+   ],
+   "series_outlier_share": 0.0,
+   "pairs_kept": 21,
+   "pairs_dropped": 0,
+   "spearman_after_filter": 0.22
+  }
+ }
+}

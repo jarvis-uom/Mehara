@@ -1,0 +1,19 @@
+{
+ "inside_coverage_count": 469,
+ "inside_coverage_with_id": 251,
+ "inside_coverage_share": 0.535,
+ "by_size": {
+  "count": {
+   "6.25-10 ha": 108,
+   "10-25 ha": 204,
+   "25-100 ha": 144,
+   "100+ ha": 13
+  },
+  "sum": {
+   "6.25-10 ha": 37,
+   "10-25 ha": 108,
+   "25-100 ha": 93,
+   "100+ ha": 13
+  }
+ }
+}

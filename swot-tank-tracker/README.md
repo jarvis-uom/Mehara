@@ -1,0 +1,63 @@
+# SWOT Tank Water Tracker: working files
+
+Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JARVIS), up to 25 October 2026.
+
+**The idea:** estimate how much water each Sri Lankan tank holds from free satellite data.
+- SWOT gives the water height.
+- AI water maps from Sentinel-1 and Sentinel-2 give the water area.
+- Together they give each tank a height–area–volume curve, and then its storage every 5–12 days.
+
+## What is here
+
+| Folder | Contents |
+|---|---|
+| `proposal-drafts/` | Proposal draft (PDF, 25 Oct 2026), its text in `export/`, and the scripts that build the PDF |
+| `feasibility-check/` | The October 2026 data checks: scripts in `work/`, results in `results/`. Start with `results/SUMMARY.md` |
+| `data-checks/` | First data access checks, and the saved Irrigation Department reservoir sheets |
+| `presentation/` | 15-slide deck for the supervisor meeting, a PDF of the slides, the speaker notes, and the scripts and pictures that build the deck |
+
+## Main results so far
+
+**Feasibility check: GO, with changes.**
+- Sentinel-1 radar and a water-plant class are now core parts of the plan.
+
+**Study area: 13 tanks east of Anuradhapura.**
+- 5 major reservoirs with daily gauges: Hurulu Wewa, Mahakanadarawa, Manankattiya, Nachchaduwa and Nuwara Wewa.
+- 8 village tanks near Mahakanadarawa.
+- SWOT passes 273 and 092 cover all 13 tanks.
+
+**Sri Lanka-wide check:** `feasibility-check/results/A7_srilanka_lakes.csv`.
+- It ranks the 187 lakes of 1 km² or more by best-quality SWOT readings.
+- Hurulu Wewa is 6th, and all 5 study reservoirs are in the top 22.
+
+**How to check every SWOT number in a browser:** `feasibility-check/results/HOW_TO_CHECK_IN_BROWSER.md`.
+
+## Not included
+
+These are left out; the scripts download them again.
+- **SWOT lake files** (about 125 MB). They need a free NASA Earthdata login.
+- **SWOT series from Hydrocron** (about 10 MB). Run `feasibility-check/work/a2_fetch.py`.
+- **Sentinel images.** The presentation scripts read them straight from Earth Search and Microsoft Planetary Computer.
+- **The Python environment and the Node build tools.** Run `npm install` in `presentation/build/`.
+
+## Rebuild
+
+1. **Python 3.13 packages:**
+   - earthaccess, geopandas, rasterio, pystac-client, planetary-computer
+   - scipy, matplotlib, pymupdf, markdown, python-pptx, qrcode
+2. **Feasibility check:** run the scripts in `feasibility-check/work/` in order, from `a1_lake_ids.py` to `a7_srilanka.py`.
+3. **Deck:**
+   - Run `p1_maps.py` to `p6_study_map.py` in `presentation/build/`.
+   - Then run `node build_deck.js`.
+   - `render.ps1` exports the slides to pictures with PowerPoint.
+4. **Daily reservoir sheet:** `data-checks/check_access.py` saves today's sheet.
+   - The sheet shows only the current day, so it must be saved every day.
+   - It is the data behind the Irrigation Department's official "Reservoir Status" dashboards: https://irrigation.gov.lk/web/index.php?option=com_content&view=article&id=84&Itemid=201&lang=en
+
+## Data sources and credits
+
+- **SWOT:** NASA/JPL and CNES, Lake Single-Pass product version D, from NASA PO.DAAC (Hydrocron).
+- **Sentinel-1 and Sentinel-2:** contains modified Copernicus Sentinel data 2023–2026.
+- **Irrigation Department of Sri Lanka:** reservoir layer and daily reservoir status.
+- **Tank outlines:** © OpenStreetMap contributors. Sri Lanka boundary: geoBoundaries.
+- **SWOT illustration:** NASA/JPL-Caltech.

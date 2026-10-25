@@ -1,0 +1,2 @@
+# One SWOT Prior Lake Database lake_id per line (10 digits). Lines starting with # are ignored.
+# Get them from the Prior Lake Database (Hydroweb.next) or a SWOT_L2_HR_LakeSP_Prior file (see README.md).
