@@ -1,0 +1,38 @@
+{
+ "pld_lakes_in_box": 402,
+ "pld_by_size_ha": {
+  ">=25": 23,
+  "6.25-25": 104,
+  "1-6.25": 275,
+  "<1": 0
+ },
+ "pld_seen_in_latest_file": {
+  "273": 197,
+  "092": 160
+ },
+ "osm_water_ge_1ha": 695,
+ "osm_ge_6.25ha": 469,
+ "osm_ge_6.25ha_with_id": 270,
+ "share_ge_6.25ha_with_id": 0.576,
+ "osm_ge_25ha": 157,
+ "osm_ge_25ha_with_id": 113,
+ "osm_1_6.25ha": 226,
+ "osm_1_6.25ha_with_id": 61,
+ "dept_tanks_in_box": 50,
+ "dept_ge_6.25ha": 50,
+ "dept_ge_6.25ha_with_id": 43,
+ "dept_without_id": [
+  "Kalpe Wewa",
+  "Kokatiyagollewa",
+  "Pihibiyagollewa",
+  "Muslim Walahawiddawewa",
+  "Pethiyannekada Wewa",
+  "Wadiga Wewa",
+  "Panwella Wewa"
+ ],
+ "files": [
+  "SWOT_L2_HR_LakeSP_Prior_057_273_AS_20261011T091921_20261011T093111_PID0_01",
+  "SWOT_L2_HR_LakeSP_Prior_057_092_AS_20261004T215052_20261004T220345_PID0_01"
+ ],
+ "verdict": "RISK"
+}

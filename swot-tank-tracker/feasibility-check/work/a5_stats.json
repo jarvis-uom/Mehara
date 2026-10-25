@@ -1,0 +1,86 @@
+{
+ "s1s2_water": {
+  "title": "S1S2-Water: A global dataset for semantic segmentation of water bodies from Sentinel-1 and Sentinel-2 satellite images",
+  "license": "cc-by-4.0",
+  "files": 7,
+  "total_gb": 165.21,
+  "largest": [
+   [
+    "part2.zip",
+    32.69
+   ],
+   [
+    "part3.zip",
+    30.76
+   ],
+   [
+    "part1.zip",
+    29.48
+   ],
+   [
+    "part4.zip",
+    29.4
+   ],
+   [
+    "part6.zip",
+    23.08
+   ]
+  ],
+  "first_file_http": 200
+ },
+ "sen1floods11": {
+  "objects": 31074,
+  "total_gb": 36.86,
+  "biggest_folders_gb": [
+   [
+    "v1.1/data/flood_events",
+    34.82
+   ],
+   [
+    "v1.1/data/perm_water",
+    1.48
+   ],
+   [
+    "v1.1/checkpoints/5e4_flood_0_89_0.5418742895126343.cp",
+    0.13
+   ],
+   [
+    "v1.1/checkpoints/5e4_handlabeled_0_8_0.43163052201271057.cp",
+    0.13
+   ],
+   [
+    "v1.1/checkpoints/5e4_permanent_0_180_0.8432363867759705.cp",
+    0.13
+   ],
+   [
+    "v1.1/checkpoints/5e4_s1weak_2_3_0.45159465074539185.cp",
+    0.13
+   ]
+  ],
+  "handlabeled": {
+   "folders": {
+    "JRCWaterHand": {
+     "files": 446,
+     "gb": 0.0
+    },
+    "LabelHand": {
+     "files": 446,
+     "gb": 0.0
+    },
+    "S1Hand": {
+     "files": 446,
+     "gb": 0.73
+    },
+    "S1OtsuLabelHand": {
+     "files": 446,
+     "gb": 0.0
+    },
+    "S2Hand": {
+     "files": 446,
+     "gb": 1.02
+    }
+   },
+   "total_gb": 1.75
+  }
+ }
+}
