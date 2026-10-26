@@ -14,8 +14,10 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 | `proposal-drafts/` | Proposal drafts (PDF; the latest is 26 Oct 2026), their text in `export/`, and the scripts that build the PDF |
 | `feasibility-check/` | The October 2026 data checks: scripts in `work/`, results in `results/`. Start with `results/SUMMARY.md` |
 | `data-checks/` | First data access checks, and the saved Irrigation Department reservoir sheets |
-| `presentation/` | 17-slide deck for the supervisor meeting, a PDF of the slides, the speaker notes, and the scripts and pictures that build the deck |
-| `research/` | A summary of all the past research we used, and ideas to strengthen and widen the scope (26 Oct 2026), each with source links |
+| `presentation/` | 17-slide deck for the supervisor meeting, a PDF of the slides, the speaker notes, the scripts and pictures that build the deck, and `tank-volume-explainer.html` (an interactive model tank) |
+| `research/` | A summary of all the past research we used, ideas to strengthen and widen the scope (26 Oct 2026), and what more frequent data would cost (27 Oct 2026), each with source links |
+
+**Project website:** https://swot-tank-tracker.netlify.app (code in [jarvis-uom/swot-tank-tracker-site](https://github.com/jarvis-uom/swot-tank-tracker-site)).
 
 ## Main results so far
 
