@@ -138,26 +138,24 @@ async function build() {
   text(s, `Tanks around Mahakanadarawa, Sentinel-2, ${fmt(pics.hero.date)}. Contains modified Copernicus Sentinel data 2026.`,
     { x: 6.4, y: 7.05, w: 6.33, h: 0.28, fontSize: 9, color: HEX.soft, align: "right" });
 
-  // 2. Problem
+  // 2. Why it matters
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Introduction" });
-  s.addText("We can see the tanks, but not the water in them", { placeholder: "title" });
-  const probs = [
+  s.addText("Why: dry-zone farming depends on tank water", { placeholder: "title" });
+  const whys = [
     ["~23,000", "small tanks of 80 ha or less in Sri Lanka, the base of dry-zone farming", "National Tanks Survey, in Lopane et al., 2025"],
-    ["118", "reservoirs publish daily water levels; village tanks publish none", "Irrigation Department, Reservoir Status, 25 Oct 2026"],
-    ["10,650", "water bodies mapped from satellites, but by area only, with no volume", "IFAD, 2026"],
+    ["2", "seasons a year. Before each, farmers plan the crop by the water in the tank", "Cultivation meetings at village tanks, Oka et al., 2015"],
+    ["1,160", "small tanks damaged by Cyclone Ditwah in November 2025", "Department of Agrarian Development, December 2025"],
   ];
-  probs.forEach(([big, label, src], i) => {
+  whys.forEach(([big, label, src], i) => {
     const y = 1.55 + i * 1.42;
-    text(s, big, { x: M, y, w: 2.75, h: 0.85, fontSize: 40, color: C.accent1, fontFace: HEAD, valign: "middle" });
-    text(s, label, { x: 3.5, y: y + 0.02, w: 3.95, h: 0.62, fontSize: 15 });
-    text(s, src, { x: 3.5, y: y + 0.7, w: 3.95, h: 0.3, fontSize: 10.5, color: C.accent6 });
+    text(s, big, { x: M, y, w: 2.75, h: 0.85, fontSize: 40, color: i === 2 ? C.accent2 : C.accent1, fontFace: HEAD, valign: "middle" });
+    text(s, label, { x: 3.5, y: y + 0.02, w: 4.2, h: 0.62, fontSize: 15 });
+    text(s, src, { x: 3.5, y: y + 0.7, w: 4.2, h: 0.3, fontSize: 10.5, color: C.accent6 });
   });
-  text(s, "A shallow tank and a deep tank of the same size hold very different amounts of water.",
-    { x: M, y: 5.5, w: 6.85, h: 0.62, fontSize: 16, italic: true, color: C.text2 });
-  text(s, [
-    { text: "Cyclone Ditwah, Nov 2025: ", options: { bold: true, color: C.accent2 } },
-    { text: "1,160 small tanks damaged (Department of Agrarian Development)" },
-  ], { x: M, y: 6.25, w: 6.85, h: 0.5, fontSize: 13 });
+  text(s, "Knowing each tank's water helps farmers plan the season, and helps officers share water and prepare for floods.",
+    { x: M, y: 5.45, w: 6.85, h: 0.62, fontSize: 16, italic: true, color: C.text2 });
+  text(s, "But today, nobody can say how much water most tanks hold.",
+    { x: M, y: 6.22, w: 6.85, h: 0.45, fontSize: 16, bold: true, color: C.accent2 });
   s.addImage({ path: path.join(CARDS, "problem.jpg"), x: 7.93, y: 1.5, w: 4.8, h: 5.3,
     altText: "Satellite image of the study area with every mapped tank shown in blue" });
   s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 8.08, y: 5.92, w: 4.5, h: 0.74, rectRadius: 0.08,
@@ -167,7 +165,38 @@ async function build() {
     { text: "Sentinel-2, 28 Feb 2026 · outlines © OpenStreetMap contributors", options: { fontSize: 9 } },
   ], { x: 8.22, y: 6.0, w: 4.25, h: 0.6, color: C.background1, valign: "middle" });
 
-  // 3. What SWOT gives vs what we add
+  // 3. The problem we solve
+  s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Introduction" });
+  s.addText("The problem we solve", { placeholder: "title" });
+  card(s, M, 1.4, CW, 1.25, { fill: HEX.navy, name: "problem statement" });
+  text(s, "THE PROBLEM", { x: M + 0.35, y: 1.55, w: 4, h: 0.3, fontSize: 12, bold: true, color: C.accent5, charSpacing: 1.5 });
+  text(s, "For most Sri Lankan tanks, nobody can say how much water they hold right now, and there is no low-cost way to measure it often.",
+    { x: M + 0.35, y: 1.86, w: CW - 0.7, h: 0.7, fontSize: 21, fontFace: HEAD, color: C.background1 });
+  text(s, "WHY IT IS STILL UNSOLVED", { x: M, y: 2.88, w: 6, h: 0.3, fontSize: 12, bold: true, color: C.accent6, charSpacing: 1.5 });
+  const gaps = [
+    ["FaGaugeHigh", "No gauges on village tanks", "Only 118 reservoirs publish daily water levels", "Irrigation Department, Reservoir Status, 25 Oct 2026"],
+    ["FaMap", "Maps show area, not volume", "IFAD maps over 10,650 water bodies, but by area only", "IFAD, 2026"],
+    ["FaCloud", "Clouds and water plants hide the water", "Only 17–22% of Sentinel-2 dates were clear over our tanks; plants cover 3 of our 8 village tanks", "Our data check, October 2026"],
+    ["FaSatellite", "SWOT gives height, not volume", "Height only, and not yet checked on Sri Lankan tanks", "NASA and CNES satellite, launched December 2022"],
+  ];
+  const gw = (CW - 0.25) / 2;
+  for (const [i, [ic, head, body, src]] of gaps.entries()) {
+    const x = M + (i % 2) * (gw + 0.25), y = 3.2 + Math.floor(i / 2) * 1.35;
+    card(s, x, y, gw, 1.25, { name: "gap " + head });
+    await iconCircle(s, ic, x + 0.25, y + 0.33, 0.58, C.accent1);
+    text(s, head, { x: x + 1.05, y: y + 0.13, w: gw - 1.3, h: 0.34, fontSize: 16, fontFace: HEAD, valign: "middle" });
+    text(s, body, { x: x + 1.05, y: y + 0.5, w: gw - 1.3, h: 0.44, fontSize: 12.5 });
+    text(s, src, { x: x + 1.05, y: y + 0.96, w: gw - 1.3, h: 0.2, fontSize: 9.5, color: C.accent6 });
+  }
+  card(s, M, 5.97, CW, 0.9, { fill: C.background1, line: HEX.border, shadow: true, name: "our answer" });
+  await iconCircle(s, "FaDroplet", M + 0.3, 6.12, 0.6, C.accent2);
+  text(s, [
+    { text: "Our answer: ", options: { bold: true, color: C.accent2 } },
+    { text: "an AI system that turns free satellite data into each tank's storage, in m³ and % full, every 5–12 days, checked against gauges.", options: { breakLine: true } },
+    { text: "For farmer organisations, the Department of Agrarian Development (village tanks) and the Irrigation Department (reservoirs).", options: { fontSize: 11.5, color: C.accent6 } },
+  ], { x: M + 1.15, y: 6.0, w: CW - 1.4, h: 0.84, fontSize: 15, valign: "middle" });
+
+  // 4. What SWOT gives vs what we add
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Introduction" });
   s.addText("SWOT gives the height. We turn it into water", { placeholder: "title" });
   const cols = [
@@ -196,7 +225,7 @@ async function build() {
   text(s, "SWOT is the ruler. We turn its readings into water in the tank.",
     { x: M, y: 5.95, w: CW, h: 0.55, fontSize: 20, italic: true, color: C.text2, valign: "middle" });
 
-  // 4. Meet SWOT
+  // 5. Meet SWOT
   pres.addSection({ title: "The satellites" });
   s = pres.addSlide({ masterName: "DARK", sectionTitle: "The satellites" });
   s.addText("SWOT: a satellite that measures water height", { placeholder: "title" });
@@ -214,7 +243,7 @@ async function build() {
   await fit(s, path.join(IMG, "swot_passes.png"), 7.9, 1.4, 4.83, 5.45, "center",
     "Map of Sri Lanka with the strips of the 7 SWOT passes; passes 273 and 092 cross our study area");
 
-  // 5. One pass
+  // 6. One pass
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "The satellites" });
   s.addText("What SWOT sees: one pass, every lake at once", { placeholder: "title" });
   text(s, String(heights.measured), { x: M, y: 1.4, w: 3.0, h: 1.15, fontSize: 66, color: C.accent1, fontFace: HEAD, valign: "middle" });
@@ -235,7 +264,7 @@ async function build() {
   await fit(s, path.join(IMG, "swot_heights.png"), 8.3, 1.3, 4.43, 5.6, "right",
     "Map of every lake SWOT measured in the study area on 11 October 2026, coloured by water height");
 
-  // 6. Clouds and radar
+  // 7. Clouds and radar
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "The satellites" });
   s.addText("Clouds hide the tanks. Radar sees through them", { placeholder: "title" });
   const views = [
@@ -254,7 +283,7 @@ async function build() {
     { x: 1.25, y: 6.38, w: 7.5, h: 0.48, fontSize: 14, valign: "middle" });
   text(s, "Contains modified Copernicus Sentinel data 2025–2026.", { x: 8.9, y: 6.38, w: 3.83, h: 0.48, fontSize: 9.5, color: C.accent6, align: "right", valign: "middle" });
 
-  // 7. Study area
+  // 8. Study area
   pres.addSection({ title: "Study and method" });
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Study and method" });
   s.addText("Study area: 5 reservoirs and 8 village tanks", { placeholder: "title" });
@@ -273,7 +302,7 @@ async function build() {
     text(s, sub, { x: 8.05, y: y + 0.38, w: 4.68, h: 0.8, fontSize: 13, color: C.accent6 });
   }
 
-  // 8. How it works
+  // 9. How it works
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Study and method" });
   s.addText("How it works", { placeholder: "title" });
   card(s, M, 1.5, 2.75, 2.75, { name: "Sentinel inputs" });
@@ -306,7 +335,7 @@ async function build() {
   text(s, "Checked against Irrigation Department gauges and official storage figures",
     { x: 8.25, y: 5.3, w: 4.3, h: 0.75, fontSize: 13.5, valign: "middle" });
 
-  // 9. Hurulu Wewa in three pictures
+  // 10. Hurulu Wewa in three pictures
   s = pres.addSlide({ masterName: "DARK", sectionTitle: "Study and method" });
   s.addText("Our method in three pictures: Hurulu Wewa", { placeholder: "title" });
   const steps = [
@@ -328,7 +357,7 @@ async function build() {
     text(s, dates, { x, y: 6.42, w: 3.85, h: 0.28, fontSize: 10.5, color: HEX.soft });
   });
 
-  // 10. Three years of SWOT levels
+  // 11. Three years of SWOT levels
   pres.addSection({ title: "Evidence" });
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Evidence" });
   s.addText("Three years of SWOT water levels", { placeholder: "title" });
@@ -360,7 +389,7 @@ async function build() {
   text(s, "Source: NASA PO.DAAC Hydrocron, SWOT lake product version D, July 2023 to October 2026. Gaps are months without a best-quality reading.",
     { x: M, y: 6.62, w: CW, h: 0.3, fontSize: 10, color: C.accent6 });
 
-  // 11. Feasibility check
+  // 12. Feasibility check
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Evidence" });
   s.addText("We tested the data before proposing", { placeholder: "title" });
   text(s, "Five quick checks in October 2026, using the real SWOT, Sentinel-2 and gauge data.",
@@ -393,7 +422,7 @@ async function build() {
     { text: "Sentinel-1 radar and a water-plant class became core parts of the plan, and RQ2 now tests SWOT's \"suspect\" readings.", options: { fontSize: 13.5, color: HEX.soft } },
   ], { x: M + 1.1, y: 5.68, w: CW - 1.3, h: 0.86, valign: "middle" });
 
-  // 12. Why these tanks
+  // 13. Why these tanks
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Evidence" });
   s.addText("Why these tanks? We checked all of Sri Lanka", { placeholder: "title" });
   text(s, "6th of 187", { x: M, y: 1.35, w: 7.6, h: 0.95, fontSize: 54, fontFace: HEAD, color: C.accent1, valign: "middle" });
@@ -415,7 +444,7 @@ async function build() {
   await fit(s, path.join(IMG, "ranking.png"), 8.5, 1.3, 4.23, 5.6, "right",
     "Map of Sri Lanka's 187 big lakes coloured by best-quality SWOT readings, with our five reservoirs circled");
 
-  // 13. Research questions
+  // 14. Research questions
   pres.addSection({ title: "Plan" });
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Plan" });
   s.addText("Research questions", { placeholder: "title" });
@@ -437,7 +466,62 @@ async function build() {
     text(s, how, { x: x + 1.15, y: y + 1.72, w: 4.55, h: 0.36, fontSize: 11.5, color: C.accent6 });
   }
 
-  // 14. Deliverables and timeline
+  // 15. Who does what
+  s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Plan" });
+  s.addText("Who does what: one research question each", { placeholder: "title" });
+  text(s, "Each of us owns one core research question from start to finish.",
+    { x: M, y: 1.25, w: CW, h: 0.4, fontSize: 14, color: C.accent6 });
+  const team = [
+    { who: "MEMBER A", role: "AI water maps", icon: "FaBrain", fill: C.accent1, rqs: ["RQ1"], items: [
+      "Labelled water masks of Sri Lankan tanks",
+      "Sentinel-1 and Sentinel-2 deep-learning model",
+      "A water-plant class for covered tanks",
+    ], out: "water maps for all tanks" },
+    { who: "MEMBER B", role: "SWOT and gauges", icon: "FaSatellite", fill: C.accent3, rqs: ["RQ2"], items: [
+      "SWOT heights from Hydrocron, poor readings removed",
+      "Gauge data: daily records, history and field photos",
+      "Tests whether \"suspect\" readings can be trusted",
+    ], out: "SWOT accuracy report" },
+    { who: "MEMBER C", role: "Storage and dashboard", icon: "FaChartLine", fill: C.accent2, rqs: ["RQ3", "RQ4 stretch"], items: [
+      "Height–area–volume curve for each tank",
+      "Storage every 5–12 days, checked against official figures",
+      "Dashboard, and the forecast if time allows",
+    ], out: "storage series and dashboard" },
+  ];
+  const tw = (CW - 2 * 0.25) / 3;
+  for (const [i, m] of team.entries()) {
+    const x = M + i * (tw + 0.25);
+    card(s, x, 1.75, tw, 4.15, { fill: C.background1, line: HEX.border, shadow: true, name: m.who });
+    await iconCircle(s, m.icon, x + 0.3, 1.95, 0.6, m.fill);
+    text(s, m.who, { x: x + 1.05, y: 1.95, w: tw - 1.3, h: 0.6, fontSize: 12, bold: true, color: C.accent6, charSpacing: 1.5, valign: "middle" });
+    text(s, m.role, { x: x + 0.3, y: 2.65, w: tw - 0.55, h: 0.45, fontSize: 19, fontFace: HEAD, valign: "middle" });
+    let px = x + 0.3;
+    for (const rq of m.rqs) {
+      const stretch = rq.includes("stretch");
+      const pw = stretch ? 1.3 : 0.7;
+      s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: px, y: 3.2, w: pw, h: 0.34, rectRadius: 0.08,
+        fill: { color: stretch ? C.background1 : m.fill }, line: { color: stretch ? C.accent6 : m.fill, width: 1, dashType: stretch ? "dash" : "solid" },
+        objectName: rq });
+      text(s, rq, { x: px, y: 3.2, w: pw, h: 0.34, fontSize: 12, bold: true, align: "center", valign: "middle",
+        color: stretch ? C.accent6 : C.background1 });
+      px += pw + 0.12;
+    }
+    text(s, m.items.map((t, k) => ({ text: t, options: { bullet: true, breakLine: k < m.items.length - 1 } })),
+      { x: x + 0.3, y: 3.7, w: tw - 0.55, h: 1.6, fontSize: 14, paraSpaceAfter: 6 });
+    s.addShape(pres.shapes.LINE, { x: x + 0.3, y: 5.36, w: tw - 0.6, h: 0, line: { color: HEX.border, width: 1 }, objectName: "divider" });
+    text(s, [
+      { text: "Output: ", options: { bold: true } },
+      { text: m.out },
+    ], { x: x + 0.3, y: 5.42, w: tw - 0.55, h: 0.4, fontSize: 12.5, valign: "middle" });
+  }
+  card(s, M, 6.05, CW, 0.75, { fill: HEX.navy, name: "shared work" });
+  await iconCircle(s, "FaPeopleGroup", M + 0.25, 6.18, 0.5, C.accent5, "#0B2230");
+  text(s, [
+    { text: "All three: ", options: { bold: true, color: C.accent5 } },
+    { text: "field visits on SWOT pass dates, labelling water masks, the thesis and the research paper." },
+  ], { x: M + 0.95, y: 6.1, w: CW - 1.2, h: 0.65, fontSize: 15, color: C.background1, valign: "middle" });
+
+  // 16. Deliverables and timeline
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Plan" });
   s.addText("What we will deliver, and when", { placeholder: "title" });
   const outs = [
@@ -470,7 +554,7 @@ async function build() {
     text(s, what, { x: 8.0, y: y + 0.36, w: 4.5, h: 0.55, fontSize: 12.5, color: C.accent6 });
   });
 
-  // 15. Thank you
+  // 17. Thank you
   s = pres.addSlide({ masterName: "DARK", sectionTitle: "Plan" });
   s.addImage({ path: path.join(CARDS, "closing.jpg"), x: 0, y: 0, w: W, h: 7.5, altText: "" });
   s.addText("Thank you", { placeholder: "title" });
