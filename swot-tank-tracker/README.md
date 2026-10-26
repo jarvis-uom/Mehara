@@ -1,6 +1,6 @@
 # SWOT Tank Water Tracker: working files
 
-Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JARVIS), up to 25 October 2026.
+Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JARVIS), up to 26 October 2026.
 
 **The idea:** estimate how much water each Sri Lankan tank holds from free satellite data.
 - SWOT gives the water height.
@@ -11,10 +11,11 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 
 | Folder | Contents |
 |---|---|
-| `proposal-drafts/` | Proposal draft (PDF, 25 Oct 2026), its text in `export/`, and the scripts that build the PDF |
+| `proposal-drafts/` | Proposal drafts (PDF; the latest is 26 Oct 2026), their text in `export/`, and the scripts that build the PDF |
 | `feasibility-check/` | The October 2026 data checks: scripts in `work/`, results in `results/`. Start with `results/SUMMARY.md` |
 | `data-checks/` | First data access checks, and the saved Irrigation Department reservoir sheets |
 | `presentation/` | 15-slide deck for the supervisor meeting, a PDF of the slides, the speaker notes, and the scripts and pictures that build the deck |
+| `research/` | Ideas to strengthen and widen the scope (26 Oct 2026), each with a source link |
 
 ## Main results so far
 
@@ -32,13 +33,19 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 
 **How to check every SWOT number in a browser:** `feasibility-check/results/HOW_TO_CHECK_IN_BROWSER.md`.
 
+**Proposal update, 26 October 2026:**
+- It cites the Irrigation Department's official Reservoir Status page for the daily gauge data.
+- It separates SWOT's 10 cm requirement (lakes over 1 km²) from its 25 cm goal (smaller lakes).
+- It adds three related studies: a 2026 Thai study without SWOT, a Sri Lankan Sentinel-1 study, and a Sri Lankan ICESat-2 study that found gauges read about 0.4 m below the satellite.
+
 ## Not included
 
-These are left out; the scripts download them again.
+These are left out. Each item says how to get it again.
 - **SWOT lake files** (about 125 MB). They need a free NASA Earthdata login.
 - **SWOT series from Hydrocron** (about 10 MB). Run `feasibility-check/work/a2_fetch.py`.
 - **Sentinel images.** The presentation scripts read them straight from Earth Search and Microsoft Planetary Computer.
 - **The Python environment and the Node build tools.** Run `npm install` in `presentation/build/`.
+- **Global Water Watch archive** (about 530 MB). The Global Water Watch site is going offline; its September 2026 archive is on Zenodo: https://zenodo.org/records/22658942 (CC BY 4.0).
 
 ## Rebuild
 
@@ -50,9 +57,11 @@ These are left out; the scripts download them again.
    - Run `p1_maps.py` to `p6_study_map.py` in `presentation/build/`.
    - Then run `node build_deck.js`.
    - `render.ps1` exports the slides to pictures with PowerPoint.
-4. **Daily reservoir sheet:** `data-checks/check_access.py` saves today's sheet.
-   - The sheet shows only the current day, so it must be saved every day.
+4. **Daily reservoir sheet:** saved automatically three times a day by the private repo `jarvis-uom/water-data-logger` (GitHub Actions), which also saves the river gauges in our three basins.
+   - The sheet shows only the current day, so a day that is not saved is lost.
    - It is the data behind the Irrigation Department's official "Reservoir Status" dashboards: https://irrigation.gov.lk/web/index.php?option=com_content&view=article&id=84&Itemid=201&lang=en
+   - `data-checks/check_access.py` can still save one copy by hand.
+5. **Proposal PDF:** run `proposal-drafts/build/build_pdf.py`. It reads the proposal's Markdown from `export/` and prints the PDF with Microsoft Edge.
 
 ## Data sources and credits
 
