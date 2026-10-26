@@ -14,8 +14,8 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 | `proposal-drafts/` | Proposal drafts (PDF; the latest is 26 Oct 2026), their text in `export/`, and the scripts that build the PDF |
 | `feasibility-check/` | The October 2026 data checks: scripts in `work/`, results in `results/`. Start with `results/SUMMARY.md` |
 | `data-checks/` | First data access checks, and the saved Irrigation Department reservoir sheets |
-| `presentation/` | 15-slide deck for the supervisor meeting, a PDF of the slides, the speaker notes, and the scripts and pictures that build the deck |
-| `research/` | Ideas to strengthen and widen the scope (26 Oct 2026), each with a source link |
+| `presentation/` | 17-slide deck for the supervisor meeting, a PDF of the slides, the speaker notes, and the scripts and pictures that build the deck |
+| `research/` | A summary of all the past research we used, and ideas to strengthen and widen the scope (26 Oct 2026), each with source links |
 
 ## Main results so far
 
@@ -37,6 +37,9 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 - It cites the Irrigation Department's official Reservoir Status page for the daily gauge data.
 - It separates SWOT's 10 cm requirement (lakes over 1 km²) from its 25 cm goal (smaller lakes).
 - It adds three related studies: a 2026 Thai study without SWOT, a Sri Lankan Sentinel-1 study, and a Sri Lankan ICESat-2 study that found gauges read about 0.4 m below the satellite.
+- Team roles: each member owns one core research question. A: AI water maps (RQ1). B: SWOT and gauges (RQ2). C: storage curves and dashboard (RQ3), plus the forecast (RQ4) if time allows.
+
+**Deck update, 26 October 2026:** new slides on why the project matters, the problem we solve, and who does what.
 
 ## Not included
 
@@ -51,12 +54,14 @@ These are left out. Each item says how to get it again.
 
 1. **Python 3.13 packages:**
    - earthaccess, geopandas, rasterio, pystac-client, planetary-computer
-   - scipy, matplotlib, pymupdf, markdown, python-pptx, qrcode
+   - scipy, matplotlib, pymupdf, markdown, python-pptx, qrcode, markitdown[pptx]
 2. **Feasibility check:** run the scripts in `feasibility-check/work/` in order, from `a1_lake_ids.py` to `a7_srilanka.py`.
 3. **Deck:**
    - Run `p1_maps.py` to `p6_study_map.py` in `presentation/build/`.
    - Then run `node build_deck.js`.
    - `render.ps1` exports the slides to pictures with PowerPoint.
+   - `p7_phone_notes.py` then prints the speaker notes with each slide's picture, one A5 page per slide, for reading on a phone.
+   - `python -m markitdown` turns the deck into `speaker-notes.md`.
 4. **Daily reservoir sheet:** saved automatically three times a day by the private repo `jarvis-uom/water-data-logger` (GitHub Actions), which also saves the river gauges in our three basins.
    - The sheet shows only the current day, so a day that is not saved is lost.
    - It is the data behind the Irrigation Department's official "Reservoir Status" dashboards: https://irrigation.gov.lk/web/index.php?option=com_content&view=article&id=84&Itemid=201&lang=en
