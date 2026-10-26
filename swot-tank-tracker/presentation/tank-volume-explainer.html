@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From water height to water volume: Tank A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#EDF2F1; --ink:#1E2A2F; --muted:#55666C; --rule:#C6D3D1; --tint:#F7FAF9;
+  --sky1:#D6E7EB; --sky2:#F1F6F5; --land:#E7DACD;
+  --earth:#9A5A3A; --earth-dark:#6E3E28; --on-earth:#F8EDE3;
+  --grass:#6F9440; --paddy:#86AD4E;
+  --water:#2E7D8C; --water2:#35899A; --surface:#9AD3DC; --on-water:#F3FBFC;
+  --swot:#B57609; --swot-soft:rgba(201,138,18,.16);
+  --sentinel:#3D7B24; --sentinel-soft:rgba(78,138,46,.14);
+  --curve:#2A7483; --on-chip:#FFFFFF; --focus:#1B5E8C;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme: dark;
+    --bg:#0F1C24; --ink:#E2EBED; --muted:#A1B4BA; --rule:#2B404A; --tint:#132630;
+    --sky1:#0F222C; --sky2:#183342; --land:#2B2420;
+    --earth:#85492D; --earth-dark:#5A301D; --on-earth:#F8EDE3;
+    --grass:#80A84C; --paddy:#6F9441;
+    --water:#2C8697; --water2:#3A9CAD; --surface:#A6DDE5; --on-water:#F3FBFC;
+    --swot:#F2B640; --swot-soft:rgba(242,182,64,.14);
+    --sentinel:#95CB66; --sentinel-soft:rgba(149,203,102,.13);
+    --curve:#62BACA; --on-chip:#0F1C24; --focus:#8EC9F0;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:17px;line-height:1.5}
+main{max-width:1180px;margin:0 auto;padding:28px 20px 56px}
+header h1{font-size:clamp(1.75rem,3.4vw,2.5rem);line-height:1.12;margin:0 0 8px;letter-spacing:-0.01em;font-weight:700}
+header p{margin:0 0 18px;color:var(--muted);max-width:64ch}
+.steps{list-style:none;counter-reset:step;display:flex;flex-wrap:wrap;gap:10px 26px;margin:0 0 20px;padding:0}
+.steps li{counter-increment:step;display:flex;align-items:center;gap:9px;font-size:.96rem}
+.steps li::before{content:counter(step);display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--c);color:var(--on-chip);font-weight:700;font-size:.82rem;flex:none}
+.scene-wrap{background:var(--tint);border:1px solid var(--rule);border-radius:16px;overflow:hidden}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.scroll svg{display:block;width:100%;min-width:720px;height:auto}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;padding:14px 18px;border-top:1px solid var(--rule)}
+.controls label{font-weight:700}
+.controls input[type=range]{flex:1 1 280px;min-width:200px;accent-color:var(--water);height:28px}
+.controls output{font-weight:700;font-variant-numeric:tabular-nums;min-width:6ch;color:var(--swot)}
+.btns{display:flex;gap:10px}
+button{font:inherit;font-weight:700;font-size:.95rem;padding:8px 18px;border-radius:999px;border:2px solid var(--water);background:transparent;color:var(--ink);cursor:pointer}
+button.primary{background:var(--water);border-color:var(--water);color:#fff}
+button:hover{filter:brightness(1.07)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.caption{font-size:.86rem;color:var(--muted);margin:10px 2px 0;max-width:80ch}
+.swipe{display:none;font-weight:700;color:var(--ink)}
+@media (max-width:760px){.swipe{display:inline}}
+.grid3{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:30px;margin-top:34px;align-items:start}
+@media (max-width:940px){.grid3{grid-template-columns:1fr}}
+.panel{border-top:4px solid var(--c);padding-top:12px;min-width:0}
+.panel h2{font-size:1.12rem;margin:0 0 6px;line-height:1.25}
+.panel .note{font-size:.88rem;color:var(--muted);margin:8px 0 0}
+.panel > svg{display:block;width:100%;height:auto;max-width:420px}
+.sum dl{display:grid;grid-template-columns:1fr auto;gap:3px 14px;margin:8px 0}
+.sum dt{color:var(--muted)}
+.sum dd{margin:0;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.sum dt.total,.sum dd.total{color:var(--ink);font-size:1.08rem;font-weight:700}
+.sum ol{list-style:none;margin:10px 0;padding:0;font-size:.92rem;font-variant-numeric:tabular-nums}
+.sum ol li{display:flex;justify-content:space-between;flex-wrap:wrap;gap:2px 10px;padding:5px 0;border-bottom:1px dashed var(--rule)}
+.sum ol li span:first-child{color:var(--muted)}
+.sum .small{font-size:.86rem;color:var(--muted);margin:4px 0 0}
+.sum .warn{margin:10px 0 0;padding:10px 12px;border-left:4px solid var(--swot);background:var(--swot-soft)}
+.timeline{margin-top:40px}
+.opt{margin:4px 0 10px;font-size:.95rem}
+.opt label{display:inline-flex;align-items:flex-start;gap:9px;cursor:pointer}
+.opt input{width:18px;height:18px;margin:3px 0 0;accent-color:var(--swot);flex:none}
+.legend{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:.88rem;color:var(--muted);margin:6px 0 10px;padding:0;list-style:none}
+.legend li{display:inline-flex;align-items:center;gap:7px}
+.legend svg{width:16px;height:16px;flex:none}
+.log{font-size:.98rem;margin:10px 0 2px;min-height:3.2em;max-width:90ch}
+.stats{font-size:.88rem;color:var(--muted);margin:0}
+footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--rule);font-size:.86rem;color:var(--muted);max-width:90ch}
+/* SVG pieces */
+svg text{font-family:inherit}
+.t{font-size:13px}
+.t-big{font-size:17px;font-weight:700}
+.t-bold{font-weight:700}
+.t-ink{fill:var(--ink)} .t-muted{fill:var(--muted)} .t-onwater{fill:var(--on-water)} .t-onearth{fill:var(--on-earth)}
+.t-swot{fill:var(--swot)} .t-sen{fill:var(--sentinel)}
+.earth{fill:var(--earth)}
+.bed-line{fill:none;stroke:var(--earth-dark);stroke-width:2.2;stroke-linejoin:round}
+.band-a{fill:var(--water)} .band-b{fill:var(--water2)} .band-unseen{fill:var(--water)}
+.surface{stroke:var(--surface);stroke-width:2.5;stroke-linecap:round}
+.glint{stroke:#fff;stroke-opacity:.5;stroke-width:1.6;stroke-dasharray:10 26;stroke-linecap:round;animation:glint 3.2s linear infinite}
+@keyframes glint{to{stroke-dashoffset:-72}}
+.ref{stroke-width:1.5;stroke-dasharray:6 5;fill:none}
+.ref-ink{stroke:var(--muted)} .ref-light{stroke:rgba(255,255,255,.65)}
+.axis-scene{stroke:var(--muted);stroke-width:1.2}
+.link{stroke:var(--swot);stroke-width:1.5;stroke-dasharray:3 4}
+.dot{fill:var(--swot);stroke:var(--tint);stroke-width:2}
+.sen-beam{fill:var(--sentinel-soft)}
+.swot-beam{stroke:var(--swot);stroke-width:2;stroke-dasharray:4 4}
+.swot-beam.flash{animation:flash 1s ease-out}
+@keyframes flash{0%{stroke-width:7}100%{stroke-width:2}}
+.sat-body{fill:var(--ink)} .sat-swot{fill:var(--swot)} .sat-sen{fill:var(--sentinel)}
+.grass{stroke:var(--grass);stroke-width:5;stroke-linecap:round}
+.paddy{fill:var(--paddy)}
+.ax{stroke:var(--rule);stroke-width:1.2}
+.gridl{stroke:var(--rule);stroke-width:1;stroke-dasharray:2 4}
+.curve-line{stroke:var(--curve);stroke-width:2.6;fill:none;stroke-linecap:round}
+.curve-guess{stroke:var(--curve);stroke-width:2;stroke-dasharray:5 5;fill:none}
+.mark{fill:var(--curve);fill-opacity:.5}
+.mark-new{fill:var(--swot);stroke:var(--tint);stroke-width:1.5}
+.cur{fill:var(--swot);stroke:var(--tint);stroke-width:2.5}
+.guide{stroke:var(--swot);stroke-width:1.3;stroke-dasharray:3 3}
+.tv-land{fill:var(--land)}
+.tv-full{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:4 4}
+.tv-water{fill:var(--water)}
+.tv-bund{fill:var(--earth)}
+.real{fill:none;stroke:var(--muted);stroke-opacity:.5;stroke-width:2}
+.ev-s1{fill:var(--water)} .ev-s2{fill:var(--sentinel)} .ev-swot{fill:var(--swot)}
+.playhead{stroke:var(--ink);stroke-opacity:.45;stroke-width:1.2}
+@media (prefers-reduced-motion:reduce){.glint{animation:none}.swot-beam.flash{animation:none}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>From water height to water volume</h1>
+  <p>Tank A is a made-up village tank with round numbers, so the maths is easy to follow. Drag the water up and down, or play a whole year and watch the satellite updates arrive.</p>
+  <ol class="steps">
+    <li style="--c:var(--swot)">SWOT measures the height</li>
+    <li style="--c:var(--sentinel)">Sentinel measures the area</li>
+    <li style="--c:var(--curve)">The curve links height and area</li>
+    <li style="--c:var(--water)">Thin layers add up to the volume</li>
+  </ol>
+</header>
+
+<section class="scene-wrap" aria-label="Side view of the tank">
+  <div class="scroll">
+    <svg id="scene" viewBox="0 0 960 420" role="img" aria-labelledby="sceneTitle sceneDesc">
+      <title id="sceneTitle">Side view of Tank A</title>
+      <desc id="sceneDesc"></desc>
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" style="stop-color:var(--sky1)"/>
+          <stop offset="1" style="stop-color:var(--sky2)"/>
+        </linearGradient>
+        <pattern id="hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <rect width="4" height="9" fill="#ffffff" fill-opacity=".22"/>
+        </pattern>
+        <clipPath id="waterClip"><path id="clipShape" d=""/></clipPath>
+      </defs>
+      <rect width="960" height="420" fill="url(#sky)"/>
+      <path id="senBeam" class="sen-beam" d=""/>
+      <path id="ground" class="earth" d=""/>
+      <g clip-path="url(#waterClip)"><g id="bands"></g></g>
+      <path id="bedLine" class="bed-line" d=""/>
+      <line id="surface" class="surface"/>
+      <line id="glint" class="glint"/>
+      <line id="ref100" class="ref ref-ink"/>
+      <line id="ref102" class="ref ref-ink"/>
+      <g id="bandLabels"></g>
+      <g id="statics"></g>
+      <g id="ruler"></g>
+      <line id="hLink" class="link"/>
+      <circle id="hDot" class="dot" cx="66" cy="0" r="5.5"/>
+      <line id="swotBeam" class="swot-beam"/>
+      <g transform="translate(300 34)">
+        <rect class="sat-sen" x="-31" y="-4" width="21" height="8" rx="1"/>
+        <rect class="sat-sen" x="10" y="-4" width="21" height="8" rx="1"/>
+        <rect class="sat-body" x="-9" y="-8" width="18" height="16" rx="2"/>
+      </g>
+      <g transform="translate(610 34)">
+        <rect class="sat-swot" x="-33" y="-5" width="23" height="10" rx="1"/>
+        <rect class="sat-swot" x="10" y="-5" width="23" height="10" rx="1"/>
+        <rect class="sat-body" x="-9" y="-9" width="18" height="18" rx="2"/>
+      </g>
+      <text class="t t-sen t-bold" x="338" y="29">Sentinel measures the area</text>
+      <text id="senVal" class="t-big t-ink" x="338" y="49"></text>
+      <text class="t t-swot t-bold" x="648" y="29">SWOT measures the height</text>
+      <text id="swotVal" class="t-big t-ink" x="648" y="49"></text>
+    </svg>
+  </div>
+  <div class="controls">
+    <label for="level">Water height</label>
+    <input id="level" type="range" min="99.3" max="102" step="0.01" value="101.25">
+    <output id="levelOut" for="level">101.25 m</output>
+    <div class="btns">
+      <button id="play" class="primary" type="button">Play a year</button>
+      <button id="reset" type="button">Reset</button>
+    </div>
+  </div>
+</section>
+<p class="caption"><span class="swipe">Swipe sideways on the picture to see the whole tank. </span>Not to scale. Real tanks are hundreds of metres wide but only a few metres deep, so the depth is stretched here to make it visible.</p>
+
+<div class="grid3">
+  <section class="panel sum" style="--c:var(--water)" aria-labelledby="sumH">
+    <h2 id="sumH">The sum, layer by layer</h2>
+    <div id="sum"></div>
+  </section>
+  <section class="panel" style="--c:var(--sentinel)" aria-labelledby="tvH">
+    <h2 id="tvH">What Sentinel sees from above</h2>
+    <svg id="topView" viewBox="0 0 320 210" role="img" aria-label="Top view of the tank and its water area"></svg>
+    <p class="note">When the water drops, the edge moves in. The dashed line shows the tank when it’s full. Floating plants can hide part of the water: a plain water map then shows too small an area, and too little water. Our AI model has a “water under plants” class for this.</p>
+  </section>
+  <section class="panel" style="--c:var(--curve)" aria-labelledby="cvH">
+    <h2 id="cvH">The curve that links them</h2>
+    <svg id="curve" viewBox="0 0 320 232" role="img" aria-label="Curve linking water height and water area"></svg>
+    <p class="note">Each faint dot is a past day when SWOT and Sentinel both saw the tank. There are no dots below 100 m, so that part of the curve is only a guess.</p>
+  </section>
+</div>
+
+<section class="timeline panel" style="--c:var(--swot)" aria-labelledby="tlH">
+  <h2 id="tlH">A year of updates</h2>
+  <ul class="legend">
+    <li><svg viewBox="0 0 16 16" aria-hidden="true"><rect class="ev-s1" x="3" y="3" width="10" height="10"/></svg>Sentinel-1 radar, about every 12 days (sometimes 6), sees through cloud</li>
+    <li><svg viewBox="0 0 16 16" aria-hidden="true"><circle class="ev-s2" cx="8" cy="8" r="5"/></svg>Sentinel-2 photo, every 5 days, but only about 1 in 5 is clear</li>
+    <li><svg viewBox="0 0 16 16" aria-hidden="true"><rect class="ev-swot" x="4" y="4" width="8" height="8" transform="rotate(45 8 8)"/></svg>SWOT pass, about twice every 21 days; on a tank this small it is typically off by about 13 cm</li>
+    <li><svg viewBox="0 0 16 16" aria-hidden="true"><line class="real" x1="1" y1="8" x2="15" y2="8"/></svg>Real water, for comparison</li>
+  </ul>
+  <p class="opt"><label><input id="logger" type="checkbox"> Add a water-level logger in the tank. It records the height every day (we match its zero to SWOT once), so every Sentinel picture becomes a new dot on the curve.</label></p>
+  <div class="scroll"><svg id="tl" viewBox="0 0 960 240" role="img" aria-label="Water in the tank over one made-up year"></svg></div>
+  <p class="log" id="log" aria-live="polite"></p>
+  <p class="stats" id="stats"></p>
+</section>
+
+<footer>
+  Made-up numbers for a made-up tank: the water area grows by 10 hectares for every metre of height, the bed is at 99 m, and the tank spills over at 102 m. In our project, the heights come from SWOT’s Hydrocron data and the areas come from our AI water maps. The timing and errors follow real data: from October 2025 to October 2026, Sentinel-1 passed over Hurulu Wewa on 35 dates, mostly 12 days apart; about 1 in 5 Sentinel-2 photos of our test tanks was clear; SWOT passes our tanks about twice every 21 days, and on lakes this small its heights scatter by about 12–14 cm (SWOT lake validation, 2025).
+</footer>
+</main>
+
+<script>
+(() => {
+  const BED = 99, SEEN = 100, FULL = 102, CREST = 102.8, HA_M = 10000;
+  const NS = 'http://www.w3.org/2000/svg';
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = id => document.getElementById(id);
+
+  // ---- The made-up tank -------------------------------------------------
+  const area = h => (h <= BED ? 0 : 10 * (h - BED));                 // hectares
+  const heightFromArea = a => BED + a / 10;                           // the curve, read backwards
+  const volBelow = h => { const t = Math.min(h, SEEN); return t <= BED ? 0 : 50000 * (t - BED) ** 2; };
+  const volAbove = h => (h <= SEEN ? 0 : 50000 * ((h - BED) ** 2 - 1));
+  const total = h => volBelow(h) + volAbove(h);                       // cubic metres
+  const FULL_TOTAL = total(FULL);
+
+  const fmt = n => Math.round(n).toLocaleString('en-US');
+  const trim = (n, d) => String(+(+n).toFixed(d));
+  const lvl = x => (Math.abs(x * 2 - Math.round(x * 2)) < 1e-9 ? x.toFixed(1) : x.toFixed(2));
+
+  function layers(h){
+    const out = [];
+    if (h <= SEEN) return out;
+    for (let a = SEEN; a < h - 1e-9; a += 0.5){
+      const b = Math.min(a + 0.5, h), t = b - a, avg = (area(a) + area(b)) / 2;
+      out.push({ a, b, t, avg, v: avg * t * HA_M });
+    }
+    return out;
+  }
+
+  // ---- Side view geometry -----------------------------------------------
+  const Y = h => 380 - (h - 98.7) * 72;
+  const XBED = 690, DL = 560, DR = 60;
+  const sq = h => Math.sqrt(Math.max(0, h - BED) / 3);
+  const xL = h => XBED - DL * sq(h);
+  const xR = h => (h <= FULL ? XBED + DR * sq(h) : XBED + DR + (h - FULL) / (CREST - FULL) * 22);
+  const P = pts => 'M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L');
+
+  function profilePoints(){
+    const pts = [];
+    for (let h = 102.15; h > BED; h -= 0.05) pts.push([xL(h), Y(h)]);
+    pts.push([XBED, Y(BED)]);
+    for (let h = BED + 0.05; h < CREST; h += 0.05) pts.push([xR(h), Y(h)]);
+    pts.push([xR(CREST), Y(CREST)]);
+    return pts;
+  }
+  function groundPath(){
+    const pts = [[80, 420], [80, Y(102.5)], [104, Y(102.3)]].concat(profilePoints());
+    pts.push([800, Y(CREST)], [860, Y(100.6)], [960, Y(100.6)], [960, 420]);
+    return P(pts) + ' Z';
+  }
+  function waterPath(h){
+    const pts = [];
+    for (let x = h; x > BED; x -= 0.04) pts.push([xL(x), Y(x)]);
+    pts.push([XBED, Y(BED)]);
+    for (let x = BED + 0.04; x < h; x += 0.04) pts.push([xR(x), Y(x)]);
+    pts.push([xR(h), Y(h)]);
+    return P(pts) + ' Z';
+  }
+  function setLine(el, x1, y1, x2, y2){
+    el.setAttribute('x1', x1.toFixed(1)); el.setAttribute('y1', y1.toFixed(1));
+    el.setAttribute('x2', x2.toFixed(1)); el.setAttribute('y2', y2.toFixed(1));
+  }
+  function svgEl(tag, attrs){
+    const el = document.createElementNS(NS, tag);
+    for (const k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+
+  // ---- Static parts of the side view -------------------------------------
+  $('ground').setAttribute('d', groundPath());
+  $('bedLine').setAttribute('d', P(profilePoints()));
+  {
+    let st = '';
+    st += `<line class="grass" x1="${xR(CREST).toFixed(1)}" y1="${Y(CREST).toFixed(1)}" x2="800" y2="${Y(CREST).toFixed(1)}"/>`;
+    st += `<text class="t t-ink t-bold" x="786" y="${(Y(CREST) - 12).toFixed(1)}" text-anchor="middle">Bund (earth dam)</text>`;
+    for (let x = 872; x < 952; x += 15) st += `<rect class="paddy" x="${x}" y="${(Y(100.6) - 8).toFixed(1)}" width="10" height="8" rx="1.5"/>`;
+    st += `<text class="t t-onearth" x="912" y="${(Y(100.6) + 24).toFixed(1)}" text-anchor="middle">Paddy fields</text>`;
+    st += `<text class="t t-onearth" x="${(xL(SEEN) - 10).toFixed(1)}" y="${(Y(SEEN) + 4).toFixed(1)}" text-anchor="end">Lowest level SWOT has seen: 100 m</text>`;
+    st += `<text class="t t-muted" x="146" y="${(Y(FULL) - 9).toFixed(1)}">Full: the tank spills over at 102 m</text>`;
+    st += `<text class="t t-onearth" x="${XBED}" y="${(Y(BED) + 22).toFixed(1)}" text-anchor="middle">Tank bed, 99 m</text>`;
+    $('statics').innerHTML = st;
+
+    let r = `<line class="axis-scene" x1="66" y1="${Y(98.9)}" x2="66" y2="${Y(102.9)}"/>`;
+    for (let k = 0; k <= 7; k++){
+      const h = 99 + k * 0.5, y = Y(h), major = k % 2 === 0;
+      r += `<line class="axis-scene" x1="${major ? 57 : 61}" y1="${y}" x2="66" y2="${y}"/>`;
+      if (major) r += `<text class="t t-muted" x="53" y="${y + 4.5}" text-anchor="end">${h} m</text>`;
+    }
+    r += `<text class="t t-muted" x="12" y="${(Y(102.9) - 12).toFixed(1)}">Height above sea level</text>`;
+    $('ruler').innerHTML = r;
+    setLine($('ref102'), xL(FULL), Y(FULL), xR(FULL), Y(FULL));
+  }
+
+  // ---- Top view ------------------------------------------------------------
+  const base = [[287,46],[262,33],[224,29],[184,38],[147,54],[110,64],[72,79],[44,100],[57,123],[96,134],[139,147],[182,164],[226,177],[266,175],[287,160],[288,104]];
+  const AX = 283, AY = 106;
+  function smoothClosed(pts){
+    const n = pts.length;
+    let d = `M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+    for (let i = 0; i < n; i++){
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      const c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+      const c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+      d += ` C${c1x.toFixed(1)} ${c1y.toFixed(1)} ${c2x.toFixed(1)} ${c2y.toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+    }
+    return d + ' Z';
+  }
+  $('topView').innerHTML =
+    `<rect class="tv-land" x="0" y="0" width="320" height="210" rx="10"/>` +
+    `<path class="tv-full" d="${smoothClosed(base)}"/>` +
+    `<path id="tvWater" class="tv-water" d=""/>` +
+    `<rect class="tv-bund" x="288" y="22" width="13" height="166" rx="3"/>` +
+    `<text class="t t-muted" x="294" y="15" text-anchor="middle">Bund</text>` +
+    `<text id="tvText" class="t t-ink t-bold" x="16" y="198"></text>`;
+
+  // ---- Height-area curve -----------------------------------------------------
+  const CW = 320, CH = 232, cl = 48, cr = 14, ct = 26, cb = 42;
+  const cxA = a => cl + a / 32 * (CW - cl - cr);
+  const cyH = h => CH - cb - (h - 99) / (102.4 - 99) * (CH - ct - cb);
+  {
+    let c = '';
+    [99, 100, 101, 102].forEach(h => {
+      const y = cyH(h);
+      c += `<line class="gridl" x1="${cl}" y1="${y}" x2="${CW - cr}" y2="${y}"/>`;
+      c += `<text class="t t-muted" x="${cl - 6}" y="${y + 4.5}" text-anchor="end">${h}</text>`;
+    });
+    [0, 10, 20, 30].forEach(a => {
+      c += `<text class="t t-muted" x="${cxA(a)}" y="${CH - cb + 17}" text-anchor="middle">${a}</text>`;
+    });
+    c += `<line class="ax" x1="${cl}" y1="${CH - cb}" x2="${CW - cr}" y2="${CH - cb}"/>`;
+    c += `<line class="ax" x1="${cl}" y1="${ct - 4}" x2="${cl}" y2="${CH - cb}"/>`;
+    c += `<text class="t t-swot t-bold" x="4" y="14">Height (m), from SWOT</text>`;
+    c += `<text class="t t-sen t-bold" x="${CW - cr}" y="${CH - 6}" text-anchor="end">Area (ha), from Sentinel</text>`;
+    c += `<line class="curve-guess" x1="${cxA(0)}" y1="${cyH(99)}" x2="${cxA(10)}" y2="${cyH(100)}"/>`;
+    c += `<line class="curve-line" x1="${cxA(10)}" y1="${cyH(100)}" x2="${cxA(30)}" y2="${cyH(102)}"/>`;
+    c += `<text class="t t-muted" x="${cxA(5) + 12}" y="${cyH(99.5) + 14}">guess</text>`;
+    c += `<g id="marksBase"></g><g id="marksNew"></g>`;
+    c += `<line id="gx" class="guide"/><line id="gy" class="guide"/><circle id="cdot" class="cur" r="6"/>`;
+    $('curve').innerHTML = c;
+    const past = [100.12,100.25,100.41,100.55,100.68,100.83,101.02,101.18,101.36,101.52,101.71,101.86,101.97];
+    const off = [0.6,-0.4,0.3,-0.7,0.5,-0.2,0.8,-0.5,0.2,-0.6,0.4,-0.3,0.1];
+    past.forEach((h, i) => $('marksBase').appendChild(svgEl('circle', { class: 'mark', cx: cxA(area(h) + off[i]).toFixed(1), cy: cyH(h).toFixed(1), r: 3.6 })));
+  }
+  function addMark(a, h){
+    const el = svgEl('circle', { class: 'mark-new', cx: cxA(a).toFixed(1), cy: cyH(Math.min(h, 102.35)).toFixed(1), r: 5 });
+    $('marksNew').appendChild(el);
+  }
+
+  // ---- A made-up year ----------------------------------------------------------
+  const smooth = t => { t = Math.min(1, Math.max(0, t)); return t * t * (3 - 2 * t); };
+  function trueLevel(d){
+    if (d < 25) return 100.45 - 0.10 * (d / 25);                        // October: a little lower
+    if (d < 88) return 100.35 + 1.65 * smooth((d - 25) / 63);           // Maha rains fill the tank
+    if (d < 150) return 102.0 - 0.08 * smooth((d - 120) / 30);          // full and spilling
+    if (d < 200) return 101.92 - 0.55 * smooth((d - 150) / 50);         // Yala water is released
+    if (d < 215) return 101.37 + 0.12 * smooth((d - 200) / 15);         // April showers
+    return 101.49 - 1.04 * smooth((d - 215) / 150);                     // long dry season
+  }
+  const MONTHS = ['Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep'];
+  const MLEN = [31,30,31,31,28,31,30,31,30,31,31,30];
+  const MSTART = MLEN.reduce((acc, n, i) => (acc.push(i ? acc[i - 1] + MLEN[i - 1] : 0), acc), []);
+  function dateLabel(d){
+    let m = 0, x = Math.floor(d);
+    while (m < 11 && x >= MLEN[m]){ x -= MLEN[m]; m++; }
+    return `${x + 1} ${MONTHS[m]}`;
+  }
+  function makeRng(seed){ let s = seed >>> 0; return () => { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 4294967296; }; }
+  const rnd = makeRng(20261027);
+  const events = [];
+  // Sentinel-1 over Hurulu Wewa, Oct 2025 to Oct 2026: 35 dates, mostly 12 days apart, sometimes 6
+  for (let d = 1, k = 0; d < 365; d += (k++ % 6 === 5 ? 6 : 12)){
+    events.push({ d, src: 's1', area: Math.max(0.5, area(trueLevel(d)) * (1 + (rnd() * 2 - 1) * 0.06)) });
+  }
+  for (let d = 3; d < 365; d += 5){
+    const clear = rnd() < (d < 123 ? 0.15 : 0.25);
+    events.push({ d, src: clear ? 's2' : 's2cloud', area: Math.max(0.5, area(trueLevel(d)) * (1 + (rnd() * 2 - 1) * 0.03)) });
+  }
+  // SWOT: passes 6 and 15 days apart; on lakes this small its heights scatter by about 13 cm (SWOT validation, 2025)
+  const gauss = () => Math.sqrt(-2 * Math.log(Math.max(1e-12, rnd()))) * Math.cos(2 * Math.PI * rnd());
+  for (let d = 4, i = 0; d < 365; d += (i++ % 2 ? 15 : 6)){
+    events.push({ d, src: 'swot', h: trueLevel(d) + 0.13 * gauss() });
+  }
+  const order = { s1: 0, s2: 1, s2cloud: 2, swot: 3 };
+  events.sort((x, y) => x.d - y.d || order[x.src] - order[y.src]);
+  const pictureDays = new Map();
+  events.forEach(e => { if (e.src === 's1' || e.src === 's2') pictureDays.set(e.d, e.area); });
+
+  // ---- Timeline -------------------------------------------------------------------
+  const TW = 960, TH = 240, tl = 82, tr = 16, tt = 24, tb = 36;
+  const tx = d => tl + d / 365 * (TW - tl - tr);
+  const ty = v => TH - tb - v / FULL_TOTAL * (TH - tt - tb);
+  {
+    let g = '';
+    [0, 150000, 300000, 450000].forEach(v => {
+      const y = ty(v);
+      g += `<line class="gridl" x1="${tl}" y1="${y}" x2="${TW - tr}" y2="${y}"/>`;
+      g += `<text class="t t-muted" x="${tl - 8}" y="${y + 4.5}" text-anchor="end">${v === 0 ? '0' : fmt(v)}</text>`;
+    });
+    g += `<text class="t t-muted" x="${tl - 8}" y="${tt - 10}" text-anchor="end">m³</text>`;
+    MSTART.forEach((d, i) => {
+      const x = tx(d);
+      g += `<line class="ax" x1="${x}" y1="${TH - tb}" x2="${x}" y2="${TH - tb + 6}"/>`;
+      g += `<text class="t t-muted" x="${x + 4}" y="${TH - tb + 20}">${MONTHS[i]}</text>`;
+    });
+    const pts = [];
+    for (let d = 0; d <= 365; d++) pts.push([tx(d), ty(total(trueLevel(d)))]);
+    g += `<path class="real" d="${P(pts)}"/>`;
+    g += `<text class="t t-muted" x="${tx(20)}" y="12">Maha rains fill the tank</text>`;
+    g += `<text class="t t-muted" x="${tx(236)}" y="12">Yala season uses the water</text>`;
+    g += `<line id="playhead" class="playhead" x1="${tl}" y1="${tt - 8}" x2="${tl}" y2="${TH - tb}"/>`;
+    g += `<g id="evs"></g>`;
+    $('tl').innerHTML = g;
+  }
+  function addEvent(src, d, v){
+    const x = tx(d), y = ty(v);
+    let el;
+    if (src === 's1') el = svgEl('rect', { class: 'ev-s1', x: (x - 3.5).toFixed(1), y: (y - 3.5).toFixed(1), width: 7, height: 7 });
+    else if (src === 's2') el = svgEl('circle', { class: 'ev-s2', cx: x.toFixed(1), cy: y.toFixed(1), r: 4.2 });
+    else el = svgEl('rect', { class: 'ev-swot', x: (x - 4).toFixed(1), y: (y - 4).toFixed(1), width: 8, height: 8, transform: `rotate(45 ${x.toFixed(1)} ${y.toFixed(1)})` });
+    $('evs').appendChild(el);
+  }
+
+  // ---- Drawing the current water level ---------------------------------------------
+  const slider = $('level'), out = $('levelOut'), sumEl = $('sum');
+  const surface = $('surface'), glint = $('glint'), ref100 = $('ref100');
+  const bands = $('bands'), bandLabels = $('bandLabels');
+
+  function render(h){
+    const hh = Math.min(FULL, Math.max(99.3, h));
+    const a = area(hh), ys = Y(hh), l1 = xL(hh), r1 = xR(hh);
+
+    $('clipShape').setAttribute('d', waterPath(hh));
+    const top = Math.min(hh, SEEN);
+    const L = layers(hh);
+    let s = '';
+    if (top > BED){
+      const y1 = Y(top), y2 = Y(BED) + 2;
+      s += `<rect class="band-unseen" x="80" width="880" y="${y1.toFixed(1)}" height="${(y2 - y1).toFixed(1)}"/>`;
+      s += `<rect fill="url(#hatch)" x="80" width="880" y="${y1.toFixed(1)}" height="${(y2 - y1).toFixed(1)}"/>`;
+    }
+    L.forEach((l, i) => {
+      const y1 = Y(l.b), y2 = Y(l.a) + 0.6;
+      s += `<rect class="${i % 2 ? 'band-b' : 'band-a'}" x="80" width="880" y="${y1.toFixed(1)}" height="${(y2 - y1).toFixed(1)}"/>`;
+    });
+    bands.innerHTML = s;
+
+    let t = '';
+    L.forEach(l => {
+      if (l.t >= 0.14){
+        const m = (l.a + l.b) / 2, cx = (xL(m) + xR(m)) / 2;
+        t += `<text class="t t-onwater t-bold" x="${cx.toFixed(1)}" y="${(Y(m) + 4.5).toFixed(1)}" text-anchor="middle">+${fmt(l.v)} m³</text>`;
+      }
+    });
+    if (top - BED >= 0.6){
+      const m = (BED + top) / 2 + 0.03, cx = (xL(m) + xR(m)) / 2;
+      t += `<text class="t t-onwater" x="${cx.toFixed(1)}" y="${(Y(m) + 4.5).toFixed(1)}" text-anchor="middle">Not seen by SWOT: ${fmt(volBelow(hh))} m³</text>`;
+    }
+    bandLabels.innerHTML = t;
+
+    setLine(surface, l1, ys, r1, ys);
+    setLine(glint, l1 + 8, ys + 3, r1 - 8, ys + 3);
+    setLine(ref100, xL(SEEN), Y(SEEN), xR(SEEN), Y(SEEN));
+    ref100.setAttribute('class', 'ref ' + (hh > SEEN + 0.02 ? 'ref-light' : 'ref-ink'));
+    setLine($('hLink'), 66, ys, l1, ys);
+    $('hDot').setAttribute('cy', ys.toFixed(1));
+    $('senBeam').setAttribute('d', `M300 46 L${r1.toFixed(1)} ${ys.toFixed(1)} L${l1.toFixed(1)} ${ys.toFixed(1)} Z`);
+    setLine($('swotBeam'), 610, 48, 610, ys - 1);
+    $('swotVal').textContent = hh.toFixed(2) + ' m';
+    $('senVal').textContent = trim(a, 1) + ' ha';
+
+    const sc = Math.sqrt(a / 30);
+    $('tvWater').setAttribute('d', smoothClosed(base.map(p => [AX + (p[0] - AX) * sc, AY + (p[1] - AY) * sc])));
+    $('tvText').textContent = `Area: ${trim(a, 1)} ha`;
+
+    const px = cxA(a), py = cyH(hh);
+    setLine($('gx'), px, py, px, CH - cb);
+    setLine($('gy'), cl, py, px, py);
+    $('cdot').setAttribute('cx', px.toFixed(1));
+    $('cdot').setAttribute('cy', py.toFixed(1));
+
+    out.textContent = hh.toFixed(2) + ' m';
+    if (document.activeElement !== slider) slider.value = hh.toFixed(2);
+
+    const tot = total(hh);
+    if (hh <= SEEN + 1e-9){
+      sumEl.innerHTML =
+        `<dl><dt>Height, from SWOT</dt><dd>${hh.toFixed(2)} m</dd><dt>Area, from Sentinel</dt><dd>${trim(a, 2)} ha</dd></dl>` +
+        `<p class="warn">The water is below 100 m, the lowest level SWOT has seen. Our curve has no dots down here, so this volume, about ${fmt(tot)} m³, has to come from a capacity table (big reservoirs have one) or a bowl-shaped guess (most village tanks have no table).</p>`;
+    } else {
+      const rows = L.map(l => `<li><span>${lvl(l.a)} to ${lvl(l.b)} m</span><span>${trim(l.avg, 2)} ha × ${trim(l.t, 2)} m = <b>${fmt(l.v)} m³</b></span></li>`).join('');
+      sumEl.innerHTML =
+        `<dl><dt>Height, from SWOT</dt><dd>${hh.toFixed(2)} m</dd><dt>Area, from Sentinel</dt><dd>${trim(a, 2)} ha</dd></dl>` +
+        `<p class="small">Each layer is its average area times its thickness, counted from the bottom up. 1 hectare × 1 metre = 10,000 m³.</p>` +
+        `<ol>${rows}</ol>` +
+        `<dl><dt>Water above 100 m</dt><dd>${fmt(volAbove(hh))} m³</dd>` +
+        `<dt>Bottom part, from a capacity table or a bowl-shaped guess</dt><dd>${fmt(volBelow(hh))} m³</dd>` +
+        `<dt class="total">Total in the tank</dt><dd class="total">${fmt(tot)} m³</dd>` +
+        `<dt>How full</dt><dd>${Math.round(tot / FULL_TOTAL * 100)}% of ${fmt(FULL_TOTAL)} m³</dd></dl>`;
+    }
+    $('sceneDesc').textContent = `Water height ${hh.toFixed(2)} metres, water area ${trim(a, 1)} hectares, about ${fmt(tot)} cubic metres in the tank.`;
+  }
+
+  // ---- Playing the year ------------------------------------------------------------------
+  const playBtn = $('play'), resetBtn = $('reset'), logEl = $('log'), statsEl = $('stats'), loggerBox = $('logger');
+  let h = 101.25, targetH = 101.25, shown = null;
+  let playing = false, ticking = false, day = 0, nextIdx = 0, last = 0;
+  let n1 = 0, n2 = 0, n2try = 0, nS = 0, nNew = 0;
+
+  function updateStats(){
+    statsEl.textContent = (n1 + n2 + nS === 0)
+      ? 'No updates yet.'
+      : `So far: ${n1} radar pictures, ${n2} clear photos out of ${n2try} Sentinel-2 tries, ${nS} SWOT passes, and ${nNew} new dots for the curve.`;
+  }
+  function flashSwot(){
+    const b = $('swotBeam');
+    b.classList.remove('flash');
+    void b.getBoundingClientRect();
+    b.classList.add('flash');
+  }
+  function handle(e){
+    const date = dateLabel(e.d);
+    if (e.src === 's1' || e.src === 's2'){
+      const what = e.src === 's1' ? 'Sentinel-1 radar picture, which sees through cloud' : 'clear Sentinel-2 photo';
+      if (e.src === 's1') n1++; else { n2++; n2try++; }
+      if (loggerBox.checked){
+        const lh = Math.min(FULL, trueLevel(e.d));
+        targetH = lh;
+        const v = total(lh);
+        addEvent(e.src, e.d, v);
+        addMark(e.area, lh);
+        nNew++;
+        logEl.textContent = `${date}: a ${what}. Water area ${trim(e.area, 1)} ha, and the logger says ${lh.toFixed(2)} m, so this is a new dot on the curve. The tank holds ${fmt(v)} m³.`;
+      } else {
+        const estH = Math.min(FULL, Math.max(99.3, heightFromArea(e.area)));
+        targetH = estH;
+        const v = total(estH);
+        addEvent(e.src, e.d, v);
+        logEl.textContent = `${date}: a ${what}. Water area ${trim(e.area, 1)} ha, so the curve gives ${estH.toFixed(2)} m and ${fmt(v)} m³ in the tank.`;
+      }
+    } else if (e.src === 's2cloud'){
+      n2try++;
+    } else {
+      nS++;
+      const v = total(Math.min(FULL, e.h));
+      addEvent('swot', e.d, v);
+      flashSwot();
+      let msg = `${date}: SWOT passes over and measures ${e.h.toFixed(2)} m. The curve turns that into ${fmt(v)} m³, a check on our last estimate of ${fmt(total(targetH))} m³.`;
+      if (pictureDays.has(e.d) && !loggerBox.checked){
+        addMark(pictureDays.get(e.d), e.h);
+        nNew++;
+        msg += ' SWOT and Sentinel saw the tank on the same day, so this also becomes a new dot on the curve.';
+      }
+      logEl.textContent = msg;
+    }
+    updateStats();
+  }
+  function setPlayhead(){
+    const x = tx(day).toFixed(1);
+    const ph = $('playhead');
+    ph.setAttribute('x1', x); ph.setAttribute('x2', x);
+  }
+  function frame(now){
+    const dt = Math.min(0.1, (now - last) / 1000);
+    last = now;
+    if (playing){
+      day = Math.min(365, day + dt * 9);
+      while (nextIdx < events.length && events[nextIdx].d <= day){ handle(events[nextIdx]); nextIdx++; }
+      setPlayhead();
+      if (day >= 365){ playing = false; playBtn.textContent = 'Play again'; }
+    }
+    if (reduceMotion) h = targetH;
+    else {
+      h += (targetH - h) * (1 - Math.exp(-dt * 7));
+      if (Math.abs(targetH - h) < 0.0005) h = targetH;
+    }
+    if (h !== shown){ render(h); shown = h; }
+    if (playing || h !== targetH) requestAnimationFrame(frame);
+    else ticking = false;
+  }
+  function kick(){
+    if (ticking) return;
+    ticking = true;
+    last = performance.now();
+    requestAnimationFrame(frame);
+  }
+  function resetYear(){
+    playing = false; day = 0; nextIdx = 0;
+    n1 = n2 = n2try = nS = nNew = 0;
+    $('evs').replaceChildren();
+    $('marksNew').replaceChildren();
+    setPlayhead();
+    logEl.textContent = 'Press “Play a year” to watch a made-up year. The Maha rains fill the tank, and then the Yala season uses the water.';
+    updateStats();
+    playBtn.textContent = 'Play a year';
+  }
+
+  playBtn.addEventListener('click', () => {
+    if (playing){ playing = false; playBtn.textContent = 'Resume'; return; }
+    if (day >= 365) resetYear();
+    playing = true;
+    playBtn.textContent = 'Pause';
+    kick();
+  });
+  resetBtn.addEventListener('click', () => {
+    resetYear();
+    targetH = h = 101.25;
+    render(h); shown = h;
+  });
+  slider.addEventListener('input', () => {
+    if (playing){ playing = false; playBtn.textContent = 'Resume'; }
+    targetH = h = +slider.value;
+    render(h); shown = h;
+  });
+
+  resetYear();
+  render(h); shown = h;
+})();
+</script>
+</body>
+</html>
