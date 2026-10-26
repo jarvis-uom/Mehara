@@ -143,7 +143,7 @@ async function build() {
   s.addText("We can see the tanks, but not the water in them", { placeholder: "title" });
   const probs = [
     ["~23,000", "small tanks of 80 ha or less in Sri Lanka, the base of dry-zone farming", "National Tanks Survey, in Lopane et al., 2025"],
-    ["118", "reservoirs publish daily water levels; village tanks publish none", "Irrigation Department daily sheet, 25 Oct 2026"],
+    ["118", "reservoirs publish daily water levels; village tanks publish none", "Irrigation Department, Reservoir Status, 25 Oct 2026"],
     ["10,650", "water bodies mapped from satellites, but by area only, with no volume", "IFAD, 2026"],
   ];
   probs.forEach(([big, label, src], i) => {
@@ -153,7 +153,11 @@ async function build() {
     text(s, src, { x: 3.5, y: y + 0.7, w: 3.95, h: 0.3, fontSize: 10.5, color: C.accent6 });
   });
   text(s, "A shallow tank and a deep tank of the same size hold very different amounts of water.",
-    { x: M, y: 5.95, w: 6.85, h: 0.75, fontSize: 16, italic: true, color: C.text2 });
+    { x: M, y: 5.5, w: 6.85, h: 0.62, fontSize: 16, italic: true, color: C.text2 });
+  text(s, [
+    { text: "Cyclone Ditwah, Nov 2025: ", options: { bold: true, color: C.accent2 } },
+    { text: "1,160 small tanks damaged (Department of Agrarian Development)" },
+  ], { x: M, y: 6.25, w: 6.85, h: 0.5, fontSize: 13 });
   s.addImage({ path: path.join(CARDS, "problem.jpg"), x: 7.93, y: 1.5, w: 4.8, h: 5.3,
     altText: "Satellite image of the study area with every mapped tank shown in blue" });
   s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 8.08, y: 5.92, w: 4.5, h: 0.74, rectRadius: 0.08,
@@ -328,8 +332,10 @@ async function build() {
   pres.addSection({ title: "Evidence" });
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Evidence" });
   s.addText("Three years of SWOT water levels", { placeholder: "title" });
-  text(s, "Monthly average of best-quality readings, in metres above each reservoir's lowest month.",
-    { x: M, y: 1.25, w: CW, h: 0.4, fontSize: 14, color: C.accent6 });
+  text(s, [
+    { text: "Monthly average of best-quality readings, in metres above each reservoir's lowest month.", options: { breakLine: true } },
+    { text: "The sharp rise at the end of 2025 is Cyclone Ditwah.", options: { bold: true, color: C.accent2 } },
+  ], { x: M, y: 1.25, w: CW, h: 0.6, fontSize: 14, color: C.accent6 });
   // pad Jan-Jul 2023 (before SWOT's science orbit) so each year label sits on January
   const pad = 7;
   const labels = Array(pad).fill("").concat(levels.labels).map((l, k) => (k % 12 === 0 ? String(2023 + k / 12) : ""));
@@ -486,7 +492,7 @@ async function build() {
   text(s, [
     { text: "See SWOT readings for any lake:", options: { breakLine: true } },
     { text: "SWOT Lake and River Explorer", options: { hyperlink: { url: EXPLORER }, color: C.accent5, bold: true } },
-  ], { x: 9.6, y: 5.25, w: 3.13, h: 0.8, fontSize: 12.5, color: HEX.soft });
+  ], { x: 9.95, y: 5.25, w: 2.78, h: 0.8, fontSize: 12, color: HEX.soft, align: "center" });
 
   await pres.writeFile({ fileName: OUT });
   if (applyTheme) await applyTheme(OUT, THEME);

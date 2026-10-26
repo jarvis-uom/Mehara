@@ -5,6 +5,7 @@ and figures, the research notes as Appendix A. Printed with Microsoft Edge (head
 """
 import re
 import subprocess
+import unicodedata
 from pathlib import Path
 
 import pymupdf as fitz
@@ -13,11 +14,11 @@ import markdown
 BUILD = Path(__file__).resolve().parent
 ROOT = BUILD.parent
 EXPORT = ROOT / "export"
-MAIN_MD = EXPORT / "09b8b4642e976209169e32a7410c5aca.md"
-NOTES_MD = EXPORT / "3975d0e817aeaa0f36b4c66b7b94a8e0.md"
+MAIN_MD = EXPORT / "4f3dab81905bb01d4b1d671b9e3b5984.md"
+NOTES_MD = EXPORT / "f55fe1ae76eb9c1de6909f7706e3846b.md"
 MAP_PNG = EXPORT / "0fd0cc02002c836fe5a6a5955166786c.png"
 EDGE = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-OUT_PDF = ROOT / "SWOT Tank Water Tracker for Sri Lanka - DRAFT 25 Oct 2026.pdf"
+OUT_PDF = ROOT / "SWOT Tank Water Tracker for Sri Lanka - DRAFT 26 Oct 2026.pdf"
 DOC_TITLE = "SWOT Tank Water Tracker for Sri Lanka"
 
 TABLE_CAPTIONS = [
@@ -62,7 +63,8 @@ h2 { font-size: 13.5pt; margin: 16pt 0 6pt; }
 h2 .num, h1 .num { display: inline-block; min-width: 26pt; }
 ul, ol { margin: 0 0 7pt; padding-left: 18pt; }
 li { margin-bottom: 2.5pt; text-align: left; }
-li p { margin: 0; }
+li p { margin: 0; text-align: left; }
+p.sub { break-after: avoid; page-break-after: avoid; }
 table { width: 100%; border-collapse: collapse; margin: 2pt 0 11pt; font-size: 9.8pt; line-height: 1.28; }
 th, td { border: 0.6pt solid #000; padding: 3pt 5pt; vertical-align: top; text-align: left; }
 th { background: #e9e9e9; font-weight: bold; }
@@ -130,12 +132,27 @@ def caption_tables(body, captions, prefix):
     return out
 
 
+def sort_refs(html):
+    # Each reference list A–Z by first author, whatever order the doc has.
+    def sort_list(m):
+        items = [re.sub(r"^\s*<p>(.*)</p>\s*$", r"\1", it, flags=re.S)
+                 for it in re.findall(r"<li>(.*?)</li>", m.group(1), flags=re.S)]
+        items.sort(key=lambda it: unicodedata.normalize("NFKD", re.sub(r"<[^>]+>", "", it)).casefold())
+        return '<ul class="refs">\n' + "\n".join(f"<li>{it}</li>" for it in items) + "\n</ul>"
+    return re.sub(r'<ul class="refs">(.*?)</ul>', sort_list, html, flags=re.S)
+
+
 def build_html(pages=None):
     main = to_html(clean_main(MAIN_MD.read_text(encoding="utf-8")))
     for dup in ("<p><strong>The 13 study tanks</strong></p>", "<p><strong>Data</strong></p>"):
         assert dup in main, dup
         main = main.replace(dup, "")
     main = caption_tables(main, TABLE_CAPTIONS, "")
+    main = re.sub(r"<p><strong>([^<]*)</strong></p>", r'<p class="sub"><strong>\1</strong></p>', main)
+    # The map is too tall for the space left under Table 2, so it goes just above that table.
+    map_slot, table2 = "<p>@@FIG:map@@</p>", '<p class="tcap"><b>Table 2.</b>'
+    assert main.count(map_slot) == 1 and main.count(table2) == 1
+    main = main.replace(map_slot, "").replace(table2, map_slot + table2)
     for n, key in enumerate(("map", "pipeline", "timeline"), start=1):
         src, cap = FIGURES[key]
         fig = f'<figure class="{key}"><img src="{src}" alt=""><figcaption><b>Figure {n}.</b> {cap}</figcaption></figure>'
@@ -156,7 +173,7 @@ def build_html(pages=None):
 
     main = re.sub(r"<h2>(.*?)</h2>", number_h2, main)
     head, refs = main.split('<h2 id="references">', 1)
-    main = head + '<h2 id="references">' + refs.replace("<ul>", '<ul class="refs">')
+    main = head + '<h2 id="references">' + sort_refs(refs.replace("<ul>", '<ul class="refs">'))
 
     notes = to_html(clean_notes(NOTES_MD.read_text(encoding="utf-8")))
     notes = caption_tables(notes, NOTE_TABLE_CAPTIONS, "A")
@@ -187,7 +204,7 @@ def build_html(pages=None):
   <div class="subtitle">An AI system that estimates how much water each tank holds, using free satellite data</div>
   <div class="group">Group 6 · JARVIS</div>
   <div class="sup">Supervisors: Dr. Upeksha Ganegoda (IT) · Prof. (Mrs) Thanuja Sandanayake (IDS)</div>
-  <div class="date">Draft, 25 October 2026</div>
+  <div class="date">Draft, 26 October 2026</div>
 </section>"""
     doc = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>{DOC_TITLE}: project proposal (draft)</title><style>{CSS}</style></head><body>

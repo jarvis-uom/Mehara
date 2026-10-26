@@ -5,6 +5,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $deck = Join-Path $root "SWOT Tank Water Tracker - proposal talk.pptx"
 $out = Join-Path $root "render"
 New-Item -ItemType Directory -Force $out | Out-Null
+$wasRunning = [bool](Get-Process POWERPNT -ErrorAction SilentlyContinue)
 $app = New-Object -ComObject PowerPoint.Application
 try {
     $pres = $app.Presentations.Open($deck, $true, $false, $false)
@@ -15,7 +16,7 @@ try {
     }
     $pres.Close()
 } finally {
-    $app.Quit()
+    if (-not $wasRunning) { $app.Quit() }  # never close a PowerPoint the user already had open
     [System.Runtime.InteropServices.Marshal]::ReleaseComObject($app) | Out-Null
 }
 Get-ChildItem $out -Filter "slide-*.png" | Select-Object -ExpandProperty Name
