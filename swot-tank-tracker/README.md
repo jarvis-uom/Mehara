@@ -17,7 +17,7 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 | `presentation/` | 17-slide deck for the supervisor meeting, a PDF of the slides, the speaker notes, the scripts and pictures that build the deck, and `tank-volume-explainer.html` (an interactive model tank) |
 | `research/` | A summary of all the past research we used, ideas to strengthen and widen the scope (26 Oct 2026), and what more frequent data would cost (27 Oct 2026), each with source links |
 
-**Project website:** https://swot-tank-tracker.netlify.app (code in [jarvis-uom/swot-tank-tracker-site](https://github.com/jarvis-uom/swot-tank-tracker-site)).
+**Project website:** https://swot.mehara.work (code in [jarvis-uom/swot-tank-tracker-site](https://github.com/jarvis-uom/swot-tank-tracker-site)).
 
 ## Main results so far
 
