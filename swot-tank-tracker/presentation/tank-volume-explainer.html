@@ -88,16 +88,20 @@ footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--rule);font-si
   header h1{margin:0 0 6px}
   header .steps{order:1;margin:0 0 6px}
   header p{order:2;flex:1 1 100%;max-width:none;margin:0 0 14px}
-  .board{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:30px;align-items:start}
-  .board .grid3{margin-top:0;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:0 24px;align-items:start;
-    grid-template-areas:"sum tvh" "sum tv" "sum cvh" "sum cv" "sum tvn" "sum cvn";grid-template-rows:repeat(5,auto) 1fr}
+  .board{display:grid;column-gap:26px;align-items:start;
+    grid-template-columns:minmax(0,.775fr) minmax(0,.775fr) minmax(0,.545fr) minmax(0,.455fr);
+    grid-template-areas:"tank tank sum tvh" "tank tank sum tv" "tank tank sum cvh" "tank tank sum cv" "tank tank sum ." "tvn cvn sum .";
+    grid-template-rows:repeat(4,auto) 1fr auto}
+  .board .stage{grid-area:tank}
+  .board .caption{max-width:none}
   .board .sum{grid-area:sum}
-  /* both pictures first, then both notes, so the pictures stay on screen */
-  .board .grid3 > .panel:not(.sum){display:contents}
+  /* the picture panels join the page grid: pictures on the right, their notes under the tank */
+  .board .grid3,.board .grid3 > .panel:not(.sum){display:contents}
   .board #tvH,.board #cvH{border-top:4px solid var(--c);padding-top:12px}
   .board #tvH{grid-area:tvh} .board #topView{grid-area:tv}
   .board #cvH{grid-area:cvh;margin-top:18px} .board #curve{grid-area:cv}
-  .board [aria-labelledby="tvH"] .note{grid-area:tvn;margin-top:14px}
+  .board .grid3 .note{margin:12px 0 0;padding-left:12px;border-left:3px solid var(--c)}
+  .board [aria-labelledby="tvH"] .note{grid-area:tvn}
   .board [aria-labelledby="cvH"] .note{grid-area:cvn}
   .timeline{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);column-gap:30px;align-items:start}
   .timeline h2{grid-column:1 / -1}
@@ -675,7 +679,7 @@ svg text{font-family:inherit}
   // ---- Wide screens: if the tank and the panels do not fit on one screen, make the words a little smaller ----
   const wide = window.matchMedia('(min-width:1400px)');
   const mainEl = document.querySelector('main');
-  const keyParts = ['.controls', '#sum', '#topView', '#curve'].map(s => document.querySelector(s));
+  const keyParts = [...document.querySelectorAll('.controls, .caption, #sum, #topView, #curve, .grid3 .note')];
   function fitsAt(z){
     mainEl.style.zoom = z === 1 ? '' : z.toFixed(3);
     return Math.max(...keyParts.map(e => e.getBoundingClientRect().bottom)) + scrollY <= innerHeight - 12;
