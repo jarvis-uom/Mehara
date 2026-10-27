@@ -81,6 +81,29 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-
 .log{font-size:.98rem;margin:10px 0 2px;min-height:3.2em;max-width:90ch}
 .stats{font-size:.88rem;color:var(--muted);margin:0}
 footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--rule);font-size:.86rem;color:var(--muted);max-width:90ch}
+/* Wide screens: the tank and the three panels side by side, so they all fit on one screen */
+@media (min-width:1400px){
+  main{max-width:2200px;padding:14px 28px 48px}
+  header{display:flex;flex-wrap:wrap;align-items:center;column-gap:36px}
+  header h1{margin:0 0 6px}
+  header .steps{order:1;margin:0 0 6px}
+  header p{order:2;flex:1 1 100%;max-width:none;margin:0 0 14px}
+  .board{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:30px;align-items:start}
+  .board .grid3{margin-top:0;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:0 24px;align-items:start;
+    grid-template-areas:"sum tvh" "sum tv" "sum cvh" "sum cv" "sum tvn" "sum cvn";grid-template-rows:repeat(5,auto) 1fr}
+  .board .sum{grid-area:sum}
+  /* both pictures first, then both notes, so the pictures stay on screen */
+  .board .grid3 > .panel:not(.sum){display:contents}
+  .board #tvH,.board #cvH{border-top:4px solid var(--c);padding-top:12px}
+  .board #tvH{grid-area:tvh} .board #topView{grid-area:tv}
+  .board #cvH{grid-area:cvh;margin-top:18px} .board #curve{grid-area:cv}
+  .board [aria-labelledby="tvH"] .note{grid-area:tvn;margin-top:14px}
+  .board [aria-labelledby="cvH"] .note{grid-area:cvn}
+  .timeline{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);column-gap:30px;align-items:start}
+  .timeline h2{grid-column:1 / -1}
+  .timeline .scroll{grid-column:1;grid-row:2 / span 4}
+  .timeline > :not(h2):not(.scroll){grid-column:2}
+}
 /* SVG pieces */
 svg text{font-family:inherit}
 .t{font-size:13px}
@@ -137,6 +160,8 @@ svg text{font-family:inherit}
   </ol>
 </header>
 
+<div class="board">
+<div class="stage">
 <section class="scene-wrap" aria-label="Side view of the tank">
   <div class="scroll">
     <svg id="scene" viewBox="0 0 960 420" role="img" aria-labelledby="sceneTitle sceneDesc">
@@ -194,6 +219,7 @@ svg text{font-family:inherit}
   </div>
 </section>
 <p class="caption"><span class="swipe">Swipe sideways on the picture to see the whole tank. </span>Not to scale. Real tanks are hundreds of metres wide but only a few metres deep, so the depth is stretched here to make it visible.</p>
+</div>
 
 <div class="grid3">
   <section class="panel sum" style="--c:var(--water)" aria-labelledby="sumH">
@@ -210,6 +236,7 @@ svg text{font-family:inherit}
     <svg id="curve" viewBox="0 0 320 232" role="img" aria-label="Curve linking water height and water area"></svg>
     <p class="note">Each faint dot is a past day when SWOT and Sentinel both saw the tank. There are no dots below 100 m, so that part of the curve is only a guess.</p>
   </section>
+</div>
 </div>
 
 <section class="timeline panel" style="--c:var(--swot)" aria-labelledby="tlH">
@@ -645,8 +672,31 @@ svg text{font-family:inherit}
     render(h); shown = h;
   });
 
+  // ---- Wide screens: if the tank and the panels do not fit on one screen, make the words a little smaller ----
+  const wide = window.matchMedia('(min-width:1400px)');
+  const mainEl = document.querySelector('main');
+  const keyParts = ['.controls', '#sum', '#topView', '#curve'].map(s => document.querySelector(s));
+  function fitsAt(z){
+    mainEl.style.zoom = z === 1 ? '' : z.toFixed(3);
+    return Math.max(...keyParts.map(e => e.getBoundingClientRect().bottom)) + scrollY <= innerHeight - 12;
+  }
+  function fit(){
+    mainEl.style.zoom = '';
+    if (wide.matches){
+      render(FULL);                                   // the tallest sum has four layers
+      if (!fitsAt(1)){
+        let lo = 0.7, hi = 1;                         // the largest size that fits, but never below 70%
+        for (let i = 0; i < 7; i++){ const mid = (lo + hi) / 2; if (fitsAt(mid)) lo = mid; else hi = mid; }
+        fitsAt(lo);
+      }
+    }
+    render(h); shown = h;
+  }
+  addEventListener('resize', fit);
+  if (document.fonts) document.fonts.ready.then(fit);
+
   resetYear();
-  render(h); shown = h;
+  fit();
 })();
 </script>
 </body>
