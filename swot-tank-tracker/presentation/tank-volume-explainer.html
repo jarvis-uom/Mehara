@@ -47,7 +47,12 @@ header p{margin:0 0 18px;color:var(--muted);max-width:64ch}
 .controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;padding:14px 18px;border-top:1px solid var(--rule)}
 .controls label{font-weight:700}
 .controls input[type=range]{flex:1 1 280px;min-width:200px;accent-color:var(--water);height:28px}
-.controls output{font-weight:700;font-variant-numeric:tabular-nums;min-width:6ch;color:var(--swot)}
+.typed{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--swot)}
+.typed input{font:inherit;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink);width:7.5ch;padding:4px 8px;border:2px solid var(--swot);border-radius:8px;background:var(--tint)}
+.picks{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.picks span{color:var(--muted);font-size:.9rem;margin-right:2px}
+.picks button{padding:4px 13px;font-size:.88rem;border-width:1.5px;font-variant-numeric:tabular-nums}
+.picks button[aria-pressed=true]{background:var(--water);border-color:var(--water);color:#fff}
 .btns{display:flex;gap:10px}
 button{font:inherit;font-weight:700;font-size:.95rem;padding:8px 18px;border-radius:999px;border:2px solid var(--water);background:transparent;color:var(--ink);cursor:pointer}
 button.primary{background:var(--water);border-color:var(--water);color:#fff}
@@ -215,10 +220,19 @@ svg text{font-family:inherit}
   <div class="controls">
     <label for="level">Water height</label>
     <input id="level" type="range" min="99.3" max="102" step="0.01" value="101.25">
-    <output id="levelOut" for="level">101.25 m</output>
+    <span class="typed"><input id="levelIn" type="number" min="99.3" max="102" step="0.01" value="101.25" inputmode="decimal" title="Type a height and press Enter" aria-label="Water height in metres. Type a number and press Enter"> m</span>
     <div class="btns">
       <button id="play" class="primary" type="button">Play a year</button>
       <button id="reset" type="button">Reset</button>
+    </div>
+    <div class="picks" role="group" aria-label="Round heights">
+      <span aria-hidden="true">Round heights:</span>
+      <button type="button" data-h="99.5">99.5 m</button>
+      <button type="button" data-h="100">100 m</button>
+      <button type="button" data-h="100.5">100.5 m</button>
+      <button type="button" data-h="101">101 m</button>
+      <button type="button" data-h="101.5">101.5 m</button>
+      <button type="button" data-h="102">102 m</button>
     </div>
   </div>
 </section>
@@ -485,7 +499,8 @@ svg text{font-family:inherit}
   }
 
   // ---- Drawing the current water level ---------------------------------------------
-  const slider = $('level'), out = $('levelOut'), sumEl = $('sum');
+  const slider = $('level'), levelIn = $('levelIn'), sumEl = $('sum');
+  const picks = [...document.querySelectorAll('.picks button')];
   const surface = $('surface'), glint = $('glint'), ref100 = $('ref100');
   const bands = $('bands'), bandLabels = $('bandLabels');
 
@@ -529,7 +544,7 @@ svg text{font-family:inherit}
     $('hDot').setAttribute('cy', ys.toFixed(1));
     $('senBeam').setAttribute('d', `M300 46 L${r1.toFixed(1)} ${ys.toFixed(1)} L${l1.toFixed(1)} ${ys.toFixed(1)} Z`);
     setLine($('swotBeam'), 610, 48, 610, ys - 1);
-    $('swotVal').textContent = hh.toFixed(2) + ' m';
+    $('swotVal').textContent = trim(hh, 2) + ' m';
     $('senVal').textContent = trim(a, 1) + ' ha';
 
     const sc = Math.sqrt(a / 30);
@@ -542,18 +557,19 @@ svg text{font-family:inherit}
     $('cdot').setAttribute('cx', px.toFixed(1));
     $('cdot').setAttribute('cy', py.toFixed(1));
 
-    out.textContent = hh.toFixed(2) + ' m';
+    if (document.activeElement !== levelIn) levelIn.value = trim(hh, 2);
+    picks.forEach(b => b.setAttribute('aria-pressed', String(Math.abs(+b.dataset.h - hh) < 0.005)));
     if (document.activeElement !== slider) slider.value = hh.toFixed(2);
 
     const tot = total(hh);
     if (hh <= SEEN + 1e-9){
       sumEl.innerHTML =
-        `<dl><dt>Height, from SWOT</dt><dd>${hh.toFixed(2)} m</dd><dt>Area, from Sentinel</dt><dd>${trim(a, 2)} ha</dd></dl>` +
-        `<p class="warn">The water is below 100 m, the lowest level SWOT has seen. Our curve has no dots down here, so this volume, about ${fmt(tot)} m³, has to come from a capacity table (big reservoirs have one) or a bowl-shaped guess (most village tanks have no table).</p>`;
+        `<dl><dt>Height, from SWOT</dt><dd>${trim(hh, 2)} m</dd><dt>Area, from Sentinel</dt><dd>${trim(a, 2)} ha</dd></dl>` +
+        `<p class="warn">The water is ${hh < SEEN - 1e-9 ? 'below' : 'at'} 100 m, the lowest level SWOT has seen. Our curve has no dots down here, so this volume, about ${fmt(tot)} m³, has to come from a capacity table (big reservoirs have one) or a bowl-shaped guess (most village tanks have no table).</p>`;
     } else {
       const rows = L.map(l => `<li><span>${lvl(l.a)} to ${lvl(l.b)} m</span><span>${trim(l.avg, 2)} ha × ${trim(l.t, 2)} m = <b>${fmt(l.v)} m³</b></span></li>`).join('');
       sumEl.innerHTML =
-        `<dl><dt>Height, from SWOT</dt><dd>${hh.toFixed(2)} m</dd><dt>Area, from Sentinel</dt><dd>${trim(a, 2)} ha</dd></dl>` +
+        `<dl><dt>Height, from SWOT</dt><dd>${trim(hh, 2)} m</dd><dt>Area, from Sentinel</dt><dd>${trim(a, 2)} ha</dd></dl>` +
         `<p class="small">Each layer is its average area times its thickness, counted from the bottom up. 1 hectare × 1 metre = 10,000 m³.</p>` +
         `<ol>${rows}</ol>` +
         `<dl><dt>Water above 100 m</dt><dd>${fmt(volAbove(hh))} m³</dd>` +
@@ -561,7 +577,7 @@ svg text{font-family:inherit}
         `<dt class="total">Total in the tank</dt><dd class="total">${fmt(tot)} m³</dd>` +
         `<dt>How full</dt><dd>${Math.round(tot / FULL_TOTAL * 100)}% of ${fmt(FULL_TOTAL)} m³</dd></dl>`;
     }
-    $('sceneDesc').textContent = `Water height ${hh.toFixed(2)} metres, water area ${trim(a, 1)} hectares, about ${fmt(tot)} cubic metres in the tank.`;
+    $('sceneDesc').textContent = `Water height ${trim(hh, 2)} metres, water area ${trim(a, 1)} hectares, about ${fmt(tot)} cubic metres in the tank.`;
   }
 
   // ---- Playing the year ------------------------------------------------------------------
@@ -675,6 +691,16 @@ svg text{font-family:inherit}
     targetH = h = +slider.value;
     render(h); shown = h;
   });
+  function setLevel(v){                               // a typed height or a round-height button
+    if (!Number.isFinite(v)){ levelIn.value = trim(h, 2); return; }
+    if (playing){ playing = false; playBtn.textContent = 'Resume'; }
+    targetH = h = Math.min(FULL, Math.max(99.3, v));
+    render(h); shown = h;
+    levelIn.value = trim(h, 2);
+  }
+  levelIn.addEventListener('change', () => setLevel(parseFloat(levelIn.value)));
+  levelIn.addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); setLevel(parseFloat(levelIn.value)); } });
+  picks.forEach(b => b.addEventListener('click', () => setLevel(+b.dataset.h)));
 
   // ---- Wide screens: if the tank and the panels do not fit on one screen, make the words a little smaller ----
   const wide = window.matchMedia('(min-width:1400px)');
