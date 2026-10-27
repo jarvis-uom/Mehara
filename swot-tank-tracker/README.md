@@ -14,7 +14,7 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 | `proposal-drafts/` | Proposal drafts (PDF; the latest is 26 Oct 2026), their text in `export/`, and the scripts that build the PDF |
 | `feasibility-check/` | The October 2026 data checks: scripts in `work/`, results in `results/`. Start with `results/SUMMARY.md` |
 | `data-checks/` | First data access checks, and the saved Irrigation Department reservoir sheets |
-| `presentation/` | 17-slide deck for the supervisor meeting, a PDF of the slides, the speaker notes, the scripts and pictures that build the deck, and `tank-volume-explainer.html` (an interactive model tank) |
+| `presentation/` | 17-slide deck for the supervisor meeting and a PDF of the slides (both without the speaker notes, which we keep private), the scripts and pictures that build the deck, and `tank-volume-explainer.html` (an interactive model tank) |
 | `research/` | A summary of all the past research we used, ideas to strengthen and widen the scope (26 Oct 2026), and what more frequent data would cost (27 Oct 2026), each with source links |
 
 **Project website:** https://swot.mehara.work (code in [jarvis-uom/swot-tank-tracker-site](https://github.com/jarvis-uom/swot-tank-tracker-site)).
@@ -62,8 +62,8 @@ These are left out. Each item says how to get it again.
    - Run `p1_maps.py` to `p6_study_map.py` in `presentation/build/`.
    - Then run `node build_deck.js`.
    - `render.ps1` exports the slides to pictures with PowerPoint.
-   - `p7_phone_notes.py` then prints the speaker notes with each slide's picture, one A5 page per slide, for reading on a phone.
-   - `python -m markitdown` turns the deck into `speaker-notes.md`.
+   - `p7_phone_notes.py` prints each slide's picture with its speaker notes, one A5 page per slide, for reading on a phone.
+   - The speaker notes are kept private, so they are not in this repo: `build_deck.js` here builds the deck without them.
 4. **Daily reservoir sheet:** saved automatically three times a day by the private repo `jarvis-uom/water-data-logger` (GitHub Actions), which also saves the river gauges in our three basins.
    - The sheet shows only the current day, so a day that is not saved is lost.
    - It is the data behind the Irrigation Department's official "Reservoir Status" dashboards: https://irrigation.gov.lk/web/index.php?option=com_content&view=article&id=84&Itemid=201&lang=en
