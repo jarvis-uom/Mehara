@@ -45,6 +45,12 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 
 **Deck update, 28 October 2026:** one slide per member (the data analysis and the technical work) and a "Datasets and links" slide with every dataset's link.
 
+**Plan update, 29 October 2026:** the three models now form one chain.
+- A: the water map (RQ1).
+- B: SWOT and storage (RQ2 and RQ3). A trust screen cleans the SWOT readings, and a gradient-boosting model trained on about 100 gauged reservoirs turns SWOT height and water area into % full.
+- C: the forecast and the system (RQ4).
+- The proposal draft and the talk (slides 14, 15, 17, 18 and 19) follow the new plan.
+
 ## Not included
 
 These are left out. Each item says how to get it again.
