@@ -521,7 +521,89 @@ async function build() {
     { text: "field visits on SWOT pass dates, labelling water masks, the thesis and the research paper." },
   ], { x: M + 0.95, y: 6.1, w: CW - 1.2, h: 0.65, fontSize: 15, color: C.background1, valign: "middle" });
 
-  // 16. Deliverables and timeline
+  // 16-18. Each member's work: the data analysis and the technical work
+  const members = [
+    { who: "Member A", role: "AI water maps", rqs: ["RQ1"], fill: C.accent1, icon: "FaBrain",
+      q: "How accurately can deep learning map tank water from Sentinel-1 and Sentinel-2, even under cloud or water plants?",
+      analysis: [
+        "Label water masks of our tanks, with a \"water under plants\" class",
+        "Score the maps: IoU and F1 against the labels",
+        "Area error against Kanhindawewa's drone survey, by sensor, season and plant cover",
+        "Compare with the simple rules and with SWOT's own area on the same days",
+      ],
+      tech: [
+        "U-Net (EfficientNet-B0) trained on S1S2-Water, then fine-tuned on our tanks",
+        "Inputs: Sentinel-1 VV and VH, NISAR L-band radar, Sentinel-2, slope",
+        "Pipeline: find each picture day, download it, map the water, measure the area",
+      ],
+      out: "water area for every tank on every picture day, with its accuracy" },
+    { who: "Member B", role: "SWOT and gauges", rqs: ["RQ2"], fill: C.accent3, icon: "FaSatellite",
+      q: "How accurate is SWOT on reservoirs and on small village tanks, and can its \"suspect\" readings be trusted?",
+      analysis: [
+        "SWOT minus gauge on every pass: the average gap and the spread in cm",
+        "\"Good\" against \"suspect\" readings: how much extra error?",
+        "Effect of lake size, distance from the track and season",
+        "How a height error turns into a volume error",
+      ],
+      tech: [
+        "Hydrocron pipeline: each tank's lake ID, every pass, cleaned with quality flags and an outlier test",
+        "Gauge zero in metres above sea level: full supply level minus full supply depth",
+        "Daily logger for the department's sheet; storage history turned back into gauge heights",
+        "Field visits on pass days: photos of the gauge",
+      ],
+      out: "SWOT accuracy report, and the fixed gap for each reservoir" },
+    { who: "Member C", role: "Storage and dashboard", rqs: ["RQ3", "RQ4 stretch"], fill: C.accent2, icon: "FaChartLine",
+      q: "Does AI water area plus SWOT height give storage close to official and measured values?",
+      analysis: [
+        "Each tank's area–height curve A(h) from its dots",
+        "Storage change against the department's daily storage",
+        "Test the method on Kanhindawewa's drone table, and against Imbulana's formula",
+        "Error budget: height error plus area error, layer by layer",
+        "RQ4: 2–4 week forecast against a \"no change\" forecast",
+      ],
+      tech: [
+        "Storage engine: dots, curve, thin layers and safe limits, after every pass",
+        "Dashboard: storage and safe limits for each tank",
+        "Automatic updates with GitHub Actions",
+        "Forecast model with rain and evaporation, if time allows",
+      ],
+      out: "storage for every tank with safe limits, on a dashboard" },
+  ];
+  const mw = (CW - 0.3) / 2;
+  for (const m of members) {
+    s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Plan" });
+    s.addText(`${m.who}: ${m.role}`, { placeholder: "title" });
+    let px = M;
+    for (const rq of m.rqs) {
+      const stretch = rq.includes("stretch");
+      const pw = stretch ? 1.3 : 0.7;
+      s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: px, y: 1.32, w: pw, h: 0.34, rectRadius: 0.08,
+        fill: { color: stretch ? C.background1 : m.fill }, line: { color: stretch ? C.accent6 : m.fill, width: 1, dashType: stretch ? "dash" : "solid" },
+        objectName: rq });
+      text(s, rq, { x: px, y: 1.32, w: pw, h: 0.34, fontSize: 12, bold: true, align: "center", valign: "middle",
+        color: stretch ? C.accent6 : C.background1 });
+      px += pw + 0.12;
+    }
+    text(s, m.q, { x: px + 0.1, y: 1.27, w: M + CW - px - 0.1, h: 0.45, fontSize: 14, color: C.accent6, valign: "middle" });
+    const cols = [["Data analysis", "FaChartColumn", m.analysis], ["Technical work", "FaGears", m.tech]];
+    for (const [i, [head, ic, items]] of cols.entries()) {
+      const x = M + i * (mw + 0.3);
+      card(s, x, 1.95, mw, 3.95, i === 0 ? { name: head } : { fill: C.background1, line: HEX.border, shadow: true, name: head });
+      await iconCircle(s, ic, x + 0.3, 2.13, 0.5, i === 0 ? m.fill : C.accent6);
+      text(s, head, { x: x + 0.95, y: 2.13, w: mw - 1.2, h: 0.5, fontSize: 18, fontFace: HEAD, valign: "middle" });
+      text(s, items.map((t, k) => ({ text: t, options: { bullet: true, breakLine: k < items.length - 1 } })),
+        { x: x + 0.3, y: 2.8, w: mw - 0.6, h: 3.0, fontSize: 15, paraSpaceAfter: 8 });
+    }
+    card(s, M, 6.05, CW, 0.75, { fill: HEX.navy, name: "output" });
+    await iconCircle(s, "FaFlagCheckered", M + 0.25, 6.18, 0.5, C.accent5, "#0B2230");
+    text(s, [
+      { text: "Output: ", options: { bold: true, color: C.accent5 } },
+      { text: m.out },
+    ], { x: M + 0.95, y: 6.1, w: CW - 1.2, h: 0.65, fontSize: 15, color: C.background1, valign: "middle" });
+    // the notes sit in this one statement, so strip_addnotes.py removes them for the public copies
+  }
+
+  // 19. Deliverables and timeline
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Plan" });
   s.addText("What we will deliver, and when", { placeholder: "title" });
   const outs = [
@@ -554,7 +636,62 @@ async function build() {
     text(s, what, { x: 8.0, y: y + 0.36, w: 4.5, h: 0.55, fontSize: 12.5, color: C.accent6 });
   });
 
-  // 17. Thank you
+  // 20. Datasets and links (every link opened and checked on 28 Oct 2026)
+  s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Plan" });
+  s.addText("Datasets and links", { placeholder: "title" });
+  text(s, "Every dataset is free and public. Click a name to open it.", { x: M, y: 1.25, w: CW, h: 0.4, fontSize: 14, color: C.accent6 });
+  const linkCols = [
+    [
+      ["Water height (SWOT)", [
+        ["SWOT Lake and River Explorer", "click any tank to see its readings", EXPLORER],
+        ["NASA Earthdata: SWOT lake product, version D", "the files we use", "https://search.earthdata.nasa.gov/search/granules?p=C3233944983-POCLOUD"],
+        ["Hydrocron", "the free service that gives each lake's heights", "https://podaac.github.io/hydrocron/"],
+      ]],
+      ["Water area (pictures)", [
+        ["Copernicus Browser", "Sentinel-1 and -2 pictures of our tanks",
+          "https://browser.dataspace.copernicus.eu/?themeId=DEFAULT-THEME&dateMode=SINGLE&zoom=14&lat=8.3868&lng=80.5471&datasetId=S2_L2A_CDAS&fromTime=2024-03-10T00%3A00%3A00.000Z&toTime=2024-03-10T23%3A59%3A59.999Z&layerId=1_TRUE_COLOR"],
+        ["Planetary Computer: Sentinel-1 radar", "terrain-corrected radar", "https://planetarycomputer.microsoft.com/dataset/sentinel-1-rtc"],
+        ["ASF: NISAR radar", "L-band radar", "https://asf.alaska.edu/nisar/"],
+        ["JAXA ALOS-2 radar on AWS", "L-band radar", "https://registry.opendata.aws/jaxa-alos-palsar2-scansar/"],
+        ["S1S2-Water", "AI training data, 65 areas in 29 countries", "https://doi.org/10.5281/zenodo.8314175"],
+      ]],
+    ],
+    [
+      ["Ground truth", [
+        ["Irrigation Department: reservoir water level", "the daily sheet", "https://docs.google.com/spreadsheets/d/e/2PACX-1vTcSGhi9RESl7CMCl1TQnrKe07Gx5Q696YiSB9jneIHqIP9lifpqSErgI3D5k9KtQXSdW5JpycIIr5e/pubhtml"],
+        ["Irrigation Department: reservoir status", "web page", "https://irrigation.gov.lk/web/index.php?option=com_content&view=article&id=84&Itemid=201&lang=en"],
+        ["Irrigation Department: reservoir map layer", "full supply levels", "https://services3.arcgis.com/J7ZFXmR8rSmQ3FGf/ArcGIS/rest/services/Scheme_Data_2/FeatureServer/10"],
+        ["Kanhindawewa drone survey", "area and capacity every 1 ft (PDF)", "https://www.irrigation.gov.lk/web/images/Scheme-Maps/Anuradhapura/HuruluWewa/Area_Capacity_Kanhindawewa_01_07_2026.pdf"],
+        ["Mahaweli Authority: reservoir status reports", "daily levels", "https://mahaweli.gov.lk/wms.html"],
+      ]],
+      ["Weather (for the forecast)", [
+        ["CHIRPS", "daily rainfall", "https://www.chc.ucsb.edu/data/chirps"],
+        ["ERA5", "weather, for evaporation", "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels"],
+      ]],
+      ["Our work", [
+        ["Project website: swot.mehara.work", "every tab, with the team plan", "https://swot.mehara.work/"],
+      ]],
+    ],
+  ];
+  const lw = (CW - 0.4) / 2;
+  for (const [ci, groups] of linkCols.entries()) {
+    const x = M + ci * (lw + 0.4);
+    let y = 1.85;
+    for (const [head, items] of groups) {
+      text(s, head, { x, y, w: lw, h: 0.36, fontSize: 15, fontFace: HEAD, color: C.text1, valign: "middle" });
+      y += 0.42;
+      for (const [name, note, url] of items) {
+        text(s, [
+          { text: name, options: { hyperlink: { url }, bold: true, color: C.accent1 } },
+          { text: "  " + note, options: { color: C.accent6 } },
+        ], { x: x + 0.15, y, w: lw - 0.15, h: 0.32, fontSize: 12.5, valign: "middle" });
+        y += 0.34;
+      }
+      y += 0.16;
+    }
+  }
+
+  // 21. Thank you
   s = pres.addSlide({ masterName: "DARK", sectionTitle: "Plan" });
   s.addImage({ path: path.join(CARDS, "closing.jpg"), x: 0, y: 0, w: W, h: 7.5, altText: "" });
   s.addText("Thank you", { placeholder: "title" });
