@@ -63,9 +63,10 @@ def timeline():
         ("Labelled water masks", date(2026, 12, 1), date(2027, 2, 28)),
         ("Gauge readings on pass dates", date(2027, 1, 4), date(2027, 4, 30)),
         ("AI water mapping model", date(2027, 1, 4), date(2027, 3, 31)),
-        ("SWOT processing and curves", date(2027, 1, 18), date(2027, 4, 15)),
+        ("SWOT processing and trust model", date(2027, 1, 18), date(2027, 4, 15)),
+        ("Storage forecast model", date(2027, 1, 18), date(2027, 4, 30)),
         ("Storage series and validation", date(2027, 3, 15), date(2027, 5, 15)),
-        ("Dashboard and forecast", date(2027, 4, 1), date(2027, 5, 31)),
+        ("Dashboard", date(2027, 4, 1), date(2027, 5, 31)),
         ("Thesis and paper", date(2027, 5, 1), date(2027, 6, 30)),
         ("Final submission", date(2027, 6, 30), None),
     ]

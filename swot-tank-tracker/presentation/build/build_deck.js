@@ -450,13 +450,13 @@ async function build() {
   s.addText("Research questions", { placeholder: "title" });
   const rqs = [
     ["How accurately can deep learning map tank water from Sentinel-1 and Sentinel-2, even under cloud or water plants?", "Measured by IoU and F1 against hand-labelled water masks"],
-    ["How accurate is SWOT on reservoirs and on small village tanks, and can its \"suspect\" readings be trusted?", "Measured by error in cm against gauge readings"],
+    ["How accurate is SWOT on reservoirs and village tanks, and can a learned model tell which readings to trust better than SWOT's own flags?", "Measured by error in cm against gauges, on reservoirs the model never saw"],
     ["Does AI water area plus SWOT height give storage close to official and measured values?", "Measured by error as a % of capacity"],
-    ["Can storage be forecast 2–4 weeks ahead from recent storage and rainfall?", "Stretch goal, compared with a \"no change\" forecast"],
+    ["Can a deep-learning model forecast each tank's storage 2–4 weeks ahead better than a \"no change\" forecast?", "Measured by error as a % of capacity at 1, 2 and 4 weeks"],
   ];
   for (const [i, [q, how]] of rqs.entries()) {
     const x = i % 2 ? 6.78 : M, y = i < 2 ? 1.5 : 4.0;
-    const stretch = i === 3;
+    const stretch = false; // RQ4 became core on 28 Oct, when each member got a model to train
     card(s, x, y, 5.95, 2.3, { fill: stretch ? C.background1 : C.background2, line: stretch ? HEX.border : undefined,
       dash: stretch ? "dash" : undefined, lineWidth: stretch ? 1.25 : undefined, name: "RQ" + (i + 1) });
     s.addShape(pres.shapes.OVAL, { x: x + 0.3, y: y + 0.3, w: 0.62, h: 0.62, fill: { color: stretch ? C.accent6 : C.accent1 },
@@ -468,25 +468,25 @@ async function build() {
 
   // 15. Who does what
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Plan" });
-  s.addText("Who does what: one research question each", { placeholder: "title" });
-  text(s, "Each of us owns one core research question from start to finish.",
+  s.addText("Who does what: one model each", { placeholder: "title" });
+  text(s, "Each of us owns a research question from start to finish, and trains one model for it.",
     { x: M, y: 1.25, w: CW, h: 0.4, fontSize: 14, color: C.accent6 });
   const team = [
     { who: "MEMBER A", role: "AI water maps", icon: "FaBrain", fill: C.accent1, rqs: ["RQ1"], items: [
       "Labelled water masks of Sri Lankan tanks",
-      "Sentinel-1 and Sentinel-2 deep-learning model",
       "A water-plant class for covered tanks",
+      "Model: a Sentinel-1 and Sentinel-2 water map (U-Net)",
     ], out: "water maps for all tanks" },
     { who: "MEMBER B", role: "SWOT and gauges", icon: "FaSatellite", fill: C.accent3, rqs: ["RQ2"], items: [
-      "SWOT heights from Hydrocron, poor readings removed",
-      "Gauge data: daily records, history and field photos",
-      "Tests whether \"suspect\" readings can be trusted",
-    ], out: "SWOT accuracy report" },
-    { who: "MEMBER C", role: "Storage and dashboard", icon: "FaChartLine", fill: C.accent2, rqs: ["RQ3", "RQ4 stretch"], items: [
+      "SWOT heights from Hydrocron, checked against gauges",
+      "Gauge data: daily records and history",
+      "Model: a SWOT trust model (gradient boosting)",
+    ], out: "accuracy report and trust model" },
+    { who: "MEMBER C", role: "Storage and forecast", icon: "FaChartLine", fill: C.accent2, rqs: ["RQ3", "RQ4"], items: [
       "Height–area–volume curve for each tank",
       "Storage every 5–12 days, checked against official figures",
-      "Dashboard, and the forecast if time allows",
-    ], out: "storage series and dashboard" },
+      "Model: a 2–4 week storage forecast (LSTM)",
+    ], out: "storage, forecast and dashboard" },
   ];
   const tw = (CW - 2 * 0.25) / 3;
   for (const [i, m] of team.entries()) {
@@ -538,36 +538,35 @@ async function build() {
       ],
       out: "water area for every tank on every picture day, with its accuracy" },
     { who: "Member B", role: "SWOT and gauges", rqs: ["RQ2"], fill: C.accent3, icon: "FaSatellite",
-      q: "How accurate is SWOT on reservoirs and on small village tanks, and can its \"suspect\" readings be trusted?",
+      q: "How accurate is SWOT on reservoirs and village tanks, and can a learned model tell which readings to trust better than SWOT's own flags?",
       analysis: [
         "SWOT minus gauge on every pass: the average gap and the spread in cm",
-        "\"Good\" against \"suspect\" readings: how much extra error?",
-        "Effect of lake size, distance from the track and season",
+        "Labels for the model: each reading's error at the 117 department reservoirs",
+        "The trust model against SWOT's own flags, on reservoirs it never saw",
         "How a height error turns into a volume error",
       ],
       tech: [
-        "Hydrocron pipeline: each tank's lake ID, every pass, cleaned with quality flags and an outlier test",
+        "Hydrocron pipeline: each tank's lake ID, every pass",
+        "Trust model: gradient boosting (XGBoost or LightGBM) on SWOT's quality fields, track distance, lake size and season",
         "Gauge zero in metres above sea level: full supply level minus full supply depth",
         "Daily logger for the department's sheet; storage history turned back into gauge heights",
-        "Field visits on pass days: photos of the gauge",
       ],
-      out: "SWOT accuracy report, and the fixed gap for each reservoir" },
-    { who: "Member C", role: "Storage and dashboard", rqs: ["RQ3", "RQ4 stretch"], fill: C.accent2, icon: "FaChartLine",
-      q: "Does AI water area plus SWOT height give storage close to official and measured values?",
+      out: "SWOT accuracy report, the fixed gap for each reservoir, and a trust model that scores every reading" },
+    { who: "Member C", role: "Storage and forecast", rqs: ["RQ3", "RQ4"], fill: C.accent2, icon: "FaChartLine",
+      q: "Does AI water area plus SWOT height give storage close to official values, and can a deep-learning model forecast it 2–4 weeks ahead?",
       analysis: [
         "Each tank's area–height curve A(h) from its dots",
         "Storage change against the department's daily storage",
         "Test the method on Kanhindawewa's drone table, and against Imbulana's formula",
-        "Error budget: height error plus area error, layer by layer",
-        "RQ4: 2–4 week forecast against a \"no change\" forecast",
+        "Forecast error at 1, 2 and 4 weeks, against \"no change\" and the seasonal average",
       ],
       tech: [
         "Storage engine: dots, curve, thin layers and safe limits, after every pass",
-        "Dashboard: storage and safe limits for each tank",
+        "Forecast model: an LSTM with a gradient-boosting baseline, trained on 117 reservoirs' daily storage (2020–2026), rain and evaporation",
+        "Dashboard: storage, safe limits and the forecast for each tank",
         "Automatic updates with GitHub Actions",
-        "Forecast model with rain and evaporation, if time allows",
       ],
-      out: "storage for every tank with safe limits, on a dashboard" },
+      out: "storage for every tank with safe limits, and a 2–4 week forecast, on a dashboard" },
   ];
   const mw = (CW - 0.3) / 2;
   for (const m of members) {
@@ -607,10 +606,10 @@ async function build() {
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Plan" });
   s.addText("What we will deliver, and when", { placeholder: "title" });
   const outs = [
-    ["FaDatabase", "A labelled dataset of Sri Lankan tank water masks"],
-    ["FaBrain", "An AI water map that works under cloud and water plants"],
-    ["FaChartLine", "Height–area–volume curves for all 13 tanks"],
-    ["FaGaugeHigh", "Storage every 5–12 days, shown on a dashboard"],
+    ["FaBrain", "A labelled dataset and an AI water map that works under cloud and water plants"],
+    ["FaSatellite", "A SWOT trust model that scores every reading"],
+    ["FaChartLine", "Curves and storage every 5–12 days for all 13 tanks"],
+    ["FaGaugeHigh", "A 2–4 week storage forecast, shown on a dashboard"],
     ["FaFileLines", "A research paper, for example for UoM's ICITR conference"],
   ];
   for (const [i, [ic, t]] of outs.entries()) {
@@ -622,7 +621,7 @@ async function build() {
   const miles = [
     ["Nov 2026", "Proposal, ethics and data requests"],
     ["15 Dec 2026", "Study area confirmed after the cascade and name checks"],
-    ["Dec 2026 – Apr 2027", "Labelled data, gauge readings, AI water model and SWOT curves"],
+    ["Dec 2026 – Apr 2027", "Labelled data, gauge readings, and the three models: water map, trust model, forecast"],
     ["Mar – May 2027", "Storage estimates, validation and dashboard"],
     ["30 Jun 2027", "Thesis, paper and final submission"],
   ];
