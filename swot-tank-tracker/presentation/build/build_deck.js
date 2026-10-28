@@ -450,8 +450,8 @@ async function build() {
   s.addText("Research questions", { placeholder: "title" });
   const rqs = [
     ["How accurately can deep learning map tank water from Sentinel-1 and Sentinel-2, even under cloud or water plants?", "Measured by IoU and F1 against hand-labelled water masks"],
-    ["How accurate is SWOT on reservoirs and village tanks, and can a learned model tell which readings to trust better than SWOT's own flags?", "Measured by error in cm against gauges, on reservoirs the model never saw"],
-    ["Does AI water area plus SWOT height give storage close to official and measured values?", "Measured by error as a % of capacity"],
+    ["How accurate is SWOT on reservoirs and village tanks, and how many \"suspect\" readings can a learned screen keep?", "Measured by error in cm against gauges, on reservoirs the screen never saw"],
+    ["Can a model trained on about 100 gauged reservoirs turn SWOT height and water area into % full, for tanks it never saw?", "Measured by error in % of capacity, on reservoirs it never saw"],
     ["Can a deep-learning model forecast each tank's storage 2–4 weeks ahead better than a \"no change\" forecast?", "Measured by error as a % of capacity at 1, 2 and 4 weeks"],
   ];
   for (const [i, [q, how]] of rqs.entries()) {
@@ -469,24 +469,24 @@ async function build() {
   // 15. Who does what
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Plan" });
   s.addText("Who does what: one model each", { placeholder: "title" });
-  text(s, "Each of us owns a research question from start to finish, and trains one model for it.",
+  text(s, "Three models in one chain: A finds where the water is, B how much there is, and C what comes next.",
     { x: M, y: 1.25, w: CW, h: 0.4, fontSize: 14, color: C.accent6 });
   const team = [
     { who: "MEMBER A", role: "AI water maps", icon: "FaBrain", fill: C.accent1, rqs: ["RQ1"], items: [
       "Labelled water masks of Sri Lankan tanks",
       "A water-plant class for covered tanks",
       "Model: a Sentinel-1 and Sentinel-2 water map (U-Net)",
-    ], out: "water maps for all tanks" },
-    { who: "MEMBER B", role: "SWOT and gauges", icon: "FaSatellite", fill: C.accent3, rqs: ["RQ2"], items: [
-      "SWOT heights from Hydrocron, checked against gauges",
-      "Gauge data: daily records and history",
-      "Model: a SWOT trust model (gradient boosting)",
-    ], out: "accuracy report and trust model" },
-    { who: "MEMBER C", role: "Storage and forecast", icon: "FaChartLine", fill: C.accent2, rqs: ["RQ3", "RQ4"], items: [
-      "Height–area–volume curve for each tank",
-      "Storage every 5–12 days, checked against official figures",
+    ], out: "the water area of every tank" },
+    { who: "MEMBER B", role: "SWOT and storage", icon: "FaSatellite", fill: C.accent3, rqs: ["RQ2", "RQ3"], items: [
+      "SWOT heights, checked against gauges",
+      "A trust screen that cleans every reading",
+      "Model: % full from height and area (gradient boosting)",
+    ], out: "how full every tank is" },
+    { who: "MEMBER C", role: "Forecast and system", icon: "FaChartLine", fill: C.accent2, rqs: ["RQ4"], items: [
+      "Daily storage of 117 reservoirs, rain and evaporation",
+      "The chain from picture to forecast, after every pass",
       "Model: a 2–4 week storage forecast (LSTM)",
-    ], out: "storage, forecast and dashboard" },
+    ], out: "the forecast and the dashboard" },
   ];
   const tw = (CW - 2 * 0.25) / 3;
   for (const [i, m] of team.entries()) {
@@ -537,36 +537,36 @@ async function build() {
         "Pipeline: find each picture day, download it, map the water, measure the area",
       ],
       out: "water area for every tank on every picture day, with its accuracy" },
-    { who: "Member B", role: "SWOT and gauges", rqs: ["RQ2"], fill: C.accent3, icon: "FaSatellite",
-      q: "How accurate is SWOT on reservoirs and village tanks, and can a learned model tell which readings to trust better than SWOT's own flags?",
+    { who: "Member B", role: "SWOT and storage", rqs: ["RQ2", "RQ3"], fill: C.accent3, icon: "FaSatellite",
+      q: "How accurate is SWOT, and can a model trained on about 100 reservoirs turn SWOT height and water area into % full for new tanks?",
       analysis: [
-        "SWOT minus gauge on every pass: the average gap and the spread in cm",
-        "Labels for the model: each reading's error at the 117 department reservoirs",
-        "The trust model against SWOT's own flags, on reservoirs it never saw",
-        "How a height error turns into a volume error",
+        "SWOT minus gauge on every pass: the steady gap and the spread in cm",
+        "Trust screen: how many \"suspect\" readings it keeps, and their error",
+        "Training pairs: daily storage with SWOT height and water area, at about 100 reservoirs",
+        "Storage error in % of capacity on reservoirs the model never saw, against one formula and Imbulana's equation",
       ],
       tech: [
         "Hydrocron pipeline: each tank's lake ID, every pass",
-        "Trust model: gradient boosting (XGBoost or LightGBM) on SWOT's quality fields, track distance, lake size and season",
-        "Gauge zero in metres above sea level: full supply level minus full supply depth",
-        "Daily logger for the department's sheet; storage history turned back into gauge heights",
+        "Trust screen: gradient boosting on SWOT's quality fields, track distance, lake size and season",
+        "Storage model: gradient boosting in which more height or area never means less water",
+        "Inputs every tank has: height, area, outline, catchment and slope (Copernicus DEM)",
       ],
-      out: "SWOT accuracy report, the fixed gap for each reservoir, and a trust model that scores every reading" },
-    { who: "Member C", role: "Storage and forecast", rqs: ["RQ3", "RQ4"], fill: C.accent2, icon: "FaChartLine",
-      q: "Does AI water area plus SWOT height give storage close to official values, and can a deep-learning model forecast it 2–4 weeks ahead?",
+      out: "SWOT accuracy report, a screen that cleans every reading, and a model that says how full any tank is" },
+    { who: "Member C", role: "Forecast and system", rqs: ["RQ4"], fill: C.accent2, icon: "FaChartLine",
+      q: "Can a deep-learning model forecast each tank's storage 2–4 weeks ahead, from recent storage, rain and evaporation, better than \"no change\"?",
       analysis: [
-        "Each tank's area–height curve A(h) from its dots",
-        "Storage change against the department's daily storage",
-        "Test the method on Kanhindawewa's drone table, and against Imbulana's formula",
+        "Seasonal average for each tank, from past years only",
         "Forecast error at 1, 2 and 4 weeks, against \"no change\" and the seasonal average",
+        "Tested on years and reservoirs the model never saw",
+        "The whole chain, picture to forecast, at the village tanks and on Kanhindawewa's drone survey",
       ],
       tech: [
-        "Storage engine: dots, curve, thin layers and safe limits, after every pass",
         "Forecast model: an LSTM with a gradient-boosting baseline, trained on 117 reservoirs' daily storage (2020–2026), rain and evaporation",
+        "The chain after every pass: A's water map and SWOT's height go into B's model",
         "Dashboard: storage, safe limits and the forecast for each tank",
         "Automatic updates with GitHub Actions",
       ],
-      out: "storage for every tank with safe limits, and a 2–4 week forecast, on a dashboard" },
+      out: "a 2–4 week forecast for every tank, the running chain and the dashboard" },
   ];
   const mw = (CW - 0.3) / 2;
   for (const m of members) {
@@ -607,8 +607,8 @@ async function build() {
   s.addText("What we will deliver, and when", { placeholder: "title" });
   const outs = [
     ["FaBrain", "A labelled dataset and an AI water map that works under cloud and water plants"],
-    ["FaSatellite", "A SWOT trust model that scores every reading"],
-    ["FaChartLine", "Curves and storage every 5–12 days for all 13 tanks"],
+    ["FaSatellite", "A SWOT trust screen, and a model that turns height and area into % full"],
+    ["FaChartLine", "Storage every 5–12 days for all 13 tanks"],
     ["FaGaugeHigh", "A 2–4 week storage forecast, shown on a dashboard"],
     ["FaFileLines", "A research paper, for example for UoM's ICITR conference"],
   ];
@@ -621,7 +621,7 @@ async function build() {
   const miles = [
     ["Nov 2026", "Proposal, ethics and data requests"],
     ["15 Dec 2026", "Study area confirmed after the cascade and name checks"],
-    ["Dec 2026 – Apr 2027", "Labelled data, gauge readings, and the three models: water map, trust model, forecast"],
+    ["Dec 2026 – Apr 2027", "Labelled data, gauge readings, and the three models: water map, storage model, forecast"],
     ["Mar – May 2027", "Storage estimates, validation and dashboard"],
     ["30 Jun 2027", "Thesis, paper and final submission"],
   ];
