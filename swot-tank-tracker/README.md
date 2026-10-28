@@ -14,7 +14,7 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 | `proposal-drafts/` | Proposal drafts (PDF; the latest is 26 Oct 2026), their text in `export/`, and the scripts that build the PDF |
 | `feasibility-check/` | The October 2026 data checks: scripts in `work/`, results in `results/`. Start with `results/SUMMARY.md` |
 | `data-checks/` | First data access checks, and the saved Irrigation Department reservoir sheets |
-| `presentation/` | 17-slide deck for the supervisor meeting and a PDF of the slides (both without the speaker notes, which we keep private), the scripts and pictures that build the deck, and `tank-volume-explainer.html` (an interactive model tank) |
+| `presentation/` | 21-slide deck for the supervisor meeting and a PDF of the slides (both without the speaker notes, which we keep private), the scripts and pictures that build the deck, and `tank-volume-explainer.html` (an interactive model tank) |
 | `research/` | A summary of all the past research we used, and ideas to strengthen and widen the scope (26 Oct 2026), each with source links |
 
 **Project website:** https://swot.mehara.work (code in [jarvis-uom/swot-tank-tracker-site](https://github.com/jarvis-uom/swot-tank-tracker-site)).
@@ -42,6 +42,8 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 - Team roles: each member owns one core research question. A: AI water maps (RQ1). B: SWOT and gauges (RQ2). C: storage curves and dashboard (RQ3), plus the forecast (RQ4) if time allows.
 
 **Deck update, 26 October 2026:** new slides on why the project matters, the problem we solve, and who does what.
+
+**Deck update, 28 October 2026:** one slide per member (the data analysis and the technical work) and a "Datasets and links" slide with every dataset's link.
 
 ## Not included
 
