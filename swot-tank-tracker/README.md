@@ -11,7 +11,7 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 
 | Folder | Contents |
 |---|---|
-| `proposal-drafts/` | Proposal drafts (PDF; the latest is 26 Oct 2026), their text in `export/`, and the scripts that build the PDF |
+| `proposal-drafts/` | Proposal drafts (PDF; the latest is 28 Oct 2026), their text in `export/`, and the scripts that build the PDF |
 | `feasibility-check/` | The October 2026 data checks: scripts in `work/`, results in `results/`. Start with `results/SUMMARY.md` |
 | `data-checks/` | First data access checks, and the saved Irrigation Department reservoir sheets |
 | `presentation/` | 21-slide deck for the supervisor meeting and a PDF of the slides (both without the speaker notes, which we keep private), the scripts and pictures that build the deck, and `tank-volume-explainer.html` (an interactive model tank) |
