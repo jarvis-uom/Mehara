@@ -397,7 +397,7 @@ async function build() {
   const checks = [
     ["1 · LAKE IDS", "86%", "of Irrigation Department tanks in our area have a SWOT lake ID (43 of 50); 58% of all mapped tanks", "RISK"],
     ["2 · HEIGHTS", "26,641", "SWOT readings on 400 lakes since July 2023; village tanks get mostly \"suspect\" readings", "RISK"],
-    ["3 · GAUGE CHECK", "~1 m", "difference between SWOT and gauges on 4 reservoirs, with readings 13 to 20 days apart", "OK"],
+    ["3 · GAUGE CHECK", "40–64 cm", "a steady gap between SWOT and the gauges at all 5 reservoirs; one fixed correction each", "PASS"],
     ["4 · WATER AREA", "17–22%", "of Sentinel-2 dates clear; water plants hide the water in 3 village tanks", "RISK"],
     ["5 · TRAINING DATA", "2", "labelled water datasets ready to use: Sen1Floods11 and S1S2‑Water", "PASS"],
   ];
