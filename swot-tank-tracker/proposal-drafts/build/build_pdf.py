@@ -18,7 +18,7 @@ MAIN_MD = EXPORT / "4f3dab81905bb01d4b1d671b9e3b5984.md"
 NOTES_MD = EXPORT / "f55fe1ae76eb9c1de6909f7706e3846b.md"
 MAP_PNG = EXPORT / "0fd0cc02002c836fe5a6a5955166786c.png"
 EDGE = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-OUT_PDF = ROOT / "SWOT Tank Water Tracker for Sri Lanka - DRAFT 26 Oct 2026.pdf"
+OUT_PDF = ROOT / "SWOT Tank Water Tracker for Sri Lanka - DRAFT 28 Oct 2026.pdf"
 DOC_TITLE = "SWOT Tank Water Tracker for Sri Lanka"
 
 TABLE_CAPTIONS = [
@@ -204,7 +204,7 @@ def build_html(pages=None):
   <div class="subtitle">An AI system that estimates how much water each tank holds, using free satellite data</div>
   <div class="group">Group 6 · JARVIS</div>
   <div class="sup">Supervisors: Dr. Upeksha Ganegoda (IT) · Prof. (Mrs) Thanuja Sandanayake (IDS)</div>
-  <div class="date">Draft, 26 October 2026</div>
+  <div class="date">Draft, 28 October 2026</div>
 </section>"""
     doc = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>{DOC_TITLE}: project proposal (draft)</title><style>{CSS}</style></head><body>
