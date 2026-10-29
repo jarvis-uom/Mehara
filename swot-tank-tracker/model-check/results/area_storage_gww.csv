@@ -1,0 +1,5 @@
+method,mae_pct_capacity,median_reservoir_mae,small_lt_2km2,medium_kind
+power_law,15.0,12.7,23.8,25.8
+area_x_depth,27.7,25.7,29.5,26.4
+model,14.2,11.8,22.4,24.3
+own_power_law,7.7,7.4,9.3,9.1

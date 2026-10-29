@@ -1,0 +1,18 @@
+chain,ends_in,lake_id,chosen,outline_ha,usable,drains_into,dept_catchments,swot_passes,pld_name,osm_name,lat,lon
+1,Nachchaduwa (Major),4580025632,,15.4,80,4580008112,Nachchaduwa,092+273,no_data,,8.155756,80.487272
+1,Nachchaduwa (Major),4580012322,,12.5,76,4580008112,Nachchaduwa,092+273,no_data,,8.164903,80.481124
+1,Nachchaduwa (Major),4580010392,,28.1,81,4580008112,Nachchaduwa,092+273,no_data,,8.15467,80.507434
+1,Nachchaduwa (Major),4580012282,,18.9,80,4580008112,Nachchaduwa,092+273,no_data,,8.171292,80.508457
+1,Nachchaduwa (Major),4580008112,,49.4,49,Nachchaduwa (Major),Nachchaduwa,092+273,no_data,,8.17677,80.497014
+2,Nuwara Wewa (Major),4580007392,V7,31.7,47,4580005192,Nuwara Wewa,092+273,no_data,,8.342858,80.497892
+2,Nuwara Wewa (Major),4580005192,,43.8,67,Nuwara Wewa (Major),Nuwara Wewa,092+273,no_data,,8.331352,80.466017
+3,Mahakanadarawa (Major),4580007532,,32.9,81,4580006282,Mahakanadarawa,092+273,no_data,,8.307222,80.540553
+3,Mahakanadarawa (Major),4580006282,V3,26.6,73,Mahakanadarawa (Major),Mahakanadarawa,092+273,no_data,,8.328194,80.544989
+4,Mahakanadarawa (Major),4580012052,,24.2,91,4580005302,Mahakanadarawa,092+273,no_data,,8.266641,80.682033
+4,Mahakanadarawa (Major),4580005302,,59.7,79,Mahakanadarawa (Major),Mahakanadarawa,092+273,no_data,,8.295819,80.675665
+5,Mahakanadarawa (Major),4580007452,,9.6,72,4580011762,Mahakanadarawa,092+273,no_data,,8.328959,80.582355
+5,Mahakanadarawa (Major),4580011762,V5,15.0,77,Mahakanadarawa (Major),Mahakanadarawa,092+273,no_data,,8.330942,80.570628
+6,Mahakanadarawa (Major),4580010692,,10.2,88,4580009592,Mahakanadarawa,092+273,no_data,,8.280977,80.625235
+6,Mahakanadarawa (Major),4580009592,,16.3,72,Mahakanadarawa (Major),Mahakanadarawa,092+273,no_data,,8.296157,80.623798
+7,Nachchaduwa (Major),4580010862,,14.1,73,4580009722,Nachchaduwa,092+273,no_data,,8.155307,80.524654
+7,Nachchaduwa (Major),4580009722,,49.5,75,Nachchaduwa (Major),Nachchaduwa,092+273,no_data,,8.218665,80.519289
