@@ -1,0 +1,50 @@
+lake_id,lon,lat,ref_ha,outline_ha,usable,near_big,km_to_big,ends_in,next_candidate
+4580038712,80.638423,8.482041,19.89,27.7,91,Mahakanadarawa,10.7,Kapirikgama Wewa (Medium),
+4580005192,80.466017,8.331352,19.26,43.8,67,Nuwara Wewa,1.2,Nuwara Wewa (Major),
+4580012292,80.618845,8.168844,17.55,47.5,88,Manankattiya,5.0,Labunoruwa (Medium),
+4580007532,80.540553,8.307222,17.01,32.9,81,Mahakanadarawa,3.7,Mahakanadarawa (Major),4580006282
+4580011422,80.493234,8.404348,16.02,31.1,90,Mahakanadarawa,4.3,leaves the box,
+4580007782,80.61115,8.261348,15.93,15.7,72,Manankattiya,6.7,Eru Wewa (Medium),
+4580005562,80.693525,8.148013,14.13,34.2,71,Hurulu Wewa,4.3,Manankattiya (Major),
+4580019082,80.518216,8.130774,13.68,32.6,85,Nachchaduwa,10.3,leaves the box,
+4580040652,80.563762,8.483716,13.23,26.9,82,Mahakanadarawa,8.1,Thalagaha Wewa (Medium),
+4580008142,80.757376,8.173773,12.96,14.9,85,Hurulu Wewa,2.2,Hurulu wewa (Major),
+4580043692,80.600733,8.444755,12.6,42.6,89,Mahakanadarawa,5.1,Kallanchiya (Medium),
+4580043532,80.539233,8.483547,12.06,17.3,77,Mahakanadarawa,8.3,Kadahatha Wewa (Medium),
+4580008112,80.497014,8.17677,11.97,49.4,49,Nachchaduwa,5.1,Nachchaduwa (Major),
+4580010482,80.47648,8.420848,11.97,17.5,70,Mahakanadarawa,6.7,leaves the box,
+4580011492,80.655766,8.38712,11.79,40.3,79,Mahakanadarawa,8.3,Elle Wewa (Huruluwewa) (Medium),
+4580011462,80.465855,8.390456,11.79,45.1,75,Nuwara Wewa,4.6,Maankadawala Wewa (Medium),
+4580005262,80.614262,8.302015,11.7,23.5,87,Mahakanadarawa,8.4,Mahakanadarawa (Major),
+4580010542,80.530669,8.321959,11.52,29.2,86,Mahakanadarawa,2.6,Mahakanadarawa (Major),
+4580012052,80.682033,8.266641,11.43,24.2,91,Manankattiya,4.5,Mahakanadarawa (Major),4580005302
+4580038832,80.638623,8.457555,11.34,9.3,78,Mahakanadarawa,8.7,Kapirikgama Wewa (Medium),
+4580012082,80.651569,8.249942,11.16,37.0,68,Manankattiya,2.8,Eru Wewa (Medium),
+4580006282,80.544989,8.328194,11.07,26.6,73,Mahakanadarawa,1.6,Mahakanadarawa (Major),
+4580010512,80.465471,8.358769,9.63,14.4,74,Nuwara Wewa,2.5,Thannayankulama (Medium),
+4580007602,80.516037,8.296121,9.54,30.3,83,Nachchaduwa,3.4,Kawarakkulama (Medium),
+4580010742,80.77946,8.24727,9.45,7.8,81,Hurulu Wewa,4.9,Aluthdiul Wewa (Medium),
+4580007452,80.582355,8.328959,9.36,9.6,72,Mahakanadarawa,3.9,Mahakanadarawa (Major),4580011762
+4580010692,80.625235,8.280977,9.18,10.2,88,Manankattiya,7.6,Mahakanadarawa (Major),4580009592
+4580011762,80.570628,8.330942,8.91,15.0,77,Mahakanadarawa,2.7,Mahakanadarawa (Major),
+4580010862,80.524654,8.155307,8.91,14.1,73,Nachchaduwa,8.2,Nachchaduwa (Major),4580009722
+4580012222,80.687078,8.194289,8.82,24.8,90,Manankattiya,1.3,Manankattiya (Major),
+4580025632,80.487272,8.155756,8.73,15.4,80,Nachchaduwa,7.3,Nachchaduwa (Major),4580008112
+4580005212,80.487461,8.313607,7.92,21.4,74,Nachchaduwa,3.5,Nuwara Wewa (Major),
+4580009652,80.449925,8.251849,7.74,17.3,66,Nachchaduwa,1.5,leaves the box,
+4580013412,80.607734,8.150492,7.47,23.2,87,Manankattiya,7.2,Nachchaduwa (Major),
+4580009592,80.623798,8.296157,7.38,16.3,72,Manankattiya,8.9,Mahakanadarawa (Major),
+4580010522,80.563686,8.357762,7.38,4.6,73,Mahakanadarawa,1.1,Mahakanadarawa (Major),
+4580012322,80.481124,8.164903,7.2,12.5,76,Nachchaduwa,6.3,Nachchaduwa (Major),4580008112
+4580009722,80.519289,8.218665,7.2,49.5,75,Nachchaduwa,1.4,Nachchaduwa (Major),
+4580007392,80.497892,8.342858,7.11,31.7,47,Mahakanadarawa,4.3,Nuwara Wewa (Major),4580005192
+4580012212,80.634333,8.197399,6.93,20.2,73,Manankattiya,2.4,Eru Wewa (Medium),
+4580007272,80.45692,8.366265,6.93,15.2,49,Nuwara Wewa,2.2,Thannayankulama (Medium),
+4580011782,80.596304,8.32631,6.84,17.0,80,Mahakanadarawa,5.5,Mahakanadarawa (Major),
+4580005322,80.59241,8.296025,6.84,23.5,80,Mahakanadarawa,7.0,Mahakanadarawa (Major),
+4580010392,80.507434,8.15467,6.75,28.1,81,Nachchaduwa,7.7,Nachchaduwa (Major),4580008112
+4580011792,80.482091,8.325703,6.66,20.5,72,Nuwara Wewa,2.9,Nuwara Wewa (Major),
+4580005512,80.691151,8.171551,6.57,9.2,87,Manankattiya,3.2,Manankattiya (Major),
+4580012282,80.508457,8.171292,6.48,18.9,80,Nachchaduwa,6.0,Nachchaduwa (Major),4580008112
+4580005172,80.538266,8.341372,6.48,5.2,73,Mahakanadarawa,0.4,Mahakanadarawa (Major),
+4580005302,80.675665,8.295819,6.39,59.7,79,Manankattiya,6.7,Mahakanadarawa (Major),

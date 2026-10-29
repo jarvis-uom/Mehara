@@ -1,0 +1,7 @@
+h_days,inputs,test_rows,no_change,seasonal_change (past-years average),model with seasonal average,model without seasonal average
+7,"daily, exact",66195,4.48,4.59,4.04,3.93
+7,"every 10 days, noisy",66215,7.4,7.04,6.57,6.43
+14,"daily, exact",65376,7.62,7.33,6.69,6.57
+14,"every 10 days, noisy",65402,9.94,9.09,8.36,8.51
+28,"daily, exact",63757,12.54,10.84,9.89,10.34
+28,"every 10 days, noisy",63764,14.33,12.04,10.92,11.65

@@ -1,6 +1,6 @@
 # SWOT Tank Water Tracker: working files
 
-Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JARVIS), up to 26 October 2026.
+Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JARVIS), up to 29 October 2026.
 
 **The idea:** estimate how much water each Sri Lankan tank holds from free satellite data.
 - SWOT gives the water height.
@@ -13,6 +13,8 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 |---|---|
 | `proposal-drafts/` | Proposal drafts (PDF; the latest is 28 Oct 2026), their text in `export/`, and the scripts that build the PDF |
 | `feasibility-check/` | The October 2026 data checks: scripts in `work/`, results in `results/`. Start with `results/SUMMARY.md` |
+| `model-check/` | The 28 October test of the models of Members B and C on real data (trust screen, storage model, forecast): scripts and result tables. Start with `model-check/README.md` |
+| `cascade-check/` | Do the eight village tanks share one cascade? (No.) A flow trace on the elevation map, checked against the department's catchments, and a real five-tank cascade south of Nachchaduwa |
 | `data-checks/` | First data access checks, and the saved Irrigation Department reservoir sheets |
 | `presentation/` | 21-slide deck for the supervisor meeting and a PDF of the slides (both without the speaker notes, which we keep private), the scripts and pictures that build the deck, and `tank-volume-explainer.html` (an interactive model tank) |
 | `research/` | A summary of all the past research we used, and ideas to strengthen and widen the scope (26 Oct 2026), each with source links |
