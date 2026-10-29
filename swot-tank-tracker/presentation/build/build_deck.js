@@ -108,6 +108,12 @@ function arrow(s, x, y, w, h, o = {}) {
   s.addShape(pres.shapes.LINE, { x, y, w, h, flipV: !!o.up,
     line: { color: o.color || HEX.muted, width: 1.75, endArrowType: "triangle" }, objectName: "arrow" });
 }
+// a round letter badge for a member (A, B or C)
+function badge(s, letter, x, y, fill, d = 0.36) {
+  s.addText(letter, { shape: pres.shapes.OVAL, x, y, w: d, h: d, fill: { color: fill }, line: { color: fill, width: 0 },
+    color: C.background1, fontSize: 13, bold: true, fontFace: HEAD, align: "center", valign: "middle", margin: 0,
+    objectName: "member " + letter });
+}
 // place a picture inside a box, keeping its shape; align "left", "center" or "right" in the box
 async function fit(s, file, x, y, wMax, hMax, align, altText) {
   const { width, height } = await sharp(file).metadata();
@@ -302,38 +308,65 @@ async function build() {
     text(s, sub, { x: 8.05, y: y + 0.38, w: 4.68, h: 0.8, fontSize: 13, color: C.accent6 });
   }
 
-  // 9. How it works
+  // 9. How it works (the same chain as the proposal's Figure 2)
   s = pres.addSlide({ masterName: "LIGHT", sectionTitle: "Study and method" });
   s.addText("How it works", { placeholder: "title" });
-  card(s, M, 1.5, 2.75, 2.75, { name: "Sentinel inputs" });
-  text(s, "Sentinel-1 and Sentinel-2", { x: M + 0.2, y: 1.65, w: 2.4, h: 0.34, fontSize: 15, fontFace: HEAD });
-  text(s, "Radar and optical images, every 5–12 days", { x: M + 0.2, y: 2.0, w: 2.4, h: 0.5, fontSize: 11.5, color: C.accent6 });
-  s.addImage({ path: path.join(CARDS, "thumb_s2.jpg"), x: M + 0.2, y: 2.68, w: 1.08, h: 1.14, altText: "Sentinel-2 view of Hurulu Wewa" });
-  s.addImage({ path: path.join(CARDS, "thumb_s1.jpg"), x: M + 1.47, y: 2.68, w: 1.08, h: 1.14, altText: "Sentinel-1 radar view of Hurulu Wewa" });
-  arrow(s, 3.35, 2.875, 0.6, 0);
-  card(s, 3.95, 1.5, 2.75, 2.75, { name: "AI water map" });
-  text(s, "AI water map", { x: 4.15, y: 1.65, w: 2.4, h: 0.34, fontSize: 15, fontFace: HEAD });
-  text(s, "Open water, water under plants, and land", { x: 4.15, y: 2.0, w: 2.4, h: 0.5, fontSize: 11.5, color: C.accent6 });
-  s.addImage({ path: path.join(CARDS, "thumb_water.jpg"), x: 4.78, y: 2.68, w: 1.08, h: 1.14, altText: "Water map of Hurulu Wewa" });
-  card(s, M, 4.75, 6.1, 1.45, { name: "SWOT heights" });
-  await iconCircle(s, "FaSatellite", M + 0.3, 5.16, 0.62, C.accent1);
-  text(s, "SWOT water heights", { x: M + 1.15, y: 5.02, w: 4.7, h: 0.36, fontSize: 15, fontFace: HEAD });
-  text(s, "From NASA's Hydrocron service since July 2023, with poor readings removed", { x: M + 1.15, y: 5.4, w: 4.75, h: 0.6, fontSize: 11.5, color: C.accent6 });
-  arrow(s, 6.7, 2.875, 0.6, 0.425);
-  arrow(s, 6.7, 4.3, 0.6, 1.175, { up: true });
-  card(s, 7.3, 2.55, 2.65, 2.2, { fill: HEX.navy, name: "Height-area-volume curve" });
-  text(s, "Height–area–volume curve", { x: 7.5, y: 2.72, w: 2.3, h: 0.7, fontSize: 16, fontFace: HEAD, color: C.background1 });
-  text(s, "One per tank: each SWOT height paired with the AI water area of the same day", { x: 7.5, y: 3.5, w: 2.3, h: 1.1, fontSize: 11.5, color: HEX.soft });
-  arrow(s, 9.95, 3.65, 0.45, 0);
-  card(s, 10.4, 2.55, 2.33, 2.2, { name: "Storage" });
+  text(s, "Three models in one chain, one per member: A finds the water, B works out how full each tank is, and C looks ahead.",
+    { x: M, y: 1.25, w: CW, h: 0.4, fontSize: 14, color: C.accent6 });
+  // top row: the pictures and Member A's water map
+  card(s, M, 1.85, 2.75, 2.3, { name: "Sentinel inputs" });
+  text(s, "Sentinel-1 and Sentinel-2", { x: M + 0.2, y: 2.0, w: 2.4, h: 0.34, fontSize: 15, fontFace: HEAD });
+  text(s, "Radar and optical images, every 5–12 days", { x: M + 0.2, y: 2.36, w: 2.4, h: 0.5, fontSize: 11.5, color: C.accent6 });
+  s.addImage({ path: path.join(CARDS, "thumb_s2.jpg"), x: M + 0.2, y: 2.93, w: 1.02, h: 1.08, altText: "Sentinel-2 view of Hurulu Wewa" });
+  s.addImage({ path: path.join(CARDS, "thumb_s1.jpg"), x: M + 1.41, y: 2.93, w: 1.02, h: 1.08, altText: "Sentinel-1 radar view of Hurulu Wewa" });
+  arrow(s, 3.35, 3.0, 0.5, 0);
+  card(s, 3.85, 1.85, 2.75, 2.3, { name: "AI water map" });
+  badge(s, "A", 4.05, 1.99, C.accent1);
+  text(s, "AI water map", { x: 4.52, y: 2.0, w: 1.93, h: 0.34, fontSize: 15, fontFace: HEAD });
+  text(s, "Open water, water under plants, and land", { x: 4.05, y: 2.36, w: 2.4, h: 0.5, fontSize: 11.5, color: C.accent6 });
+  s.addImage({ path: path.join(CARDS, "thumb_water.jpg"), x: 4.715, y: 2.93, w: 1.02, h: 1.08, altText: "Water map of Hurulu Wewa" });
+  // bottom row: SWOT and Member B's trust screen
+  card(s, M, 4.5, 2.75, 1.3, { name: "SWOT heights" });
+  await iconCircle(s, "FaSatellite", M + 0.2, 4.875, 0.55, HEX.navy2);
+  text(s, "SWOT heights", { x: M + 0.95, y: 4.66, w: 1.65, h: 0.34, fontSize: 15, fontFace: HEAD });
+  text(s, [{ text: "A height about twice", options: { breakLine: true } }, { text: "every 21 days" }],
+    { x: M + 0.95, y: 5.02, w: 1.75, h: 0.6, fontSize: 11.5, color: C.accent6 });
+  arrow(s, 3.35, 5.15, 0.5, 0);
+  card(s, 3.85, 4.5, 2.75, 1.3, { name: "Trust screen" });
+  badge(s, "B", 4.05, 4.64, C.accent3);
+  text(s, "Trust screen", { x: 4.52, y: 4.65, w: 1.93, h: 0.34, fontSize: 15, fontFace: HEAD });
+  text(s, "Keeps the good “suspect” readings and drops the bad ones", { x: 4.05, y: 5.04, w: 2.4, h: 0.6, fontSize: 11.5, color: C.accent6 });
+  // middle: Member B's storage model takes the water area and the height
+  arrow(s, 6.6, 3.0, 0.5, 0);
+  arrow(s, 6.6, 5.15, 0.5, 0);
+  card(s, 7.1, 2.5, 2.7, 3.0, { fill: HEX.navy, name: "Storage model" });
+  badge(s, "B", 7.3, 2.68, C.accent3);
+  text(s, "Storage model", { x: 7.77, y: 2.69, w: 1.9, h: 0.36, fontSize: 16, fontFace: HEAD, color: C.background1 });
+  text(s, [{ text: "height + water area", options: { breakLine: true, fontSize: 13, color: HEX.soft } },
+    { text: "→ % full", options: { fontSize: 22, fontFace: HEAD, color: C.background1 } }],
+    { x: 7.3, y: 3.3, w: 2.3, h: 0.9 });
+  text(s, "Trained on about 100 gauged reservoirs, so it also works for tanks with no records",
+    { x: 7.3, y: 4.35, w: 2.3, h: 0.95, fontSize: 11.5, color: HEX.soft });
+  // right: storage, then Member C's forecast
+  arrow(s, 9.8, 3.0, 0.5, 0);
+  card(s, 10.3, 1.85, 2.433, 1.95, { name: "Storage" });
   text(s, [{ text: "Storage every", options: { breakLine: true } }, { text: "5–12 days" }],
-    { x: 10.58, y: 2.72, w: 2.0, h: 0.7, fontSize: 16, fontFace: HEAD });
-  text(s, "Each new water map becomes a volume, shown on a dashboard", { x: 10.58, y: 3.5, w: 2.0, h: 1.1, fontSize: 11.5, color: C.accent6 });
-  arrow(s, 11.565, 4.75, 0, 0.4);
-  card(s, 7.3, 5.15, 5.43, 1.05, { fill: C.background1, line: HEX.border, name: "Validation" });
-  await iconCircle(s, "FaCheck", 7.5, 5.39, 0.56, C.accent3);
-  text(s, "Checked against Irrigation Department gauges and official storage figures",
-    { x: 8.25, y: 5.3, w: 4.3, h: 0.75, fontSize: 13.5, valign: "middle" });
+    { x: 10.5, y: 2.0, w: 2.05, h: 0.7, fontSize: 16, fontFace: HEAD });
+  text(s, [{ text: "% full for every tank,", options: { breakLine: true } }, { text: "after each new picture", options: { breakLine: true } },
+    { text: "or SWOT pass" }], { x: 10.5, y: 2.8, w: 2.1, h: 0.85, fontSize: 11.5, color: C.accent6 });
+  arrow(s, 11.5165, 3.8, 0, 0.35);
+  card(s, 10.3, 4.15, 2.433, 1.65, { name: "Forecast" });
+  badge(s, "C", 10.5, 4.29, C.accent2);
+  text(s, "Forecast", { x: 10.97, y: 4.3, w: 1.6, h: 0.34, fontSize: 15, fontFace: HEAD });
+  text(s, [{ text: "2–4 weeks ahead, from", options: { breakLine: true } }, { text: "rain and evaporation,", options: { breakLine: true } },
+    { text: "shown on a dashboard" }], { x: 10.5, y: 4.72, w: 2.1, h: 0.95, fontSize: 11.5, color: C.accent6 });
+  // bottom: everything is checked
+  arrow(s, 8.45, 5.5, 0, 0.6);
+  arrow(s, 11.5165, 5.8, 0, 0.3);
+  card(s, M, 6.1, CW, 0.75, { fill: C.background1, line: HEX.border, name: "Validation" });
+  await iconCircle(s, "FaCheck", M + 0.2, 6.2, 0.55, HEX.navy2);
+  text(s, "Checked against the daily gauges at the 5 big reservoirs and Kanhindawewa's drone survey",
+    { x: M + 0.95, y: 6.1, w: CW - 1.15, h: 0.75, fontSize: 13.5, valign: "middle" });
 
   // 10. Hurulu Wewa in three pictures
   s = pres.addSlide({ masterName: "DARK", sectionTitle: "Study and method" });
