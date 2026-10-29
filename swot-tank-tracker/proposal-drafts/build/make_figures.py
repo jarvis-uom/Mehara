@@ -15,45 +15,55 @@ INK, GREY, LIGHT = "#000000", "#555555", "#ececec"
 
 
 def pipeline():
-    fig, ax = plt.subplots(figsize=(7.2, 5.6))
-    ax.set_xlim(0, 100)
-    ax.set_ylim(0, 100)
+    """The method chain: three inputs, Member A's water map, Member B's trust screen and storage model,
+    the storage series, Member C's forecast, validation and the dashboard (same layout as the online doc)."""
+    fig, ax = plt.subplots(figsize=(7.2, 5.76))
+    ax.set_xlim(0, 760)
+    ax.set_ylim(672, 64)          # y grows downwards, like the online diagram
     ax.axis("off")
-    W, H = 40, 11
 
-    def box(cx, cy, title, sub, fill="white", lw=0.9):
-        ax.add_patch(Rectangle((cx - W / 2, cy - H / 2), W, H, facecolor=fill, edgecolor=INK, lw=lw))
-        ax.text(cx, cy + 2.2, title, ha="center", va="center", fontsize=10.5, fontweight="bold")
-        ax.text(cx, cy - 2.4, sub, ha="center", va="center", fontsize=9, color=GREY)
-        return cx, cy
+    def box(x, y, w, h, name, lines, fill="white", lw=0.9):
+        ax.add_patch(Rectangle((x, y), w, h, facecolor=fill, edgecolor=INK, lw=lw))
+        cx = x + w / 2
+        ax.text(cx, y + 21, name, ha="center", va="center", fontsize=9.5, fontweight="bold")
+        for k, line in enumerate(lines):
+            ax.text(cx, y + 38 + 16 * k, line, ha="center", va="center", fontsize=8, color=GREY)
 
     def arrow(points):
         xs, ys = zip(*points)
-        ax.plot(xs[:-1] + (xs[-1],), ys[:-1] + (ys[-1],), color=INK, lw=0.8)
+        ax.plot(xs, ys, color=INK, lw=0.8)
         ax.annotate("", xy=points[-1], xytext=points[-2],
                     arrowprops=dict(arrowstyle="-|>", color=INK, lw=0.8, mutation_scale=9))
 
-    L, R, C = 24, 76, 50
-    box(L, 92, "Sentinel-1 and Sentinel-2", "Radar and optical images, every 5–12 days", fill=LIGHT)
-    box(R, 92, "SWOT", "Water height per pass, 21-day repeat", fill=LIGHT)
-    box(L, 72, "AI water mapping", "Open water, water under plants, land")
-    box(R, 72, "SWOT height series", "Hydrocron API, poor passes removed")
-    box(C, 50, "Height–area–volume curve", "Pairs SWOT height with AI area, per tank")
-    box(C, 29, "Storage time series", "Each new water map becomes a volume")
-    box(L, 8, "Validation", "Gauge readings and official figures")
-    box(R, 8, "Dashboard", "Storage per tank, every 5–12 days", lw=1.6)
-    arrow([(L, 92 - H / 2), (L, 72 + H / 2)])
-    arrow([(R, 92 - H / 2), (R, 72 + H / 2)])
-    arrow([(L + 10, 72 - H / 2), (L + 10, 61), (C - 8, 61), (C - 8, 50 + H / 2)])
-    arrow([(R - 10, 72 - H / 2), (R - 10, 61), (C + 8, 61), (C + 8, 50 + H / 2)])
-    arrow([(C, 50 - H / 2), (C, 29 + H / 2)])
-    arrow([(L - 12, 72 - H / 2), (L - 12, 29), (C - W / 2, 29)])
-    ax.text(L - 10.5, 40, "each new map", fontsize=9, color=GREY, style="italic")
-    arrow([(C - 8, 29 - H / 2), (C - 8, 18), (L, 18), (L, 8 + H / 2)])
-    arrow([(C + 8, 29 - H / 2), (C + 8, 18), (R, 18), (R, 8 + H / 2)])
+    def note(x, y, words):
+        ax.text(x, y, words, ha="left", va="center", fontsize=8, color=GREY, style="italic")
+
+    box(24, 72, 224, 56, "Sentinel-1 and Sentinel-2", ["Pictures every 5–12 days"], fill=LIGHT)
+    box(268, 72, 224, 56, "117 gauged reservoirs", ["Daily storage since 2020"], fill=LIGHT)
+    box(512, 72, 224, 56, "SWOT", ["Water height, 21-day repeat"], fill=LIGHT)
+    box(24, 176, 224, 56, "A · AI water map", ["Open water, water under plants"])
+    box(512, 176, 224, 56, "B · Trust screen", ["Keeps good “suspect” readings"])
+    box(210, 280, 340, 56, "B · Storage model", ["Height + area → % full, for tanks with no records"])
+    box(210, 384, 340, 56, "Storage time series", ["% full for every tank, every 5–12 days"])
+    box(24, 488, 300, 72, "C · Forecast", ["2–4 weeks ahead, from rain and evaporation",
+                                             "Trained on the 117 reservoirs' storage"])
+    box(436, 488, 300, 72, "Validation", ["Gauges at the 5 big reservoirs", "and Kanhindawewa's drone survey"])
+    box(210, 608, 340, 56, "Dashboard", ["% full, safe limits and forecast for every tank"], lw=1.6)
+    arrow([(136, 128), (136, 176)])
+    arrow([(624, 128), (624, 176)])
+    arrow([(380, 128), (380, 280)])
+    arrow([(136, 232), (136, 308), (210, 308)])
+    arrow([(624, 232), (624, 308), (550, 308)])
+    arrow([(380, 336), (380, 384)])
+    arrow([(210, 412), (174, 412), (174, 488)])
+    arrow([(550, 412), (586, 412), (586, 488)])
+    arrow([(380, 440), (380, 608)])
+    arrow([(174, 560), (174, 636), (210, 636)])
+    note(388, 156, "trains the models")
+    note(140, 290, "water area")
+    note(562, 290, "height")
     fig.savefig(OUT / "fig2_pipeline.svg", bbox_inches="tight", pad_inches=0.05)
     plt.close(fig)
-
 
 def timeline():
     phases = [

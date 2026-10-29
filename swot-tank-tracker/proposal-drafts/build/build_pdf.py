@@ -43,8 +43,9 @@ FIGURES = {
             "Study area east of Anuradhapura (80.40–80.80°E, 8.10–8.60°N): the five major reservoirs "
             "and the eight village tanks."),
     "pipeline": ("fig2_pipeline.svg",
-                 "Method pipeline: SWOT builds each tank's height–area–volume curve; Sentinel-1 and "
-                 "Sentinel-2 water maps then update storage every 5–12 days."),
+                 "Method chain: Member A's AI water map gives each tank's water area; Member B's trust screen "
+                 "cleans the SWOT heights, and the storage model, trained on gauged reservoirs, turns height and "
+                 "area into % full; Member C forecasts storage 2–4 weeks ahead. The dashboard shows all three."),
     "timeline": ("fig3_timeline.svg",
                  "Project timeline, October 2026 to June 2027. Dates are assumed and will be adjusted to "
                  "faculty deadlines; the study area is confirmed by 15 December, after the tank name check."),
@@ -105,7 +106,7 @@ def clean_main(md):
     md = "## Introduction" + md
     md = re.sub(r"\n\s*Research notes and extra sources:.*$", "\n", md.strip())
     md = re.sub(r"^&#91;image:.*$", "@@FIG:map@@", md, flags=re.M)
-    md = re.sub(r"^&#91;embedded content: method pipeline.*$", "@@FIG:pipeline@@", md, flags=re.M)
+    md = re.sub(r"^&#91;embedded content: method (pipeline|chain).*$", "@@FIG:pipeline@@", md, flags=re.M)
     md = re.sub(r"^&#91;embedded content: project timeline.*$", "@@FIG:timeline@@", md, flags=re.M)
     md = re.sub(r"^\* ", "- ", md, flags=re.M)
     assert "&#91;" not in md, "unhandled placeholder"
