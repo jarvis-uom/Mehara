@@ -161,7 +161,7 @@ async function build() {
   s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 8.08, y: 5.92, w: 4.5, h: 0.74, rectRadius: 0.08,
     fill: { color: HEX.navy, transparency: 12 }, line: { color: HEX.navy, width: 0 }, objectName: "image caption" });
   text(s, [
-    { text: `${pics.problem.tanks_6ha} tanks of 6.25 ha or more in our study area (blue)`, options: { fontSize: 11.5, bold: true, breakLine: true } },
+    { text: `${pics.problem.tanks_6ha} tanks of 6.25 ha or more on this map (blue)`, options: { fontSize: 11.5, bold: true, breakLine: true } },
     { text: "Sentinel-2, 28 Feb 2026 · outlines © OpenStreetMap contributors", options: { fontSize: 9 } },
   ], { x: 8.22, y: 6.0, w: 4.25, h: 0.6, color: C.background1, valign: "middle" });
 
@@ -543,7 +543,7 @@ async function build() {
         "SWOT minus gauge on every pass: the steady gap and the spread in cm",
         "Trust screen: how many \"suspect\" readings it keeps, and their error",
         "Training pairs: daily storage with SWOT height and water area, at about 100 reservoirs",
-        "Storage error in % of capacity on reservoirs the model never saw, against one formula and Imbulana's equation",
+        "Storage error in % of capacity on reservoirs the model never saw, against one formula for all tanks",
       ],
       tech: [
         "Hydrocron pipeline: each tank's lake ID, every pass",
@@ -620,7 +620,7 @@ async function build() {
   card(s, 7.15, 1.4, 5.58, 5.4, { name: "timeline" });
   const miles = [
     ["Nov 2026", "Proposal, ethics and data requests"],
-    ["15 Dec 2026", "Study area confirmed after the cascade and name checks"],
+    ["15 Dec 2026", "Study area confirmed after the name check"],
     ["Dec 2026 – Apr 2027", "Labelled data, gauge readings, and the three models: water map, storage model, forecast"],
     ["Mar – May 2027", "Storage estimates, validation and dashboard"],
     ["30 Jun 2027", "Thesis, paper and final submission"],
@@ -652,7 +652,11 @@ async function build() {
         ["Planetary Computer: Sentinel-1 radar", "terrain-corrected radar", "https://planetarycomputer.microsoft.com/dataset/sentinel-1-rtc"],
         ["ASF: NISAR radar", "L-band radar", "https://asf.alaska.edu/nisar/"],
         ["JAXA ALOS-2 radar on AWS", "L-band radar", "https://registry.opendata.aws/jaxa-alos-palsar2-scansar/"],
-        ["S1S2-Water", "AI training data, 65 areas in 29 countries", "https://doi.org/10.5281/zenodo.8314175"],
+        ["S1S2-Water", "AI training data, 65 areas in 29 countries", "https://doi.org/10.5281/zenodo.11278238"],
+        ["Global Water Watch archive", "reservoir water areas", "https://zenodo.org/records/22643338"],
+      ]],
+      ["Ground shape", [
+        ["Copernicus DEM (GLO-30)", "30 m elevation map", "https://registry.opendata.aws/copernicus-dem/"],
       ]],
     ],
     [
@@ -664,7 +668,8 @@ async function build() {
         ["Mahaweli Authority: reservoir status reports", "daily levels", "https://mahaweli.gov.lk/wms.html"],
       ]],
       ["Weather (for the forecast)", [
-        ["CHIRPS", "daily rainfall", "https://www.chc.ucsb.edu/data/chirps"],
+        ["GPM IMERG", "daily rainfall", "https://gpm.nasa.gov/data/imerg"],
+        ["CHIRPS", "monthly rainfall checks", "https://www.chc.ucsb.edu/data/chirps"],
         ["ERA5", "weather, for evaporation", "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels"],
       ]],
       ["Our work", [
