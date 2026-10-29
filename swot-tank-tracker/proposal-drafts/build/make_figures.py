@@ -58,7 +58,7 @@ def pipeline():
 def timeline():
     phases = [
         ("Proposal and ethics", date(2026, 10, 19), date(2026, 11, 30)),
-        ("Cascade and name checks", date(2026, 11, 16), date(2026, 12, 15)),
+        ("Tank name check", date(2026, 11, 16), date(2026, 12, 15)),
         ("Study area confirmed", date(2026, 12, 15), None),
         ("Labelled water masks", date(2026, 12, 1), date(2027, 2, 28)),
         ("Gauge readings on pass dates", date(2027, 1, 4), date(2027, 4, 30)),
