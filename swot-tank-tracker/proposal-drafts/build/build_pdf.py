@@ -47,7 +47,7 @@ FIGURES = {
                  "Sentinel-2 water maps then update storage every 5–12 days."),
     "timeline": ("fig3_timeline.svg",
                  "Project timeline, October 2026 to June 2027. Dates are assumed and will be adjusted to "
-                 "faculty deadlines; the study area is confirmed by 15 December, after the cascade and name checks."),
+                 "faculty deadlines; the study area is confirmed by 15 December, after the tank name check."),
 }
 
 CSS = """
