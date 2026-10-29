@@ -1,0 +1,137 @@
+[
+ {
+  "tank": "V1",
+  "lake_id": "4580005172",
+  "osm_name": "",
+  "outline_ha": 5.2,
+  "path_km": 30.3,
+  "drains_to": [
+   "Mahakanadarawa (study tank 4580006192, 1307.6 ha)",
+   "Mahakanadarawa (department Major)"
+  ],
+  "first_department_reservoir": "Mahakanadarawa",
+  "village_tanks_passed": [
+   "Mahakanadarawa"
+  ],
+  "inside_department_catchments": [
+   "Mahakanadarawa"
+  ]
+ },
+ {
+  "tank": "V2",
+  "lake_id": "4580010522",
+  "osm_name": "",
+  "outline_ha": 4.6,
+  "path_km": 27.7,
+  "drains_to": [
+   "Mahakanadarawa (department Major)"
+  ],
+  "first_department_reservoir": "Mahakanadarawa",
+  "village_tanks_passed": [],
+  "inside_department_catchments": [
+   "Mahakanadarawa"
+  ]
+ },
+ {
+  "tank": "V3",
+  "lake_id": "4580006282",
+  "osm_name": "",
+  "outline_ha": 26.6,
+  "path_km": 30.9,
+  "drains_to": [
+   "Mahakanadarawa (study tank 4580006192, 1307.6 ha)",
+   "Mahakanadarawa (department Major)"
+  ],
+  "first_department_reservoir": "Mahakanadarawa",
+  "village_tanks_passed": [
+   "Mahakanadarawa"
+  ],
+  "inside_department_catchments": [
+   "Mahakanadarawa"
+  ]
+ },
+ {
+  "tank": "V4",
+  "lake_id": "4580010542",
+  "osm_name": "",
+  "outline_ha": 29.2,
+  "path_km": 32.9,
+  "drains_to": [
+   "Mahakanadarawa (study tank 4580006192, 1307.6 ha)",
+   "Mahakanadarawa (department Major)"
+  ],
+  "first_department_reservoir": "Mahakanadarawa",
+  "village_tanks_passed": [
+   "Mahakanadarawa"
+  ],
+  "inside_department_catchments": [
+   "Mahakanadarawa"
+  ]
+ },
+ {
+  "tank": "V5",
+  "lake_id": "4580011762",
+  "osm_name": "",
+  "outline_ha": 15.0,
+  "path_km": 31.5,
+  "drains_to": [
+   "Mahakanadarawa (study tank 4580006192, 1307.6 ha)",
+   "Mahakanadarawa (department Major)"
+  ],
+  "first_department_reservoir": "Mahakanadarawa",
+  "village_tanks_passed": [
+   "Mahakanadarawa"
+  ],
+  "inside_department_catchments": [
+   "Mahakanadarawa"
+  ]
+ },
+ {
+  "tank": "V6",
+  "lake_id": "4580011422",
+  "osm_name": "",
+  "outline_ha": 31.1,
+  "path_km": 20.0,
+  "drains_to": [
+   "unnamed (osm way 287429210, 25.4 ha)",
+   "unnamed (osm way 534841691, 59.1 ha)",
+   "unnamed (osm way 30738052, 39.0 ha)"
+  ],
+  "first_department_reservoir": null,
+  "village_tanks_passed": [],
+  "inside_department_catchments": []
+ },
+ {
+  "tank": "V7",
+  "lake_id": "4580007392",
+  "osm_name": "Bulankulama Lake",
+  "outline_ha": 31.7,
+  "path_km": 20.2,
+  "drains_to": [
+   "unnamed (osm way 195256692, 24.6 ha)",
+   "unnamed (osm way 310008339, 43.8 ha)",
+   "Nuwara Wewa (department Major)"
+  ],
+  "first_department_reservoir": "Nuwara Wewa",
+  "village_tanks_passed": [],
+  "inside_department_catchments": [
+   "Nuwara Wewa"
+  ]
+ },
+ {
+  "tank": "V8",
+  "lake_id": "4580043692",
+  "osm_name": "",
+  "outline_ha": 42.6,
+  "path_km": 29.4,
+  "drains_to": [
+   "Kallanchiya (department Medium)"
+  ],
+  "first_department_reservoir": "Kallanchiya",
+  "village_tanks_passed": [],
+  "inside_department_catchments": [
+   "Kallanchiya",
+   "Kadahatha Wewa"
+  ]
+ }
+]

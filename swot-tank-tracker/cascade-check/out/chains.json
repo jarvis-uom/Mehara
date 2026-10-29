@@ -1,0 +1,245 @@
+[
+ {
+  "tanks": 5,
+  "ends_in": [
+   "Nachchaduwa (Major)"
+  ],
+  "members": [
+   {
+    "lake_id": "4580025632",
+    "chosen": "",
+    "outline_ha": 15.4,
+    "usable": 80,
+    "lon": 80.487272,
+    "lat": 8.155756,
+    "drains_into": [
+     "4580008112"
+    ]
+   },
+   {
+    "lake_id": "4580012322",
+    "chosen": "",
+    "outline_ha": 12.5,
+    "usable": 76,
+    "lon": 80.481124,
+    "lat": 8.164903,
+    "drains_into": [
+     "4580008112"
+    ]
+   },
+   {
+    "lake_id": "4580010392",
+    "chosen": "",
+    "outline_ha": 28.1,
+    "usable": 81,
+    "lon": 80.507434,
+    "lat": 8.15467,
+    "drains_into": [
+     "4580008112"
+    ]
+   },
+   {
+    "lake_id": "4580012282",
+    "chosen": "",
+    "outline_ha": 18.9,
+    "usable": 80,
+    "lon": 80.508457,
+    "lat": 8.171292,
+    "drains_into": [
+     "4580008112"
+    ]
+   },
+   {
+    "lake_id": "4580008112",
+    "chosen": "",
+    "outline_ha": 49.4,
+    "usable": 49,
+    "lon": 80.497014,
+    "lat": 8.17677,
+    "drains_into": [
+     "Nachchaduwa (Major)"
+    ]
+   }
+  ]
+ },
+ {
+  "tanks": 2,
+  "ends_in": [
+   "Nuwara Wewa (Major)"
+  ],
+  "members": [
+   {
+    "lake_id": "4580007392",
+    "chosen": "V7",
+    "outline_ha": 31.7,
+    "usable": 47,
+    "lon": 80.497892,
+    "lat": 8.342858,
+    "drains_into": [
+     "4580005192"
+    ]
+   },
+   {
+    "lake_id": "4580005192",
+    "chosen": "",
+    "outline_ha": 43.8,
+    "usable": 67,
+    "lon": 80.466017,
+    "lat": 8.331352,
+    "drains_into": [
+     "Nuwara Wewa (Major)"
+    ]
+   }
+  ]
+ },
+ {
+  "tanks": 2,
+  "ends_in": [
+   "Mahakanadarawa (Major)"
+  ],
+  "members": [
+   {
+    "lake_id": "4580007532",
+    "chosen": "",
+    "outline_ha": 32.9,
+    "usable": 81,
+    "lon": 80.540553,
+    "lat": 8.307222,
+    "drains_into": [
+     "4580006282"
+    ]
+   },
+   {
+    "lake_id": "4580006282",
+    "chosen": "V3",
+    "outline_ha": 26.6,
+    "usable": 73,
+    "lon": 80.544989,
+    "lat": 8.328194,
+    "drains_into": [
+     "Mahakanadarawa (Major)"
+    ]
+   }
+  ]
+ },
+ {
+  "tanks": 2,
+  "ends_in": [
+   "Mahakanadarawa (Major)"
+  ],
+  "members": [
+   {
+    "lake_id": "4580012052",
+    "chosen": "",
+    "outline_ha": 24.2,
+    "usable": 91,
+    "lon": 80.682033,
+    "lat": 8.266641,
+    "drains_into": [
+     "4580005302"
+    ]
+   },
+   {
+    "lake_id": "4580005302",
+    "chosen": "",
+    "outline_ha": 59.7,
+    "usable": 79,
+    "lon": 80.675665,
+    "lat": 8.295819,
+    "drains_into": [
+     "Mahakanadarawa (Major)"
+    ]
+   }
+  ]
+ },
+ {
+  "tanks": 2,
+  "ends_in": [
+   "Mahakanadarawa (Major)"
+  ],
+  "members": [
+   {
+    "lake_id": "4580007452",
+    "chosen": "",
+    "outline_ha": 9.6,
+    "usable": 72,
+    "lon": 80.582355,
+    "lat": 8.328959,
+    "drains_into": [
+     "4580011762"
+    ]
+   },
+   {
+    "lake_id": "4580011762",
+    "chosen": "V5",
+    "outline_ha": 15.0,
+    "usable": 77,
+    "lon": 80.570628,
+    "lat": 8.330942,
+    "drains_into": [
+     "Mahakanadarawa (Major)"
+    ]
+   }
+  ]
+ },
+ {
+  "tanks": 2,
+  "ends_in": [
+   "Mahakanadarawa (Major)"
+  ],
+  "members": [
+   {
+    "lake_id": "4580010692",
+    "chosen": "",
+    "outline_ha": 10.2,
+    "usable": 88,
+    "lon": 80.625235,
+    "lat": 8.280977,
+    "drains_into": [
+     "4580009592"
+    ]
+   },
+   {
+    "lake_id": "4580009592",
+    "chosen": "",
+    "outline_ha": 16.3,
+    "usable": 72,
+    "lon": 80.623798,
+    "lat": 8.296157,
+    "drains_into": [
+     "Mahakanadarawa (Major)"
+    ]
+   }
+  ]
+ },
+ {
+  "tanks": 2,
+  "ends_in": [
+   "Nachchaduwa (Major)"
+  ],
+  "members": [
+   {
+    "lake_id": "4580010862",
+    "chosen": "",
+    "outline_ha": 14.1,
+    "usable": 73,
+    "lon": 80.524654,
+    "lat": 8.155307,
+    "drains_into": [
+     "4580009722"
+    ]
+   },
+   {
+    "lake_id": "4580009722",
+    "chosen": "",
+    "outline_ha": 49.5,
+    "usable": 75,
+    "lon": 80.519289,
+    "lat": 8.218665,
+    "drains_into": [
+     "Nachchaduwa (Major)"
+    ]
+   }
+  ]
+ }
+]
