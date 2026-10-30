@@ -1,6 +1,6 @@
 # SWOT Tank Water Tracker: working files
 
-Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JARVIS), up to 29 October 2026.
+Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JARVIS), up to 30 October 2026.
 
 **The idea:** estimate how much water each Sri Lankan tank holds from free satellite data.
 - SWOT gives the water height.
@@ -53,7 +53,7 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 - C: the forecast and the system (RQ4).
 - The proposal draft and the talk (slides 14, 15, 17, 18 and 19) follow the new plan.
 
-**Approved, 29 October 2026:** both supervisors approved the proposal. The final proposal is `proposal-drafts/SWOT Tank Water Tracker for Sri Lanka.pdf` (the older drafts are kept for reference).
+**Approved, 29 October 2026:** both supervisors approved the proposal. The final proposal is `proposal-drafts/SWOT Tank Water Tracker for Sri Lanka.pdf` (the older drafts are kept for reference). On 30 October it got 7 small factual fixes before the upload.
 - RQ3 now compares the storage model with one area–storage formula for all tanks.
 - New baselines: the Brazil SWOT filter (Lappicy et al., 2026) for the trust screen, and NASA's OPERA water maps for the water map.
 - IMERG for daily rain, CHIRPS for monthly checks.
