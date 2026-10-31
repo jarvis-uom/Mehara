@@ -11,12 +11,12 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 
 | Folder | Contents |
 |---|---|
-| `proposal-drafts/` | Proposal drafts (PDF; the latest is 28 Oct 2026), their text in `export/`, and the scripts that build the PDF |
+| `proposal-drafts/` | The official 4-page proposal as submitted on 30 Oct 2026 (`Project Proposal - submitted 30 Oct 2026 (public copy).pdf`, without the title page), the earlier full proposal and drafts, their text in `export/`, and the scripts that build the PDF |
 | `feasibility-check/` | The October 2026 data checks: scripts in `work/`, results in `results/`. Start with `results/SUMMARY.md` |
 | `model-check/` | The 28 October test of the models of Members B and C on real data (trust screen, storage model, forecast): scripts and result tables. Start with `model-check/README.md` |
 | `cascade-check/` | Do the eight village tanks share one cascade? (No.) A flow trace on the elevation map, checked against the department's catchments, and a real five-tank cascade south of Nachchaduwa |
 | `data-checks/` | First data access checks, and the saved Irrigation Department reservoir sheets |
-| `presentation/` | 21-slide deck for the supervisor meeting and a PDF of the slides (both without the speaker notes, which we keep private), the scripts and pictures that build the deck, and `tank-volume-explainer.html` (an interactive model tank) |
+| `presentation/` | The 15-slide proposal talk submitted on 30 Oct 2026, as PowerPoint and PDF (without the speaker notes, which we keep private, and with the owners shown as Member A, B and C), the scripts and pictures that built the earlier 21-slide deck, and `tank-volume-explainer.html` (an interactive model tank) |
 | `research/` | A summary of all the past research we used, and ideas to strengthen and widen the scope (26 Oct 2026), each with source links |
 
 **Project website:** https://swot.mehara.work (code in [jarvis-uom/swot-tank-tracker-site](https://github.com/jarvis-uom/swot-tank-tracker-site)).
@@ -59,6 +59,8 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 - IMERG for daily rain, CHIRPS for monthly checks.
 - The eight village tanks are not one cascade (`cascade-check/`).
 - The slides in `presentation/` match the final proposal.
+
+**Submitted, 30 October 2026:** the official 4-page proposal (`proposal-drafts/Project Proposal - submitted 30 Oct 2026 (public copy).pdf`) and the 15-slide talk (`presentation/`). The presentation date is still to be announced.
 
 ## Not included
 
