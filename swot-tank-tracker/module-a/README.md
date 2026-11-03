@@ -1,6 +1,6 @@
 # Module A: water maps under cloud (RQ1)
 
-Results from 1 to 3 November 2026 (runs 1 to 3 of the retraining). Module A maps the water in Sri Lanka's reservoirs from satellite images, under cloud too, and turns the water area into storage. Every check compares the result with the Irrigation Department's daily storage.
+Results from 1 to 4 November 2026: runs 1 to 3 of the retraining, and a check against expert water maps. Module A maps the water in Sri Lanka's reservoirs from satellite images, under cloud too, and turns the water area into storage. Every check compares the result with the Irrigation Department's daily storage.
 
 The code, the department's tables and the trained models are kept private. This page gives the method, the numbers and the pictures.
 
@@ -136,15 +136,45 @@ With run 2 (103 reservoirs):
 
 *The two reservoirs were picked by rank, among those with 10 or more old-photo passes. At Kantale (the middle by the radar's gain), the radar is off by 2% of capacity against 7% for the photo. At Parakrama Samudraya (the lower quarter), it is 4% against 6%.*
 
+## 7. Against expert water maps (S1S2-Water, 4 Nov)
+
+S1S2-Water is a public dataset of lakes, rivers and reservoirs around the world, with the water mapped by experts (Wieland et al., 2024). We scored the models on its 15 test scenes, which they had never seen, and trained nothing on them. The rules were fixed before the scoring.
+
+- **The radar** is Earth Engine's, for each scene's own Sentinel-1 images, made the same way as our training radar. The experts' masks were moved to its 10 m grid.
+- **Why not S1S2-Water's own radar:** it was smoothed with a median speckle filter, and our models fail on smoothed radar. On Sen1Floods11's Bolivia chips, r6 falls from 66 to 7 after the same smoothing.
+
+| 15 test scenes, pooled | Water IoU | F1 |
+|---|---|---|
+| Otsu radar threshold | 34 | 50 |
+| Radar U-Net before (r6) | 53 | 69 |
+| Retrained (run 3) | **60** | **75** |
+| Photo-label control | **65** | **79** |
+
+- **Retraining on our tanks did not cost water-mapping skill; it added some.** Run 3 beats r6 at 11 of 15 scenes (p = 0.02), so its loss on Bolivia is specific to floods.
+- **All the U-Nets beat a simple radar threshold.**
+- **Photo labels beat the storage rule here too:** 65 against 60, and better at 11 of 15 scenes.
+- **On 5 South and Southeast Asian scenes** (India, Bangladesh, Thailand and Vietnam), run 3 scores 92 and the control 93. These come from S1S2-Water's other splits, and they are new to our models too.
+- **The weak spot is false water on dark, dry land.** The models find 98% of the experts' water, but a third or more of what they call water is dry ground: desert, dry grassland or terrain shadow.
+
+![S1S2-Water scene 75: radar, expert water, r6, run 3 and Otsu](pictures/s1s2water-scene75.png)
+
+*S1S2-Water scene 75, cropland near the Sea of Azov: the radar, the experts' water, r6, run 3 (fold 1) and Otsu. Run 3 drops most of r6's false water in the fields.*
+
+![Kantale under full cloud: photo, radar and the fine-tuned model's water map](pictures/kantale-under-cloud-finetuned.png)
+
+*Kantale on 27 November 2025, with the whole tank under cloud. The water map comes from the radar alone, made by a fine-tuned model that never saw Kantale in training, and is drawn on the photo.*
+
 ## Next
 
 - **Train with photo labels for storage.** They are as good as the rule and need no storage records. Any further run will have its rules fixed first.
 - Storage near full, where the radar's reading flattens: add SWOT's water height (Module B).
-- Pixel accuracy on expert-labelled benchmarks (Sen1Floods11, S1S2-Water).
+- **Cut the false water on dry land:** a further run could add S1S2-Water's training scenes (expert labels) and train with photo labels only. Its rules would be fixed first.
+- **Pixel agreement on our own tanks,** against the clear photo (agreement, not ground truth).
 
 ## Credits
 
 - Contains modified Copernicus Sentinel data (2020 to 2026), processed with Google Earth Engine.
 - Sen1Floods11: Bonafilia et al. (2020), CVPR Workshops.
+- S1S2-Water: Wieland et al. (2024), IEEE JSTARS; CC BY 4.0.
 - Reservoir outlines: JRC Global Surface Water (Pekel et al., 2016).
 - Storage: Irrigation Department of Sri Lanka, daily reservoir status.
