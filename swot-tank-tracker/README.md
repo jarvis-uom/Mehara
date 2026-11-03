@@ -67,7 +67,7 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 
 **Module A, 1 to 3 November 2026** (`module-a/README.md`):
 - Under cloud, only radar works. At about 100 reservoirs, the radar-only U-Net reads storage within 11 to 12% of capacity, against 20 to 22% with no model.
-- Retrained on our own reservoirs (a trial run), it reads storage within 8.9%, and it beats the last clear photo at 76% of reservoirs.
+- Retrained on our own reservoirs (run 2, 103 reservoirs), it reads storage within 7.9% of capacity, and it beats the last clear photo at 81% of reservoirs. But it lost flood-mapping skill on an outside test, so by our own rules it is not yet a win.
 - Our two reservoir image datasets are public on Kaggle.
 
 ## Not included
