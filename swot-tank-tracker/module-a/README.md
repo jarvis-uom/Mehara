@@ -1,6 +1,6 @@
 # Module A: water maps under cloud (RQ1)
 
-Results from 1 to 3 November 2026. Module A maps the water in Sri Lanka's reservoirs from satellite images, under cloud too, and turns the water area into storage. Every check compares the result with the Irrigation Department's daily storage.
+Results from 1 to 3 November 2026 (runs 1 to 3 of the retraining). Module A maps the water in Sri Lanka's reservoirs from satellite images, under cloud too, and turns the water area into storage. Every check compares the result with the Irrigation Department's daily storage.
 
 The code, the department's tables and the trained models are kept private. This page gives the method, the numbers and the pictures.
 
@@ -89,6 +89,24 @@ The models that use the photo failed under thick cloud.
 - **The fifth fails, so run 2 is not a win by its own rules.** On Sen1Floods11's Bolivia chips its water IoU fell to 44.8, against 58.6 for the model it started from, and the limit was 2 points. Training on tank labels made the model better at reading tank storage, but worse at mapping flood water.
 - **The labelling rule is not what helps.** A control trained only on clear-day photo labels, with no storage and no radar passes, does as well (8.5%, p = 0.31). So the gain comes from training on our own reservoirs, and neither the rule nor the extra radar passes added to it.
 
+**Run 3 (3 Nov, rules fixed first).** To keep flood-mapping skill:
+- it starts from run 6;
+- a quarter of every batch is Sen1Floods11's expert-labelled flood chips;
+- the photo-label control now sees the same photo-labelled radar passes, so the comparison is fair.
+
+| Storage error, later half (median, % of capacity, 103 reservoirs) | |
+|---|---|
+| Run 3 | **7.8** |
+| Run 2's retrained model | 7.9 |
+| Photo-label control (fair) | 8.3 |
+| Run 6, the starting model | 10.8 |
+| Seasonal average | 14.4 |
+
+- **Rules 1 to 4 hold again.** For example, run 3 is better than run 6 at 80% of reservoirs (p = 4e-9).
+- **Rule 5 fails, so run 3 is not a win by its own rules either.** Bolivia rose from 44.8 to 54.4 at no cost to storage, but the rule asked for at least 64. On Sen1Floods11's own test floods the model keeps about 67; what drops is the unseen Bolivia flood.
+- **Photo labels are enough.** Even against a fair control, the labelling rule adds nothing (p = 0.96), and photo labels need no storage records.
+- **The result does not depend on the computer.** Fold 4 ran on Kaggle and on Colab with identical results.
+
 ## 6. Against the last clear photo (3 Nov)
 
 Without radar, a user would read storage from the most recent clear photo. To test this baseline:
@@ -120,7 +138,7 @@ With run 2 (103 reservoirs):
 
 ## Next
 
-- **Run 3, to keep flood-mapping skill**, with its rules fixed first. Either mix Sen1Floods11's expert-labelled chips into the training, or start from the stronger run 6 model (Bolivia 66).
+- **Train with photo labels for storage.** They are as good as the rule and need no storage records. Any further run will have its rules fixed first.
 - Storage near full, where the radar's reading flattens: add SWOT's water height (Module B).
 - Pixel accuracy on expert-labelled benchmarks (Sen1Floods11, S1S2-Water).
 
