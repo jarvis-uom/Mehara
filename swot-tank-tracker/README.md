@@ -22,7 +22,7 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 
 **The code and the Irrigation Department's tables are kept private** (since 3 Nov 2026). Script names in the write-ups refer to those private scripts.
 
-**Project website:** https://swot.mehara.work (code in [jarvis-uom/swot-tank-tracker-site](https://github.com/jarvis-uom/swot-tank-tracker-site)).
+**Project website:** https://swot.mehara.work (code in the private repo [jarvis-uom/swot-tank-tracker-site](https://github.com/jarvis-uom/swot-tank-tracker-site)).
 
 ## Main results so far
 
