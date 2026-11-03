@@ -71,7 +71,23 @@ The models that use the photo failed under thick cloud.
 
 *Akathimuruppu, held out of training ("run 2" in the picture is the radar U-Net before retraining). In the middle row, at 10% storage, the model before marks most of the dry bed as water, while the retrained model keeps to the pool in the south.*
 
-**Run 2** is the main test, with better labels, three seeds and stricter rules. It is running on Kaggle, and its results will follow.
+**Run 2 (the main test, 103 reservoirs).** Compared with run 1, it has:
+- better labels (more land, and a guard against cloud shadows);
+- folds that keep neighbouring reservoirs together;
+- a cleaned storage sheet;
+- three seeds per fold;
+- a control model trained on photo labels alone.
+
+| Storage error on the later half (median, % of capacity) | Reservoirs | Retrained | Photo-label control | Radar U-Net before | Seasonal average | No model |
+|---|---|---|---|---|---|---|
+| All | 103 | **7.9** | 8.5 | 12.5 | 14.4 | 22.5 |
+| Under 5 million m³ | 39 | 11.0 | 11.5 | 13.7 | 15.2 | 26.1 |
+| 5 to 30 million m³ | 34 | 7.9 | 7.5 | 10.5 | 14.4 | 17.3 |
+| 30 million m³ and more | 30 | 5.4 | 5.2 | 8.8 | 13.3 | 22.7 |
+
+- **Four of its five rules hold.** It is better than the radar U-Net before at 79% of reservoirs (Wilcoxon p = 2e-10), better than every threshold method and the seasonal average, and closer to the photo on the dry lake bed.
+- **The fifth fails, so run 2 is not a win by its own rules.** On Sen1Floods11's Bolivia chips its water IoU fell to 44.8, against 58.6 for the model it started from, and the limit was 2 points. Training on tank labels made the model better at reading tank storage, but worse at mapping flood water.
+- **The labelling rule is not what helps.** The control trained on photo labels alone does as well (8.5%, p = 0.31). The gain comes from training on our own reservoirs.
 
 ## 6. Against the last clear photo (3 Nov)
 
@@ -82,24 +98,29 @@ Without radar, a user would read storage from the most recent clear photo. To te
 **How often there is a clear photo:**
 - a median of 20 a year per reservoir;
 - the longest gap between them is a median of 138 days, and November and December have the fewest;
-- on the later half, the last clear photo is a median of 12 days old, and over 30 days old on 29% of passes.
+- on the later half, the last clear photo is a median of 13 days old, and over 30 days old on 29% of passes.
+
+With run 2 (103 reservoirs):
 
 | Storage error, later half (median, % of capacity) | All passes | Photo 10 days old or less | Photo over 30 days old |
 |---|---|---|---|
-| Retrained radar U-Net (run 1) | **8.8** | **8.0** | **10.4** |
-| Radar U-Net before | 12.1 | 11.2 | 11.2 |
-| Last clear photo | 12.9 | 9.5 | 19.9 |
-| Seasonal average | 14.2 | 14.2 | 13.6 |
-| No model | 21.9 | 22.3 | 21.2 |
+| Retrained radar U-Net (run 2) | **7.9** | 7.9 | 8.4 |
+| Photo-label control | 8.1 | **7.4** | **7.7** |
+| Radar U-Net before | 12.3 | 11.2 | 10.9 |
+| Last clear photo | 12.9 | 9.5 | 19.5 |
+| Seasonal average | 14.2 | 13.7 | 13.6 |
+| No model | 22.5 | 23.0 | 21.2 |
 
-- The retrained model beats the last clear photo at 76% of reservoirs (p = 2e-8), and at 79% when the photo is over 30 days old (p = 9e-10).
-- **A limit:** at small reservoirs (under 5 million m³) with an old photo, the seasonal average (9.6) beats every map.
+- The retrained model beats the last clear photo at 81% of reservoirs (p = 2e-10), and at 86% when the photo is over 30 days old (p = 9e-12). Run 1 showed the same picture (8.8 against 12.9).
+- **A limit:** at small reservoirs (under 5 million m³) with an old photo, the seasonal average (9.6) is still the best.
 
-![Storage, the retrained radar U-Net and the last clear photo at Minneriya and Hakwatunawa wawa](pictures/last-clear-photo-vs-radar.png)
+![Storage, the retrained radar U-Net and the last clear photo at Kantale and Parakrama Samudraya](pictures/last-clear-photo-vs-radar.png)
+
+*The two reservoirs were picked by rank, among those with 10 or more old-photo passes. At Kantale (the middle by the radar's gain), the radar is off by 2% of capacity against 7% for the photo. At Parakrama Samudraya (the lower quarter), it is 4% against 6%.*
 
 ## Next
 
-- Check run 2's results against its rules ([issue #9](https://github.com/jarvis-uom/IS4990-project/issues/9) in the main repo).
+- **Run 3, to keep flood-mapping skill**, with its rules fixed first. Either mix Sen1Floods11's expert-labelled chips into the training, or start from the stronger run 6 model (Bolivia 66).
 - Storage near full, where the radar's reading flattens: add SWOT's water height (Module B).
 - Pixel accuracy on expert-labelled benchmarks (Sen1Floods11, S1S2-Water).
 
