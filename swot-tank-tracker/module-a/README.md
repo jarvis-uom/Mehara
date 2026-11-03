@@ -15,14 +15,14 @@ The code, the department's tables and the trained models are kept private. This 
 ## 1. The first models (1 Nov)
 
 U-Nets trained on Sen1Floods11, using radar only, the photo only, or both. Water IoU on the test chips (mean of 3 seeds):
-- radar and photo together: 83%. Under full cloud it falls to 57%.
+- radar and photo together: 83%. Under simulated full cloud it falls to 57%.
 - radar only: 65%, with or without cloud.
 
 ## 2. Seven tanks, clear and cloudy days (1 Nov)
 
 At 7 tanks with daily storage (103 cloudy days), the radar-only U-Net followed storage best:
 - Spearman 0.95 on clear days and 0.91 on cloudy days;
-- under cloud, storage read within 9% of capacity (median over the 7 tanks).
+- under cloud, storage read within 9% of capacity (median over the 7 tanks). By tank it ranged from 4 to 26%, and the two smallest tanks were the worst.
 
 The models that use the photo failed under thick cloud.
 
@@ -34,7 +34,7 @@ The models that use the photo failed under thick cloud.
 
 - **Coverage:** 117 reservoirs from the department's sheet. 100 passed quality rules that were set before the results were seen; the other 17 were left out, each for a stated reason.
 - **Chips:** 2,976, of which 1,429 are on clear days and 1,547 on cloudy days.
-- **Under cloud, only radar works.** The radar-only U-Net follows storage at a median Spearman of 0.79 and reads storage within 11% of capacity, against 20% with no model. Under cloud, the methods that use the photo do worse than no model (27 to 32%).
+- **Under cloud, only radar works.** The radar-only U-Net follows storage at a median Spearman of 0.79 and reads storage within 11% of capacity, against 20% with no model. Under cloud, the methods that use the photo do worse than no model (27 to 32%). A radar threshold tuned for each reservoir reads storage about as well (11.0%), but the U-Net follows storage more closely (better Spearman at 72% of reservoirs).
 - **Bigger reservoirs are read better:** 7% error at 30 million m³ and more, against 13.5% under 5 million m³.
 
 ## 4. Every radar pass since 2020 (2 Nov)
@@ -43,7 +43,7 @@ The models that use the photo failed under thick cloud.
 
 - **Coverage:** 107 reservoirs and 15,430 radar passes.
 - **Test:** a curve fitted on the first half of each reservoir's passes reads storage on the second half, as the system would run.
-- **Result:** the radar U-Net reads later storage within 12% of capacity, against 22% with no model, and beats no model at 87% of reservoirs. Clouds make no difference to it.
+- **Result:** the radar U-Net reads later storage within 12% of capacity, against 14% for the seasonal average and 22% with no model. It beats no model at 87% of reservoirs and the seasonal average at 65%. Clouds make no difference to it.
 - **Two limits:**
   - near full, the reading flattens: at 44 of 104 reservoirs it is 15 points of capacity or more too low;
   - at low storage, the radar calls much of the exposed lake bed water.
@@ -87,7 +87,7 @@ The models that use the photo failed under thick cloud.
 
 - **Four of its five rules hold.** It is better than the radar U-Net before at 79% of reservoirs (Wilcoxon p = 2e-10), better than every threshold method and the seasonal average, and closer to the photo on the dry lake bed.
 - **The fifth fails, so run 2 is not a win by its own rules.** On Sen1Floods11's Bolivia chips its water IoU fell to 44.8, against 58.6 for the model it started from, and the limit was 2 points. Training on tank labels made the model better at reading tank storage, but worse at mapping flood water.
-- **The labelling rule is not what helps.** The control trained on photo labels alone does as well (8.5%, p = 0.31). The gain comes from training on our own reservoirs.
+- **The labelling rule is not what helps.** A control trained only on clear-day photo labels, with no storage and no radar passes, does as well (8.5%, p = 0.31). So the gain comes from training on our own reservoirs, and neither the rule nor the extra radar passes added to it.
 
 ## 6. Against the last clear photo (3 Nov)
 
