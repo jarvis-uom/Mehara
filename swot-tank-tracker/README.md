@@ -11,7 +11,7 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 
 | Folder | Contents |
 |---|---|
-| `module-a/` | Module A (RQ1), 1 to 3 Nov 2026: water maps under cloud at 117 reservoirs, the retraining for tank beds, and the comparison with the last clear photo. Start with `module-a/README.md` |
+| `module-a/` | Module A (RQ1), 1 to 4 Nov 2026: water maps under cloud at 117 reservoirs, the retraining for tank beds, and the comparison with the last clear photo. Start with `module-a/README.md` |
 | `proposal-drafts/` | The official 4-page proposal as submitted on 30 Oct 2026 (`Project Proposal - submitted 30 Oct 2026 (public copy).pdf`, without the title page), the earlier full proposal and drafts, and their text in `export/` |
 | `feasibility-check/` | The October 2026 data checks: results in `results/` and working files in `work/`. Start with `results/SUMMARY.md` |
 | `model-check/` | The 28 October test of the models of Members B and C on real data (trust screen, storage model, forecast): result tables. Start with `model-check/README.md` |
@@ -65,9 +65,10 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 
 **Submitted, 30 October 2026:** the official 4-page proposal (`proposal-drafts/Project Proposal - submitted 30 Oct 2026 (public copy).pdf`) and the 15-slide talk (`presentation/`). The presentation date is still to be announced.
 
-**Module A, 1 to 3 November 2026** (`module-a/README.md`):
+**Module A, 1 to 4 November 2026** (`module-a/README.md`):
 - Under cloud, only radar works. At about 100 reservoirs, the radar-only U-Net reads storage within 11 to 12% of capacity, against 20 to 22% with no model.
 - Retrained on our own reservoirs, it reads storage within about 8% of capacity at 103 reservoirs, a result now confirmed in two runs (7.9% and 7.8%). It beats the last clear photo at 81% of reservoirs. Flood practice narrowed its loss on an outside flood test, but not enough for our strict rule, so it is not yet a win. Photo labels are as good as the storage rule.
+- Against expert water maps (S1S2-Water: 15 scenes worldwide it never saw), the retrained model maps water at IoU 60 (F1 75), against 53 before retraining and 34 for a simple radar threshold. Trained on photo labels, it scores 65.
 - Our two reservoir image datasets are public on Kaggle.
 
 ## Not included
