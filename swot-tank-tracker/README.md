@@ -1,6 +1,6 @@
 # SWOT Tank Water Tracker: working files
 
-Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JARVIS), up to 30 October 2026.
+Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JARVIS), up to 3 November 2026.
 
 **The idea:** estimate how much water each Sri Lankan tank holds from free satellite data.
 - SWOT gives the water height.
@@ -11,15 +11,18 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 
 | Folder | Contents |
 |---|---|
-| `proposal-drafts/` | The official 4-page proposal as submitted on 30 Oct 2026 (`Project Proposal - submitted 30 Oct 2026 (public copy).pdf`, without the title page), the earlier full proposal and drafts, their text in `export/`, and the scripts that build the PDF |
-| `feasibility-check/` | The October 2026 data checks: scripts in `work/`, results in `results/`. Start with `results/SUMMARY.md` |
-| `model-check/` | The 28 October test of the models of Members B and C on real data (trust screen, storage model, forecast): scripts and result tables. Start with `model-check/README.md` |
+| `module-a/` | Module A (RQ1), 1 to 3 Nov 2026: water maps under cloud at 117 reservoirs, the retraining for tank beds, and the comparison with the last clear photo. Start with `module-a/README.md` |
+| `proposal-drafts/` | The official 4-page proposal as submitted on 30 Oct 2026 (`Project Proposal - submitted 30 Oct 2026 (public copy).pdf`, without the title page), the earlier full proposal and drafts, and their text in `export/` |
+| `feasibility-check/` | The October 2026 data checks: results in `results/` and working files in `work/`. Start with `results/SUMMARY.md` |
+| `model-check/` | The 28 October test of the models of Members B and C on real data (trust screen, storage model, forecast): result tables. Start with `model-check/README.md` |
 | `cascade-check/` | Do the eight village tanks share one cascade? (No.) A flow trace on the elevation map, checked against the department's catchments, and a real five-tank cascade south of Nachchaduwa |
-| `data-checks/` | First data access checks, and the saved Irrigation Department reservoir sheets |
-| `presentation/` | The 15-slide proposal talk submitted on 30 Oct 2026, as PowerPoint and PDF (without the speaker notes, which we keep private, and with the owners shown as Member A, B and C), the scripts and pictures that built the earlier 21-slide deck, and `tank-volume-explainer.html` (an interactive model tank) |
+| `data-checks/` | First data access checks |
+| `presentation/` | The 15-slide proposal talk submitted on 30 Oct 2026, as PowerPoint and PDF (without the speaker notes, which we keep private, and with the owners shown as Member A, B and C), the pictures of the earlier 21-slide deck, and `tank-volume-explainer.html` (an interactive model tank) |
 | `research/` | A summary of all the past research we used, and ideas to strengthen and widen the scope (26 Oct 2026), each with source links |
 
-**Project website:** https://swot.mehara.work (code in [jarvis-uom/swot-tank-tracker-site](https://github.com/jarvis-uom/swot-tank-tracker-site)).
+**The code and the Irrigation Department's tables are kept private** (since 3 Nov 2026). Script names in the write-ups refer to those private scripts.
+
+**Project website:** https://swot.mehara.work (code in the private repo [jarvis-uom/swot-tank-tracker-site](https://github.com/jarvis-uom/swot-tank-tracker-site)).
 
 ## Main results so far
 
@@ -62,37 +65,30 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 
 **Submitted, 30 October 2026:** the official 4-page proposal (`proposal-drafts/Project Proposal - submitted 30 Oct 2026 (public copy).pdf`) and the 15-slide talk (`presentation/`). The presentation date is still to be announced.
 
+**Module A, 1 to 3 November 2026** (`module-a/README.md`):
+- Under cloud, only radar works. At about 100 reservoirs, the radar-only U-Net reads storage within 11 to 12% of capacity, against 20 to 22% with no model.
+- Retrained on our own reservoirs (a trial run), it reads storage within 8.9%, and it beats the last clear photo at 76% of reservoirs.
+- Our two reservoir image datasets are public on Kaggle.
+
 ## Not included
 
 These are left out. Each item says how to get it again.
 - **SWOT lake files** (about 125 MB). They need a free NASA Earthdata login.
-- **SWOT series from Hydrocron** (about 10 MB). Run `feasibility-check/work/a2_fetch.py`.
-- **Sentinel images.** The presentation scripts read them straight from Earth Search and Microsoft Planetary Computer.
-- **The Python environment and the Node build tools.** Run `npm install` in `presentation/build/`.
+- **SWOT series from Hydrocron** (about 10 MB). Hydrocron serves them free.
+- **Sentinel images.** They are free from Earth Search and Microsoft Planetary Computer. Module A's chips are on Kaggle (`module-a/README.md`).
+- **The code and the Irrigation Department's tables.** They are kept private.
 - **Global Water Watch archive** (about 530 MB). The Global Water Watch site is going offline; its September 2026 archive is on Zenodo: https://zenodo.org/records/22658942 (CC BY 4.0).
 
-## Rebuild
+## Daily reservoir sheet
 
-1. **Python 3.13 packages:**
-   - earthaccess, geopandas, rasterio, pystac-client, planetary-computer
-   - scipy, matplotlib, pymupdf, markdown, python-pptx, qrcode, markitdown[pptx]
-2. **Feasibility check:** run the scripts in `feasibility-check/work/` in order, from `a1_lake_ids.py` to `a7_srilanka.py`.
-3. **Deck:**
-   - Run `p1_maps.py` to `p6_study_map.py` in `presentation/build/`.
-   - Then run `node build_deck.js`.
-   - `render.ps1` exports the slides to pictures with PowerPoint.
-   - `p7_phone_notes.py` prints each slide's picture with its speaker notes, one A5 page per slide, for reading on a phone.
-   - The speaker notes are kept private, so they are not in this repo: `build_deck.js` here builds the deck without them.
-4. **Daily reservoir sheet:** saved automatically three times a day by the private repo `jarvis-uom/water-data-logger` (GitHub Actions), which also saves the river gauges in our three basins.
-   - The sheet shows only the current day, so a day that is not saved is lost.
-   - It is the data behind the Irrigation Department's official "Reservoir Status" dashboards: https://irrigation.gov.lk/web/index.php?option=com_content&view=article&id=84&Itemid=201&lang=en
-   - `data-checks/check_access.py` can still save one copy by hand.
-5. **Proposal PDF:** run `proposal-drafts/build/build_pdf.py`. It reads the proposal's Markdown from `export/` and prints the PDF with Microsoft Edge.
+The private repo `jarvis-uom/water-data-logger` saves the department's sheet three times a day with GitHub Actions, along with the river gauges in our three basins.
+- The sheet shows only the current day, so a day that is not saved is lost.
+- It is the data behind the Irrigation Department's official "Reservoir Status" dashboards: https://irrigation.gov.lk/web/index.php?option=com_content&view=article&id=84&Itemid=201&lang=en
 
 ## Data sources and credits
 
 - **SWOT:** NASA/JPL and CNES, Lake Single-Pass product version D, from NASA PO.DAAC (Hydrocron).
-- **Sentinel-1 and Sentinel-2:** contains modified Copernicus Sentinel data 2023–2026.
+- **Sentinel-1 and Sentinel-2:** contains modified Copernicus Sentinel data 2020–2026.
 - **Irrigation Department of Sri Lanka:** reservoir layer and daily reservoir status.
 - **Tank outlines:** © OpenStreetMap contributors. Sri Lanka boundary: geoBoundaries.
 - **SWOT illustration:** NASA/JPL-Caltech.

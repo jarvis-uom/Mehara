@@ -28,7 +28,7 @@ Study box 80.40–80.80E, 8.10–8.60N (east of pass 273's blind strip). SWOT pa
 - [A_area_vs_height.png](A_area_vs_height.png): Sentinel-2 water area against SWOT height
 - [A_tank_images.png](A_tank_images.png): true-colour views of 3 tanks at high and low water
 
-**Tables:** `A_lake_ids.txt`, `A_pld_lakes.csv`, `A1_tanks.csv`, `A2_heights_by_lake.csv`, `A3_gauge_vs_swot.csv`, `A4_pairs.csv`, `A4_village_cover.csv`. Scripts are in `..\work\`.
+**Tables:** `A_lake_ids.txt`, `A_pld_lakes.csv`, `A1_tanks.csv`, `A2_heights_by_lake.csv`, `A3_gauge_vs_swot.csv` (kept private: it holds the department's gauge readings), `A4_pairs.csv`, `A4_village_cover.csv`. The scripts are kept private.
 
 **Notes:** a good reading has quality flag 0, crossover flag 1 or less, and dark water 10% or less (Köhn & Nielsen 2026). A usable reading also allows quality flag 1. Tank size is SWOT's reference area in A2 and the OpenStreetMap outline in A1. Water is NDWI > 0 inside the tank outline, on scenes with under 30% cloud within 500 m and 5% or less on the tank, paired with SWOT within 3 days.
 
