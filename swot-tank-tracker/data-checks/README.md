@@ -19,8 +19,8 @@ Results land in `results/` next to the script:
 | `summary.md` | All counts in one page |
 | `swot_lakesp_files_*.txt` | SWOT lake files over Sri Lanka and the Anuradhapura cascade |
 | `hydrocron_<lake_id>.csv` | SWOT height and area per tank, cleaned |
-| `irrigation_tanks.csv` | Every tank in the Irrigation Department layer, with full-supply level and capacity |
-| `reservoir_status_*_<date>.csv` | Today's major and medium reservoir status; run daily to build a history |
+| `irrigation_tanks.csv` | Every tank in the Irrigation Department layer, with full-supply level and capacity (kept private) |
+| `reservoir_status_*_<date>.csv` | Today's major and medium reservoir status; run daily to build a history (kept private) |
 | `asf_*.csv` | Sentinel-1 and NISAR scenes over the study areas |
 
 ## Getting real Sri Lankan tank IDs for Hydrocron
