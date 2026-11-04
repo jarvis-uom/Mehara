@@ -1,6 +1,6 @@
 # Module A: water maps under cloud (RQ1)
 
-Results from 1 to 4 November 2026: runs 1 to 3 of the retraining, and a check against expert water maps. Module A maps the water in Sri Lanka's reservoirs from satellite images, under cloud too, and turns the water area into storage. Every check compares the result with the Irrigation Department's daily storage.
+Results from 1 to 5 November 2026: runs 1 to 4 of the retraining, and a check against expert water maps. Module A maps the water in Sri Lanka's reservoirs from satellite images, under cloud too, and turns the water area into storage. Every check compares the result with the Irrigation Department's daily storage.
 
 The code, the department's tables and the trained models are kept private. This page gives the method, the numbers and the pictures.
 
@@ -164,11 +164,33 @@ S1S2-Water is a public dataset of lakes, rivers and reservoirs around the world,
 
 *Kantale on 27 November 2025, with the whole tank under cloud. The water map comes from the radar alone, made by a fine-tuned model that never saw Kantale in training, and is drawn on the photo.*
 
+## 8. Run 4: cutting the false water on dry land (4 and 5 Nov)
+
+Run 4 went after the weak spot in section 7. The rules were fixed before any training data was prepared. It starts from the photo-label control and changes these things together:
+- 29 of S1S2-Water's training scenes join the training (expert labels; the test scenes and the 5 Asian scenes stay unseen);
+- ground that has never been water in 38 years of Landsat history is labelled land;
+- dry lake beds count twice;
+- every batch mixes our reservoirs, Sen1Floods11 floods and S1S2-Water scenes.
+
+To win, run 4 had to clear four rules: much less false water abroad, and no loss on our reservoirs' water maps, on storage or on floods.
+
+| Rule | Run 4 | Control | Needed | Holds? |
+|---|---|---|---|---|
+| 1. S1S2-Water, 15 test scenes, water IoU | **86** | 65 | 68 or more | yes |
+| 2. Our reservoirs against Google's Dynamic World, median reservoir IoU | 89.1 | 90.4 | 89.4 or more | no |
+| 3. Storage error, % of capacity (103 reservoirs) | 8.7 | 8.3 | within 0.5 (shown by test) | no (p = 0.09) |
+| 4. Sen1Floods11 test floods, water IoU | 65.5 | 67.6 | 65.6 or more | no |
+
+- **The false water is mostly gone.** On S1S2-Water, run 4 is better than the control at 13 of 15 scenes. Of what it calls water, 89% is water, against 66% before, and it still finds 95% of the experts' water. On the 5 Asian scenes it scores 95, against 93.
+- **At home it costs a little.** Our reservoirs had almost no false water to remove (99% of what the models call water is water there), so the change only takes away a little real water: the pooled IoU against Dynamic World is 91.3 against 91.8, and the storage error 8.7% against 8.3%.
+- **So run 4 is not a win by its own rules.** It misses three of them by small margins, and run 3 stays our model for storage.
+- **One caution:** run 4 learned from other S1S2-Water scenes (at least 223 km from any test scene), so part of its gain may be that it knows that dataset's style of labelling.
+
 ## Next
 
 - **Train with photo labels for storage.** They are as good as the rule and need no storage records. Any further run will have its rules fixed first.
 - Storage near full, where the radar's reading flattens: add SWOT's water height (Module B).
-- **Cut the false water on dry land:** a further run could add S1S2-Water's training scenes (expert labels) and train with photo labels only. Its rules would be fixed first.
+- **False water on dry land:** run 4 showed that expert-labelled scenes can train it away. A further run could keep more of our own reservoirs in each batch, so that the fix costs less at home. Its rules would be fixed first.
 - **Pixel agreement on our own tanks,** against the clear photo (agreement, not ground truth).
 
 ## Credits
