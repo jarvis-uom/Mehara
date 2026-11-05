@@ -1,6 +1,6 @@
 # Module A: water maps under cloud (RQ1)
 
-Results from 1 to 5 November 2026: runs 1 to 4 of the retraining, and a check against expert water maps. Module A maps the water in Sri Lanka's reservoirs from satellite images, under cloud too, and turns the water area into storage. Every check compares the result with the Irrigation Department's daily storage.
+Results from 1 to 5 November 2026: runs 1 to 5 of the retraining, the final model, and a check against expert water maps. Module A maps the water in Sri Lanka's reservoirs from satellite images, under cloud too, and turns the water area into storage. Every check compares the result with the Irrigation Department's daily storage.
 
 The code, the department's tables and the trained models are kept private. This page gives the method, the numbers and the pictures.
 
@@ -186,11 +186,27 @@ To win, run 4 had to clear four rules: much less false water abroad, and no loss
 - **So run 4 is not a win by its own rules.** It misses three of them by small margins, and run 3 stays our model for storage.
 - **One caution:** run 4 learned from other S1S2-Water scenes (at least 223 km from any test scene), so part of its gain may be that it knows that dataset's style of labelling.
 
+## 9. Run 5: the same fix, with more of our own reservoirs (5 Nov)
+
+Run 4 cut the false water abroad but lost a little at home. Run 5 changes one thing: every batch of 16 crops now holds 10 from our reservoirs, 4 Sen1Floods11 floods and 2 S1S2-Water scenes (run 4: 8, 4 and 4). Everything else is run 4's. Its rules, run 4's four rules with the same bars, were fixed before it was trained, and it is the last run in this series.
+
+| Rule | Run 5 | Run 4 | Control | Needed | Holds? |
+|---|---|---|---|---|---|
+| 1. S1S2-Water, 15 test scenes, water IoU | **84.6** | 85.6 | 65.3 | 68.3 or more | yes |
+| 2. Our reservoirs against Google's Dynamic World, median reservoir IoU | 89.48 | 89.12 | 90.35 | 89.35 or more | yes |
+| 3. Storage error, % of capacity (103 reservoirs) | 8.65 | 8.69 | 8.28 | within 0.5 (shown by test) | yes (p = 0.004) |
+| 4. Sen1Floods11 test floods, water IoU | 65.67 | 65.55 | 67.6 | 65.6 or more | yes |
+
+- **It keeps the gain abroad.** On S1S2-Water, run 5 is better than the control at 13 of 15 scenes. Of what it calls water, 88% is water (66% for the control), and it finds 95% of the experts' water. On the 5 Asian scenes it scores 94, against 93.
+- **At home it now passes, by small margins.** The median reservoir IoU passes by 0.13 and the flood test by 0.07. A test now shows the storage error within the 0.5 allowed: the difference from the control is +0.16 points of capacity (95% interval -0.05 to +0.40). Run 5 is still a little below the control at home, within the limits rather than better.
+- **So run 5 is now Module A's model.** One caution: its change was chosen after seeing run 4's scores on the same test data, so it is weaker evidence than a fresh test would be. Run 4 stays the main test of the fix.
+- **It is weaker on the Bolivia flood test** (a country kept out of training): 42, against 48.5 for the control. This is not one of the rules, but we report it.
+- **A final model for use.** Each of the five models above trained on four fifths of the reservoirs and was tested on the rest. A final model trained the same way on all 103 reservoirs is the one for new radar passes and new tanks. Before it ran, we set the ranges it had to land in on the outside tests, as a check for errors. It scores 87 on S1S2-Water and 65 on Sen1Floods11, both inside them. The five-fold results stay the evidence.
+
 ## Next
 
-- **Train with photo labels for storage.** They are as good as the rule and need no storage records. Any further run will have its rules fixed first.
-- Storage near full, where the radar's reading flattens: add SWOT's water height (Module B).
-- **False water on dry land:** run 4 showed that expert-labelled scenes can train it away. A further run could keep more of our own reservoirs in each batch, so that the fix costs less at home. Its rules would be fixed first.
+- **Module A's model is run 5,** in its final version trained on all 103 reservoirs. Any further training would need new test data, with its rules fixed first.
+- **Water areas for Module B:** every radar pass at the 103 reservoirs, each from a model that never trained on that reservoir. Near full, where the radar's reading flattens, SWOT's water height has to carry the storage (Module B).
 - **Pixel agreement on our own tanks,** against the clear photo (agreement, not ground truth).
 
 ## Credits
