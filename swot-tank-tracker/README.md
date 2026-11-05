@@ -70,6 +70,7 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 - Retrained on our own reservoirs, it reads storage within about 8% of capacity at 103 reservoirs, a result now confirmed in two runs (7.9% and 7.8%). It beats the last clear photo at 81% of reservoirs. Flood practice narrowed its loss on an outside flood test, but not enough for our strict rule, so it is not yet a win. Photo labels are as good as the storage rule.
 - Against expert water maps (S1S2-Water: 15 scenes worldwide it never saw), the retrained model maps water at IoU 60 (F1 75), against 53 before retraining and 34 for a simple radar threshold. Trained on photo labels, it scores 65.
 - Run 4 added expert-labelled scenes to cut the false water on dry land. It scores 86 on those 15 scenes, but it loses a little on our reservoirs and on floods, so by its own rules it is not a win.
+- Run 5 kept more of our own reservoirs in each batch. It keeps most of run 4's gain (85 on those 15 scenes) and passes all four of its rules, by small margins at home, so it is now Module A's model. A final version trained on all 103 reservoirs is the one for use.
 - Our two reservoir image datasets are public on Kaggle.
 
 ## Not included
