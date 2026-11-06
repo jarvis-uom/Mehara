@@ -1,0 +1,27 @@
+{
+  "id": "mehararothila/is4990-module-a-photo-check",
+  "title": "IS4990 Module A photo check",
+  "code_file": "photo_check.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [
+    "mehararothila/is4990-module-a-tables",
+    "mehararothila/is4990-module-a-first-check-chips",
+    "mehararothila/is4990-module-a-code",
+    "mehararothila/is4990-module-a-dynamic-world"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [
+    "mehararothila/is4990-module-a-run-2",
+    "mehararothila/is4990-module-a-run-6",
+    "mehararothila/is4990-module-a-retrain-3-prep",
+    "mehararothila/is4990-module-a-retrain-3a",
+    "mehararothila/is4990-module-a-retrain-3b1",
+    "mehararothila/is4990-module-a-retrain-3b2"
+  ],
+  "model_sources": []
+}

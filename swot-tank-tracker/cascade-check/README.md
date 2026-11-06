@@ -34,7 +34,7 @@ The search found 7 chains. The biggest is south of Nachchaduwa:
 
 - All five lie inside Nachchaduwa's department catchment, and both SWOT passes (092 and 273) see them.
 - None has a name in OpenStreetMap or in SWOT's lake list.
-- Their plant cover has not been checked yet; that is the same Sentinel-2 check as `../feasibility-check/work/a6_shortlist.py`.
+- Their plant cover has not been checked yet; that is the same Sentinel-2 check as the feasibility check's shortlist step.
 
 The other chains each have two tanks:
 - V7 → 4580005192 → Nuwara Wewa;
@@ -66,7 +66,7 @@ Run everything from this folder (`cascade-check/`). Python packages: geopandas, 
 
 - `study_tanks.geojson`: the 13 study tanks' outlines from OpenStreetMap, made in the feasibility check.
 - `web-sources/analysis/points_used.csv`: the eight village tanks' SWOT lake IDs and their names V1–V8.
-- Step 5 also needs the feasibility check's cached SWOT series, `../feasibility-check/work/hydrocron/` (not included): run `../feasibility-check/work/a2_fetch.py` first.
+- Step 5 also needs the feasibility check's cached SWOT series (not included).
 
 **Credits:**
 - Elevation: Copernicus GLO-30 (© DLR e.V. 2010–2014 and © Airbus 2014–2018, provided under COPERNICUS by the European Union and ESA).

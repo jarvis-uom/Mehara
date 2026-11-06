@@ -12,15 +12,14 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 | Folder | Contents |
 |---|---|
 | `module-a/` | Module A (RQ1), 1 to 5 Nov 2026: water maps under cloud at 117 reservoirs, the retraining for tank beds, and the comparison with the last clear photo. Start with `module-a/README.md` |
-| `proposal-drafts/` | The official 4-page proposal as submitted on 30 Oct 2026 (`Project Proposal - submitted 30 Oct 2026 (public copy).pdf`, without the title page), the earlier full proposal and drafts, and their text in `export/` |
-| `feasibility-check/` | The October 2026 data checks: results in `results/` and working files in `work/`. Start with `results/SUMMARY.md` |
+| `proposal-drafts/` | The official 4-page proposal as submitted on 30 Oct 2026 (`Project Proposal - submitted 30 Oct 2026 (public copy).pdf`, without the title page) |
+| `feasibility-check/` | The October 2026 data checks: results in `results/`. Start with `results/SUMMARY.md` |
 | `model-check/` | The 28 October test of the models of Members B and C on real data (trust screen, storage model, forecast): result tables. Start with `model-check/README.md` |
 | `cascade-check/` | Do the eight village tanks share one cascade? (No.) A flow trace on the elevation map, checked against the department's catchments, and a real five-tank cascade south of Nachchaduwa |
-| `data-checks/` | First data access checks |
 | `presentation/` | The 15-slide proposal talk submitted on 30 Oct 2026, as PowerPoint and PDF (without the speaker notes, which we keep private, and with the owners shown as Member A, B and C), the pictures of the earlier 21-slide deck, and `tank-volume-explainer.html` (an interactive model tank) |
 | `research/` | A summary of all the past research we used, and ideas to strengthen and widen the scope (26 Oct 2026), each with source links |
 
-**The code and the Irrigation Department's tables are kept private** (since 3 Nov 2026). Script names in the write-ups refer to those private scripts.
+**Module A's code, protocols and results are public** in `module-a/code/` and `module-a/docs/` (since 6 Nov 2026). The Irrigation Department's tables and the trained models stay private.
 
 **Project website:** https://swot.mehara.work (code in the private repo [jarvis-uom/swot-tank-tracker-site](https://github.com/jarvis-uom/swot-tank-tracker-site)).
 
@@ -56,7 +55,7 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 - C: the forecast and the system (RQ4).
 - The proposal draft and the talk (slides 14, 15, 17, 18 and 19) follow the new plan.
 
-**Approved, 29 October 2026:** both supervisors approved the proposal. The final proposal is `proposal-drafts/SWOT Tank Water Tracker for Sri Lanka.pdf` (the older drafts are kept for reference). On 30 October it got 7 small factual fixes before the upload.
+**Approved, 29 October 2026:** both supervisors approved the proposal. The version uploaded on 30 October (after 7 small factual fixes) is `proposal-drafts/Project Proposal - submitted 30 Oct 2026 (public copy).pdf`.
 - RQ3 now compares the storage model with one area–storage formula for all tanks.
 - New baselines: the Brazil SWOT filter (Lappicy et al., 2026) for the trust screen, and NASA's OPERA water maps for the water map.
 - IMERG for daily rain, CHIRPS for monthly checks.
