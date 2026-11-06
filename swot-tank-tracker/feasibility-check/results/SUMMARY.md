@@ -20,7 +20,7 @@ Study box 80.40–80.80E, 8.10–8.60N (east of pass 273's blind strip). SWOT pa
 1. **Study area:** keep the box east of Anuradhapura city and pick a cascade whose tanks have lake IDs (list: `A_lake_ids.txt`). Big and medium tanks are solid: Nachchaduwa, Hurulu Wewa, Nuwara Wewa, Mahakanadarawa and Manankattiya each have 50–70 best-quality readings.
 2. **Village tanks:** SWOT gives them heights, but marks almost all of them "suspect", and a few readings are metres off. Add outlier screening, test the suspect readings against gauges as part of RQ2, and keep the SWOT pixel cloud for tanks without a lake ID (move it to core if the chosen cascade needs it).
 3. **Water area:** a plain water index fails where plants cover the water, and clear optical scenes are rare. So Sentinel-1 and the "water under plants" class are core, not extras. Fallback for village tanks: SWOT heights with Imbulana's (2022) depth–area–capacity formula (reading notes, paper 2).
-4. **Ground truth:** save the Irrigation Department sheet every day from now (`temp\data-checks\check_access.py`), and request daily levels since July 2023. The next SWOT passes here are about 25 Oct (pass 092) and 1 Nov (pass 273).
+4. **Ground truth:** save the Irrigation Department sheet every day from now, and request daily levels since July 2023. The next SWOT passes here are about 25 Oct (pass 092) and 1 Nov (pass 273).
 5. **Training data:** use the Sen1Floods11 hand-labelled set and one part of S1S2-Water, not all 165 GB.
 
 **Charts**
