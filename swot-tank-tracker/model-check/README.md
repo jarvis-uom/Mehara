@@ -170,7 +170,7 @@ After about 40 reservoirs the curve is flat, so the amount of data is enough. Be
 
 Not trained in this check. The evidence:
 - **Published results:** U-Nets trained on S1S2-Water reach IoU 0.85–0.97 for open water.
-- **Our Kanhindawewa check:** the tank's full-supply area is 83.4 ha (from the department's drone survey), and it is often covered by water plants. On each satellite day, each simple rule's water area was compared with the true area at SWOT's height:
+- **Our Kanhindawewa check:** the tank's true full-supply area is known from department data we keep private, and it is often covered by water plants. On each satellite day, each simple rule's water area was compared with the true area at SWOT's height:
 
 | Simple rule | Days | Median area error | Main problem |
 |---|---|---|---|

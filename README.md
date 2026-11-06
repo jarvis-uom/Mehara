@@ -1,6 +1,6 @@
 # Mehara
 
-Personal workspace of Mehara Rothila Ranawaka ([@mehara-rothila](https://github.com/mehara-rothila)) for the JARVIS IS4990 project: experiments, notebooks, test scripts and learning.
+Personal workspace of [@mehara-rothila](https://github.com/mehara-rothila) for the JARVIS IS4990 project: experiments, notebooks, test scripts and learning.
 
 **The real project lives in the main repo, [jarvis-uom/is4990-project](https://github.com/jarvis-uom/is4990-project).** Tasks, weekly updates, decisions and the final code all go there.
 

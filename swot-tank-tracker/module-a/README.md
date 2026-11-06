@@ -2,7 +2,7 @@
 
 Results from 1 to 5 November 2026: runs 1 to 5 of the retraining, the final model, and a check against expert water maps. Module A maps the water in Sri Lanka's reservoirs from satellite images, under cloud too, and turns the water area into storage. Every check compares the result with the Irrigation Department's daily storage.
 
-The code, the department's tables and the trained models are kept private. This page gives the method, the numbers and the pictures.
+This page gives the method, the numbers and the pictures. The code, the protocols and the full results are in `code/` and `docs/` (published 6 Nov 2026). The department's tables and the trained models stay private.
 
 ## Data
 
@@ -203,9 +203,22 @@ Run 4 cut the false water abroad but lost a little at home. Run 5 changes one th
 - **It is weaker on the Bolivia flood test** (a country kept out of training): 42, against 48.5 for the control. This is not one of the rules, but we report it.
 - **A final model for use.** Each of the five models above trained on four fifths of the reservoirs and was tested on the rest. A final model trained the same way on all 103 reservoirs is the one for new radar passes and new tanks. Before it ran, we set the ranges it had to land in on the outside tests, as a check for errors. It scores 87 on S1S2-Water and 65 on Sen1Floods11, both inside them. The five-fold results stay the evidence.
 
+## Code and documents
+
+| Folder | What it holds |
+|---|---|
+| `docs/` | Every protocol, fixed before its run (`PROTOCOL.md` to `PROTOCOL-6.md`, `PROTOCOL-S1S2.md`, `PROTOCOL-PHOTO.md`), the results of each run (`RESULTS-run1.md` to `RESULTS-run5.md`, `RESULTS-s1s2water.md`, `RESULTS-photo.md`), the final model (`FINAL-MODEL-5.md`) and the second series' development plan (`DEV-6.md`) |
+| `code/module-a-retrain/` | Training and scoring: `kernel5/` is run 5's recipe (the current model), `kernel3/retrain.py` holds the storage scoring, `kernel6-dev/` the second series' development runs, `scripts/` the labels, scorers and Kaggle builders |
+| `code/module-a-reservoirs/scripts/` | Earth Engine exports of the reservoir chips and every radar pass |
+| `code/s1s2water-check/` | The scoring against S1S2-Water's expert water maps |
+| `code/module-a-photo-check/`, `code/module-a-kaggle/kernel/` | The Dynamic World check, and the first training series on Sen1Floods11 (which made r6) |
+
+The code reads its data from our Kaggle datasets and from the department's daily storage, which is not published.
+
 ## Next
 
-- **Module A's model is run 5,** in its final version trained on all 103 reservoirs. Any further training would need new test data, with its rules fixed first.
+- **Module A's model is run 5,** in its final version trained on all 103 reservoirs.
+- **A second series** (`docs/PROTOCOL-6.md`, fixed 5 Nov 2026) is tested only on data no model has seen: radar passes from 1 Nov 2026 to 31 Jan 2027 against the department's daily storage, 14 never-used S1S2-Water scenes, and an outside flood dataset. Its development runs use held-out data only (`docs/DEV-6.md`).
 - **Water areas for Module B:** every radar pass at the 103 reservoirs, each from a model that never trained on that reservoir. Near full, where the radar's reading flattens, SWOT's water height has to carry the storage (Module B).
 - **Pixel agreement on our own tanks,** against the clear photo (agreement, not ground truth).
 
