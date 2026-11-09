@@ -1,6 +1,6 @@
 # SWOT Tank Water Tracker: working files
 
-Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JARVIS), up to 3 November 2026.
+Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JARVIS), up to 9 November 2026.
 
 **The idea:** estimate how much water each Sri Lankan tank holds from free satellite data.
 - SWOT gives the water height.
@@ -11,13 +11,13 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 
 | Folder | Contents |
 |---|---|
-| `module-a/` | Module A (RQ1), 1 to 5 Nov 2026: water maps under cloud at 117 reservoirs, the retraining for tank beds, and the comparison with the last clear photo. Start with `module-a/README.md` |
-| `proposal-drafts/` | The official 4-page proposal as submitted on 30 Oct 2026 (`Project Proposal - submitted 30 Oct 2026 (public copy).pdf`, without the title page) |
+| `module-a/` | Module A (RQ1), 1 to 9 Nov 2026: water maps under cloud at 117 reservoirs, the retraining for tank beds (run 5 is the model), the comparison with the last clear photo, and the second series on fresh data. Start with `module-a/README.md`, or with the plain-English overview `module-a/docs/MODULE-A-SUMMARY.md` |
 | `feasibility-check/` | The October 2026 data checks: results in `results/`. Start with `results/SUMMARY.md` |
 | `model-check/` | The 28 October test of the models of Members B and C on real data (trust screen, storage model, forecast): result tables. Start with `model-check/README.md` |
 | `cascade-check/` | Do the eight village tanks share one cascade? (No.) A flow trace on the elevation map, checked against the department's catchments, and a real five-tank cascade south of Nachchaduwa |
-| `presentation/` | The 15-slide proposal talk submitted on 30 Oct 2026, as PowerPoint and PDF (without the speaker notes, which we keep private, and with the owners shown as Member A, B and C), the pictures of the earlier 21-slide deck, and `tank-volume-explainer.html` (an interactive model tank) |
-| `research/` | A summary of all the past research we used, and ideas to strengthen and widen the scope (26 Oct 2026), each with source links |
+| `presentation/` | `tank-volume-explainer.html`: an interactive model tank |
+
+**The submitted proposal, the 15-slide talk and the research notes** (past research, scope ideas and the checks) are in the main repo, [IS4990-project](https://github.com/jarvis-uom/IS4990-project), under `docs/`.
 
 **Module A's code, protocols and results are public** in `module-a/code/` and `module-a/docs/` (since 6 Nov 2026). The Irrigation Department's tables and the trained models stay private.
 
@@ -55,14 +55,14 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 - C: the forecast and the system (RQ4).
 - The proposal draft and the talk (slides 14, 15, 17, 18 and 19) follow the new plan.
 
-**Approved, 29 October 2026:** both supervisors approved the proposal. The version uploaded on 30 October (after 7 small factual fixes) is `proposal-drafts/Project Proposal - submitted 30 Oct 2026 (public copy).pdf`.
+**Approved, 29 October 2026:** both supervisors approved the proposal. The version uploaded on 30 October (after 7 small factual fixes) is in the main repo ([docs/proposals/](https://github.com/jarvis-uom/IS4990-project/tree/main/docs/proposals)).
 - RQ3 now compares the storage model with one area–storage formula for all tanks.
 - New baselines: the Brazil SWOT filter (Lappicy et al., 2026) for the trust screen, and NASA's OPERA water maps for the water map.
 - IMERG for daily rain, CHIRPS for monthly checks.
 - The eight village tanks are not one cascade (`cascade-check/`).
-- The slides in `presentation/` match the final proposal.
+- The talk's slides match the final proposal.
 
-**Submitted, 30 October 2026:** the official 4-page proposal (`proposal-drafts/Project Proposal - submitted 30 Oct 2026 (public copy).pdf`) and the 15-slide talk (`presentation/`). The presentation date is still to be announced.
+**Submitted, 30 October 2026:** the official 4-page proposal and the 15-slide talk (both in the main repo's [docs/](https://github.com/jarvis-uom/IS4990-project/tree/main/docs)). The presentation date is still to be announced.
 
 **Module A, 1 to 5 November 2026** (`module-a/README.md`):
 - Under cloud, only radar works. At about 100 reservoirs, the radar-only U-Net reads storage within 11 to 12% of capacity, against 20 to 22% with no model.
@@ -72,13 +72,19 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 - Run 5 kept more of our own reservoirs in each batch. It keeps most of run 4's gain (85 on those 15 scenes) and passes all four of its rules, by small margins at home, so it is now Module A's model. A final version trained on all 103 reservoirs is the one for use.
 - Our two reservoir image datasets are public on Kaggle.
 
+**Module A, 6 to 9 November 2026: the second series** (`module-a/README.md`, section 10):
+- It is judged only on fresh data: radar passes from November 2026 to January 2027 against the department's daily storage (scored in February 2027), 14 unused S1S2-Water scenes and an outside flood dataset.
+- On development data, longer training did not help at home, and the map is no longer the main limit: near full, the water area barely grows while storage still changes.
+- A storage curve that bends near full reads storage within about 6% of capacity, against about 7% for a straight line. The morning passes add nothing.
+- Water under plants is still part of RQ1, but it is not trained or tested yet.
+
 ## Not included
 
 These are left out. Each item says how to get it again.
 - **SWOT lake files** (about 125 MB). They need a free NASA Earthdata login.
 - **SWOT series from Hydrocron** (about 10 MB). Hydrocron serves them free.
 - **Sentinel images.** They are free from Earth Search and Microsoft Planetary Computer. Module A's chips are on Kaggle (`module-a/README.md`).
-- **The code and the Irrigation Department's tables.** They are kept private.
+- **The Irrigation Department's tables, the trained models and the code of the October checks** (feasibility, model and cascade checks). They are kept private. Module A's code is public in `module-a/code/`.
 - **Global Water Watch archive** (about 530 MB). The Global Water Watch site is going offline; its September 2026 archive is on Zenodo: https://zenodo.org/records/22658942 (CC BY 4.0).
 
 ## Daily reservoir sheet
