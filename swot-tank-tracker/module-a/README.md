@@ -1,8 +1,8 @@
 # Module A: water maps under cloud (RQ1)
 
-Results from 1 to 5 November 2026: runs 1 to 5 of the retraining, the final model, and a check against expert water maps. Module A maps the water in Sri Lanka's reservoirs from satellite images, under cloud too, and turns the water area into storage. Every check compares the result with the Irrigation Department's daily storage.
+Results from 1 to 9 November 2026: runs 1 to 5 of the retraining, the final model, a check against expert water maps, and the second series' development work. Module A maps the water in Sri Lanka's reservoirs from satellite images, under cloud too, and turns the water area into storage. Every check compares the result with the Irrigation Department's daily storage.
 
-This page gives the method, the numbers and the pictures. The code, the protocols and the full results are in `code/` and `docs/` (published 6 Nov 2026). The department's tables and the trained models stay private.
+This page gives the method, the numbers and the pictures. The code, the protocols and the full results are in `code/` and `docs/` (published 6 Nov, updated 9 Nov 2026). A plain-English overview of the whole module is in `docs/MODULE-A-SUMMARY.md`. The department's tables and the trained models stay private.
 
 ## Data
 
@@ -203,12 +203,32 @@ Run 4 cut the false water abroad but lost a little at home. Run 5 changes one th
 - **It is weaker on the Bolivia flood test** (a country kept out of training): 42, against 48.5 for the control. This is not one of the rules, but we report it.
 - **A final model for use.** Each of the five models above trained on four fifths of the reservoirs and was tested on the rest. A final model trained the same way on all 103 reservoirs is the one for new radar passes and new tanks. Before it ran, we set the ranges it had to land in on the outside tests, as a check for errors. It scores 87 on S1S2-Water and 65 on Sen1Floods11, both inside them. The five-fold results stay the evidence.
 
+## 10. The second series so far (5 to 9 Nov)
+
+Run 5's tests had been used several times, so the second series is judged only on fresh tests fixed in advance (`docs/PROTOCOL-6.md`):
+- radar passes from 1 Nov 2026 to 31 Jan 2027 against the department's daily storage, scored in February 2027;
+- 14 S1S2-Water scenes that no model has seen;
+- an outside flood dataset.
+
+Until then, everything is chosen on development data only: the first half of each reservoir's history, with each curve fitted on the first quarter and scored on the second. **The numbers below are development numbers, not claims.**
+
+- **Longer training does not help at home.** Two variants of run 5's recipe were tried: three times the training steps, and the same with an extra loss that rewards overlap (Lovász). Both gained on floods but lost on our reservoirs' maps, and neither improved storage. Run 5's recipe stays.
+- **The map is no longer the main limit.**
+  - With water areas from clear photos instead of the radar, the storage error is worse (8.4% against 6.7% of capacity).
+  - Near full, both the photo's and the radar's water area stop growing (97% of their top size at 85 to 95% full) while storage still changes.
+  - So the reading scatters there: when it says 75 to 85% full, it is off by about 9 points either way.
+- **A curve that bends near full helps.** Six curve forms were fixed in advance (`docs/PROTOCOL-CURVE.md`). A hinged log-log line that may only bend upward reads storage within 5.6% of capacity, against 6.7% for today's straight line. Reservoir by reservoir, the gain is 0.32 points (95% interval 0.19 to 0.74). Neither smoothing over time nor the morning passes improved it (13,808 passes of the second orbit were measured to test the morning passes).
+- **The February test.**
+  - A dry run of its scorer on development data gives today's method 6.7%, the new curve 5.8%, the seasonal average 15% and no model 21%.
+  - The new curve passes the no-loss rule, but its gain is under the 0.5 points needed to claim an improvement.
+  - The test window is the season when reservoirs are most often full.
+
 ## Code and documents
 
 | Folder | What it holds |
 |---|---|
-| `docs/` | Every protocol, fixed before its run (`PROTOCOL.md` to `PROTOCOL-6.md`, `PROTOCOL-S1S2.md`, `PROTOCOL-PHOTO.md`), the results of each run (`RESULTS-run1.md` to `RESULTS-run5.md`, `RESULTS-s1s2water.md`, `RESULTS-photo.md`), the final model (`FINAL-MODEL-5.md`) and the second series' development plan (`DEV-6.md`) |
-| `code/module-a-retrain/` | Training and scoring: `kernel5/` is run 5's recipe (the current model), `kernel3/retrain.py` holds the storage scoring, `kernel6-dev/` the second series' development runs, `scripts/` the labels, scorers and Kaggle builders |
+| `docs/` | A plain-English overview (`MODULE-A-SUMMARY.md`); every protocol, fixed before its run (`PROTOCOL.md` to `PROTOCOL-6.md`, `PROTOCOL-CURVE.md`, `PROTOCOL-S1S2.md`, `PROTOCOL-PHOTO.md`); the results of each run (`RESULTS-run1.md` to `RESULTS-run5.md`, `RESULTS-s1s2water.md`, `RESULTS-photo.md`); the final model (`FINAL-MODEL-5.md`); and the second series' development plan and results (`DEV-6.md`) |
+| `code/module-a-retrain/` | Training and scoring: `kernel5/` is run 5's recipe (the current model), `kernel3/retrain.py` holds the storage scoring, `kernel6-dev/` the second series' development runs, `kernel6-morning/` the measuring of the morning passes, `scripts/` the labels, scorers (including the error budget, the curve study and the February test's scorer) and Kaggle builders |
 | `code/module-a-reservoirs/scripts/` | Earth Engine exports of the reservoir chips and every radar pass |
 | `code/s1s2water-check/` | The scoring against S1S2-Water's expert water maps |
 | `code/module-a-photo-check/`, `code/module-a-kaggle/kernel/` | The Dynamic World check, and the first training series on Sen1Floods11 (which made r6) |
@@ -218,7 +238,8 @@ The code reads its data from our Kaggle datasets and from the department's daily
 ## Next
 
 - **Module A's model is run 5,** in its final version trained on all 103 reservoirs.
-- **A second series** (`docs/PROTOCOL-6.md`, fixed 5 Nov 2026) is tested only on data no model has seen: radar passes from 1 Nov 2026 to 31 Jan 2027 against the department's daily storage, 14 never-used S1S2-Water scenes, and an outside flood dataset. Its development runs use held-out data only (`docs/DEV-6.md`).
+- **The second series' fresh tests** (`docs/PROTOCOL-6.md`): the storage test is scored in February 2027, after its window closes; the two map tests are prepared by 15 January 2027.
+- **Water under plants.** The model has a class for it, but the photo labels used from run 4 on contain no examples of it, so it is not trained or tested yet. Finding trustworthy examples without hand labelling is the next step for Module A.
 - **Water areas for Module B:** every radar pass at the 103 reservoirs, each from a model that never trained on that reservoir. Near full, where the radar's reading flattens, SWOT's water height has to carry the storage (Module B).
 - **Pixel agreement on our own tanks,** against the clear photo (agreement, not ground truth).
 
