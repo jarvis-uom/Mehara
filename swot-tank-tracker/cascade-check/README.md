@@ -53,7 +53,7 @@ The other chains each have two tanks:
 
 ## Run it again
 
-Run everything from this folder (`cascade-check/`). Python packages: geopandas, rasterio, numpy, pandas, matplotlib.
+The scripts are kept private, so this table records how the results were made. They run from the `cascade-check/` folder. Python packages: geopandas, rasterio, numpy, pandas, matplotlib.
 
 | Step | Command | Writes |
 |---|---|---|

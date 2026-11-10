@@ -7,7 +7,9 @@ development data only. Written to --out:
   (first-half passes only), run_fold<k-1>.json;
 - logs/<step>.log and part.json (each step's exit code, minutes and GPU).
 A step that fails is logged and the others still run.
-    python -u run6_dev.py --variant long --folds 1,2 [--input /kaggle/input] [--out /kaggle/working]
+With --ens (development batch 2, DEV-6's addendum of 10 Nov 2026), score_ens6.py then combines the folds' models on the
+development data abroad (one part per GPU) and writes ens_part<i>.csv.
+    python -u run6_dev.py --variant long --folds 1,2 [--ens] [--input /kaggle/input] [--out /kaggle/working]
 Local check on a CPU (tiny):
     python -B run6_dev.py --variant lovasz --folds 1,2 --dry-run --input <project folder> --out <folder>
 """
@@ -91,6 +93,7 @@ def main():
     ap.add_argument("--folds", default="1,2", help="1 to 5, for example 1,2")
     ap.add_argument("--input", default="/kaggle/input")
     ap.add_argument("--out", default="/kaggle/working")
+    ap.add_argument("--ens", action="store_true", help="then run score_ens6.py on the folds' models (batch 2)")
     ap.add_argument("--dry-run", action="store_true", help="CPU only, a few steps")
     args = ap.parse_args()
     t0 = time.time()
@@ -110,7 +113,15 @@ def main():
     need = 1 if args.dry_run else 3
     done = [k for k in folds if len(list((out / f"fold{k}" / "weights").glob(f"fold*_{args.variant}6_seed?.pt"))) == need
             and (out / f"fold{k}" / f"run_fold{k - 1}.json").exists()]
+    if args.ens and done == folds:
+        parts = 2 if two else 1
+        ens = [(f"ens{i}", py + [str(HERE / "score_ens6.py"), "--variant", args.variant, "--folds", args.folds,
+                                 "--part", f"{i}/{parts}", "--input", args.input, "--run", str(out)] + dry)
+               for i in range(parts)]
+        steps.update(run_lanes({0: ens[0::2], 1: ens[1::2]} if two else {0 if n else None: ens}, out))
     problems = [s for s, v in steps.items() if v["exit"]] + [f"fold{k}: not finished" for k in folds if k not in done]
+    if args.ens:
+        problems += [f"ens part {i}: no output" for i in range(2 if two else 1) if not (out / f"ens_part{i}.csv").exists()]
     with open(out / "part.json", "w", encoding="utf-8") as f:
         json.dump({"protocol": "PROTOCOL-6.md part 1 B; DEV-6.md", "variant": args.variant, "folds": folds,
                    "gpus": names, "two_at_a_time": two, "ram_gb": round(ram_gb()), "steps": steps, "done": done,
