@@ -223,3 +223,86 @@ Two new reviews (read-only, development data only) were checked by recomputing t
 **Rejected:** a rainfall term. PROTOCOL-6 part 1 lists what a pipeline may use: radar, plus the reservoir's history of radar, storage and clear photos. Rain is not on the list.
 
 **Open option (not started):** one season-aware correction near full, using only the date and the reservoir's history, both allowed. It would be laptop only, with a fixed addendum before scoring and a hard stop unless it beats L4c by 0.1. The team has not decided.
+
+## Development batch 2 (addendum, fixed 10 Nov 2026, before any run): all fold models together, and flips
+
+**Why.** Model 3's fold models disagree on some scenes abroad: on the reused S1S2-Water test three scenes move by 15 to 20 IoU points between folds (`RESULTS-run5.md`), and on Asian scene 11 one fold scores 92 where the other four score 98. PROTOCOL-6 (T2) allows a map product other than the mean of folds. This batch tries two ways of combining the models at inference. No recipe changes: Model 3's weights, its training and the reservoirs' maps stay as they are.
+
+**The models.** Batch 1's control, trained again by the same code and seeds (`retrain6.py --variant control`, folds 1 and 2, 3 seeds each: 6 models, S1S2-Water scenes 39, 49, 54, 76 and 83 held out). Its weights were deleted in the 9 Nov clean-up. Training on a GPU does not repeat bit for bit, so batch 1's control scores are reported beside the new ones.
+
+**Candidates,** from the simplest:
+
+| Code | Map product for a scene abroad |
+|---|---|
+| **A0** | Today's: each fold's 3 seeds averaged (mean softmax, water where p(land) < 0.5), one map per fold. A scene's IoU is the mean of the folds' IoUs, as in rule 1 and for I in T2 |
+| **A1** | All folds' models averaged into one map (6 models here; 15 in the confirmatory run) |
+| **A2** | A1, with each model's probabilities first averaged over the 8 turns and flips of the input (4 quarter turns, each plain and mirrored; each output turned back before averaging) |
+
+**Data (development only, PROTOCOL-6 B):**
+- the 10 S1S2-Water development scenes: held-out training scenes 39, 49, 54, 76 and 83 (their 64 patches each) and Asian scenes 6, 7, 11, 12 and 52 (tiled as `score_s1s2.py`);
+- Sen1Floods11's validation split (89 chips).
+
+**Scores:**
+- **S:** the IoU of each of the 10 scenes. Pixels are not pooled over scenes (the 7 Nov note above).
+- **F:** the pooled IoU of the 89 flood chips. For A0, the mean of the two folds.
+
+**Keep rules** (each candidate against A0, on unrounded values):
+- **Gain (at least one of):** the mean of the 10 per-scene differences in S is +0.3 points or more; F is up by 1.0 or more.
+- **No loss (all of):** no scene is down by 1.0 point or more; F is down by less than 1.0.
+
+**The choice.** Among the kept candidates, A1 is taken unless A2's mean scene IoU is more than 0.1 points above A1's. If only one is kept, it is taken. If none is kept, this batch gives no C2.
+
+**Not scored here: M2 and M4.** The reservoirs keep their own fold's 3 seeds, with no flips. A reservoir's maps must come from models that never trained on it, so A1 cannot apply there. Their maps and areas are A0's under every candidate.
+
+**What a kept candidate means for part 2.**
+- C2's map product for T2 and T3 would be Model 3's 15 fold models (weights unchanged), combined as chosen here. As PROTOCOL-6 says, C2's mean of folds is reported beside it.
+- On T1, C2's areas equal C1's, so step 2's T1 "no loss" holds by construction and its T1 gain is zero. The report will say so.
+- By PROTOCOL-6's fixed order, gains on T2 and T3 are tested only after both T1 gains hold. So C2's differences on T2 and T3 will be reported with their Hodges-Lehmann intervals and not claimed as gains. The "no loss" rules on T2 and T3 decide whether C2 becomes Module A's map product.
+
+**Reported beside the rules (not rules):**
+- A0 with flips, per fold;
+- precision and recall;
+- the flood IoU per event;
+- a check that this scorer's A0 counts equal `retrain6.py`'s own per-fold counts on the same scenes;
+- batch 1's control scores.
+
+**Limits, stated now.** Development has 2 folds (6 models); the confirmatory product has 15. There are 10 scenes. A scene-level difference under about half a point is within what a retraining changes.
+
+**How it runs.** `kernel6-dev/score_ens6.py` (new), started by `run6_dev.py --ens` after the control's training, in one private Kaggle notebook (about 2 to 3 GPU hours). Scored on the laptop by `scripts/score_dev6b.py`. The 6 weights are kept in a private Kaggle dataset until part 2 is fixed.
+
+## Batch 2 results (10 Nov 2026): nothing kept
+
+The notebook finished on Kaggle (two T4s, 66 minutes, no problems): 49 minutes of training per fold, then 17 for the combining step. Scored on the laptop by `scripts/score_dev6b.py`; the tables are in `runs/dev6b/` (`dev6b_scenes.csv`, `dev6b_floods.csv`, `dev6b_verdict.csv`). Development scores only: no claim, no p-value.
+
+| IoU | A0 (today's) | A1 (all models) | A2 (A1 + flips) | beside: A0 + flips |
+|---|---|---|---|---|
+| Asian 6 | 83.70 | 83.85 | 83.96 | 83.83 |
+| Asian 7 | 75.96 | 76.26 | 76.42 | 76.18 |
+| Asian 11 | 97.93 | 97.95 | 97.96 | 97.95 |
+| Asian 12 | 93.00 | 93.20 | 93.04 | 92.90 |
+| Asian 52 | 94.20 | 94.21 | 94.20 | 94.19 |
+| Held-out 39 | 70.90 | 71.28 | 69.48 | 69.57 |
+| Held-out 49 | 81.23 | 81.54 | 81.68 | 81.51 |
+| Held-out 54 | 80.22 | 80.49 | 80.57 | 80.35 |
+| Held-out 76 | 96.26 | 96.28 | 96.30 | 96.29 |
+| Held-out 83 | 80.85 | 80.98 | 81.04 | 80.92 |
+| Mean of the 10 scenes | 85.42 | 85.60 | 85.46 | 85.37 |
+| **F**, floods (89 chips) | 66.15 | 66.23 | 65.66 | 65.75 |
+
+- **A1 against A0:** the mean of the 10 scene differences is +0.18 (median +0.18, lowest +0.01, highest +0.38; up at all 10 scenes); F +0.08. No loss, but no gain either (+0.3 on the scenes or +1.0 on F was needed): **not kept**.
+- **A2 against A0:** mean +0.04 (median +0.12, up at 9 of 10), but scene 39 is down by 1.41; F -0.48. A loss on a scene, and no gain: **not kept**.
+- **The choice: none.** As fixed above, this batch gives no C2.
+
+Beside the rules:
+- **The check.** This scorer's A0 counts equal `retrain6.py`'s own per-fold counts: the largest IoU difference is 0.000.
+- **Batch 1's control.** The retrained control's score files (`dev_s1s2`, `dev_flood`, `dw_counts` and every `areas_passes` file, both folds) are the same as batch 1's byte for byte. So the training repeated exactly on Kaggle's T4s, and A0 here is batch 1's control (scene 39: 73.9 and 67.9 in the two folds; scene 54: 76.9 and 83.5; F 66.2 and 66.1).
+- **Flips alone (A0 with flips):** mean of the scenes -0.05, scene 39 -1.33, F -0.40. The loss in A2 comes from the flips, not from combining the folds. Training already uses the 8 turns and flips, so there was little for them to add.
+- **Floods per event.** A1 is within 0.4 of A0 at every event. With flips, Ghana falls from 51.3 to 44.7 and Pakistan from 54.5 to 52.9; India, Paraguay and Spain rise by about half a point.
+- **Precision and recall (A1).** The weak scenes are of two kinds: false water at 39 (precision 73, recall 96) and 54 (84, 95); missed water at Asian 7 (95, 79) and 49 (96, 84).
+
+What it shows:
+- Putting all the models into one map is safe but small: never worse, +0.2 on average, at most +0.4. That is under the limit fixed in advance and within what a retraining changes.
+- Where the folds disagree most (39 and 54), the combined map scores about the mean of the two folds (71.3 against 70.9; 80.5 against 80.2), not the better fold. The mean of folds already takes the swing out of the score, so combining has little left to win.
+- Flips do not help this model, and hurt on two scene types.
+
+**Consequence (as fixed above).** No C2 from this batch: Model 3's map product stays as it is (for T2 and T3, the mean of the folds' scores). `score_ens6.py` stays in the code for any later batch. The 6 development weights are in the private Kaggle dataset `is4990-module-a-dev6-weights` until part 2 is fixed.

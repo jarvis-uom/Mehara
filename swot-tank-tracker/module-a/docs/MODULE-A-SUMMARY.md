@@ -177,7 +177,7 @@ Outside reviews on 5, 7 and 9 Nov. Every claim was checked against the files bef
 |---|---|
 | Detecting water | ✅ **Done: Model 3** (and Model 3 final, trained on all 103 reservoirs). Works through cloud and passed every check |
 | Water area | ✅ **Done:** the area of every radar pass at 103 reservoirs, 2020 to 2026 |
-| Reservoirs with plants around them | ✅ Works: about 92 IoU against Dynamic World at plant-covered reservoirs |
+| Reservoirs with plants around them | ✅ Works: about 92 IoU against Dynamic World at plant-covered reservoirs (measured on Model 2's try 3 in the photo check of 4 Nov; Model 3 was not scored on this group separately) |
 | **Water under plants** | ❌ **Not done.** Model 3 has a slot for it, but from try 4 on it had no examples to learn from, and there is no test yet. It is part of RQ1 |
 | The storage check | Curve 2: about 6% of capacity against about 7% on development data. Final test T1 in Feb 2027 |
 | Near full | Still the weak spot: the reading scatters by about 9 points there. The fix is **water height** (SWOT, ICESat-2), which is Module B's job |

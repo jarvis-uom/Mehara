@@ -1,8 +1,8 @@
 # Module A: water maps under cloud (RQ1)
 
-Results from 1 to 9 November 2026: runs 1 to 5 of the retraining, the final model, a check against expert water maps, and the second series' development work. Module A maps the water in Sri Lanka's reservoirs from satellite images, under cloud too, and turns the water area into storage. Every check compares the result with the Irrigation Department's daily storage.
+Results from 1 to 10 November 2026: runs 1 to 5 of the retraining, the final model, a check against expert water maps, and the second series' development work. Module A maps the water in Sri Lanka's reservoirs from satellite images, under cloud too, and turns the water area into storage. Every check compares the result with the Irrigation Department's daily storage.
 
-This page gives the method, the numbers and the pictures. The code, the protocols and the full results are in `code/` and `docs/` (published 6 Nov, updated 9 Nov 2026). A plain-English overview of the whole module is in `docs/MODULE-A-SUMMARY.md`. The department's tables and the trained models stay private.
+This page gives the method, the numbers and the pictures. The code, the protocols and the full results are in `code/` and `docs/` (published 6 Nov, updated 10 Nov 2026). A plain-English overview of the whole module is in `docs/MODULE-A-SUMMARY.md`. The department's tables and the trained models stay private.
 
 ## Data
 
@@ -203,7 +203,7 @@ Run 4 cut the false water abroad but lost a little at home. Run 5 changes one th
 - **It is weaker on the Bolivia flood test** (a country kept out of training): 42, against 48.5 for the control. This is not one of the rules, but we report it.
 - **A final model for use.** Each of the five models above trained on four fifths of the reservoirs and was tested on the rest. A final model trained the same way on all 103 reservoirs is the one for new radar passes and new tanks. Before it ran, we set the ranges it had to land in on the outside tests, as a check for errors. It scores 87 on S1S2-Water and 65 on Sen1Floods11, both inside them. The five-fold results stay the evidence.
 
-## 10. The second series so far (5 to 9 Nov)
+## 10. The second series so far (5 to 10 Nov)
 
 Run 5's tests had been used several times, so the second series is judged only on fresh tests fixed in advance (`docs/PROTOCOL-6.md`):
 - radar passes from 1 Nov 2026 to 31 Jan 2027 against the department's daily storage, scored in February 2027;
@@ -218,6 +218,7 @@ Until then, everything is chosen on development data only: the first half of eac
   - Near full, both the photo's and the radar's water area stop growing (97% of their top size at 85 to 95% full) while storage still changes.
   - So the reading scatters there: when it says 75 to 85% full, it is off by about 9 points either way.
 - **A curve that bends near full helps.** Six curve forms were fixed in advance (`docs/PROTOCOL-CURVE.md`). A hinged log-log line that may only bend upward reads storage within 5.6% of capacity, against 6.7% for today's straight line. Reservoir by reservoir, the gain is 0.32 points (95% interval 0.19 to 0.74). Neither smoothing over time nor the morning passes improved it (13,808 passes of the second orbit were measured to test the morning passes).
+- **All five fold models in one map, and turns and flips at inference, are not kept (10 Nov).** By rules fixed before the run (`docs/DEV-6.md`), one map from all five fold models raised the water IoU at all 10 development scenes of S1S2-Water, but only by 0.18 on average (0.3 was needed). Adding the eight turns and flips at inference lost 1.41 on one scene. So run 5's maps stay.
 - **The February test.**
   - A dry run of its scorer on development data gives today's method 6.7%, the new curve 5.8%, the seasonal average 15% and no model 21%.
   - The new curve passes the no-loss rule, but its gain is under the 0.5 points needed to claim an improvement.

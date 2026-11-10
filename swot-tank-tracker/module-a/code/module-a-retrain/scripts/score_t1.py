@@ -12,7 +12,8 @@ Written and tried on development data on 7 Nov 2026, before any window pass is m
   major reservoirs, while the sheet's own "Date" column lags for some reservoirs. If that sheet is missing: the mean
   of the day before and the day after if both exist, else the one that exists, else the date is not scored;
 - error at a reservoir: the median absolute error over its scored dates, % of capacity; reservoirs with fewer than 3
-  scored dates are left out for every pipeline and counted;
+  scored dates are left out for every pipeline and counted; a reservoir with no row at all in the logger's sheets (a
+  name spelt differently there) is named in the output (a guard added on 10 Nov 2026; no rule changes);
 - baselines: seasonal (median history-pass storage within 15 days of the same day of the year) and no model;
 - step 1: no loss if a one-sided Wilcoxon on (I + 0.5 - C1) > 0 has p < 0.05; a gain (only then) if a one-sided
   Wilcoxon on (I - C1) > 0 has p < 0.05 and the Hodges-Lehmann estimate is at least 0.5.
@@ -72,6 +73,12 @@ def logger_truth(K):
                     if v is not None:
                         out.setdefault(r["Reservoir"].strip(), {})[day] = v * K.ACFT_TO_MCM
     return out
+
+
+def no_truth(lt, names):
+    """A guard: run 5's reservoirs with no row at all in the logger's sheets (a name spelt differently there would
+    otherwise be left out of T1 without a word)."""
+    return sorted(n for n in names if not lt.get(n))
 
 
 def truth_on(s, d):
@@ -189,6 +196,9 @@ def main():
               f"days also in storage_daily.csv: {same} equal, {diff} different")
         for b in bad[:10]:
             print("  ", b)
+        names = {C.read(f)[0]["tank"] for f in C.RUN5.glob("part*/fold*/areas_passes/*.csv")}
+        missing = no_truth(lt, names)
+        print(f"run 5's {len(names)} reservoirs with no truth in the logger's sheets: {', '.join(missing) or 'none'}")
         return
 
     split = {r["reservoir"]: r for r in C.read(ROOT / "kernel6-dev/split_dates.csv") if r["later_from"]}
@@ -219,6 +229,11 @@ def main():
                    and float(r["radar_gap_share_both"]) == 0 and r[C.COL] != ""]
         reservoirs[name] = (cap, hist, win)
     rows, summary, left_out = score(K, C, L, S5, reservoirs)
+    if lt is not None:  # the guard: a reservoir with no truth at all is named, not only counted
+        missing = no_truth(lt, reservoirs)
+        summary["no_truth"] = " ".join(missing) or "none"
+        if missing:
+            print(f"WARNING: no truth in the logger's sheets for {len(missing)} reservoirs: {', '.join(missing)}")
     tag = "dev" if args.dev else "window"
     K.write(out / f"t1_{tag}_reservoirs.csv", [{k: round(v, 3) if isinstance(v, float) else v for k, v in r.items()}
                                               for r in rows])
