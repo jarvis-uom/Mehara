@@ -2,7 +2,7 @@
 
 Before the proposal went in, we tested the models of Member B and Member C on real data. An outside review of our first run found real mistakes; we checked each point and fixed what was wrong. **All numbers below come from the corrected run.** The changes are listed at the end.
 
-The scripts are in this folder, and the result tables in `results/`. The data they read is not included (see "Run it again").
+The result tables are in `results/`. The scripts and the data they read are kept private (see "Run it again").
 
 ## Short answer
 
@@ -205,7 +205,7 @@ Two review points we did not accept as stated:
 
 ## Run it again
 
-Run the scripts from this folder (`model-check/`). Each writes its output here; our copies are in `results/`.
+The scripts are kept private, so this table records how the results were made. They run from the `model-check/` folder, and each writes its output there; our copies are in `results/`.
 
 | Step | Script | Reads | Writes |
 |---|---|---|---|

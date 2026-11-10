@@ -1,6 +1,6 @@
 # SWOT Tank Water Tracker: working files
 
-Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JARVIS), up to 9 November 2026.
+Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JARVIS), up to 10 November 2026.
 
 **The idea:** estimate how much water each Sri Lankan tank holds from free satellite data.
 - SWOT gives the water height.
@@ -11,7 +11,7 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 
 | Folder | Contents |
 |---|---|
-| `module-a/` | Module A (RQ1), 1 to 9 Nov 2026: water maps under cloud at 117 reservoirs, the retraining for tank beds (run 5 is the model), the comparison with the last clear photo, and the second series on fresh data. Start with `module-a/README.md`, or with the plain-English overview `module-a/docs/MODULE-A-SUMMARY.md` |
+| `module-a/` | Module A (RQ1), 1 to 10 Nov 2026: water maps under cloud at 117 reservoirs, the retraining for tank beds (run 5 is the model), the comparison with the last clear photo, and the second series on fresh data. Start with `module-a/README.md`, or with the plain-English overview `module-a/docs/MODULE-A-SUMMARY.md` |
 | `feasibility-check/` | The October 2026 data checks: results in `results/`. Start with `results/SUMMARY.md` |
 | `model-check/` | The 28 October test of the models of Members B and C on real data (trust screen, storage model, forecast): result tables. Start with `model-check/README.md` |
 | `cascade-check/` | Do the eight village tanks share one cascade? (No.) A flow trace on the elevation map, checked against the department's catchments, and a real five-tank cascade south of Nachchaduwa |
@@ -72,10 +72,11 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 - Run 5 kept more of our own reservoirs in each batch. It keeps most of run 4's gain (85 on those 15 scenes) and passes all four of its rules, by small margins at home, so it is now Module A's model. A final version trained on all 103 reservoirs is the one for use.
 - Our two reservoir image datasets are public on Kaggle.
 
-**Module A, 6 to 9 November 2026: the second series** (`module-a/README.md`, section 10):
+**Module A, 6 to 10 November 2026: the second series** (`module-a/README.md`, section 10):
 - It is judged only on fresh data: radar passes from November 2026 to January 2027 against the department's daily storage (scored in February 2027), 14 unused S1S2-Water scenes and an outside flood dataset.
 - On development data, longer training did not help at home, and the map is no longer the main limit: near full, the water area barely grows while storage still changes.
 - A storage curve that bends near full reads storage within about 6% of capacity, against about 7% for a straight line. The morning passes add nothing.
+- One map from all five fold models, with or without turns and flips at inference, did not pass its rules (10 Nov), so run 5's maps stay.
 - Water under plants is still part of RQ1, but it is not trained or tested yet.
 
 ## Not included

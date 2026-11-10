@@ -8,7 +8,7 @@ venv/
 # Secrets
 .env
 
-# Large data: keep it in the shared Google Drive folder
+# Large data: keep it on Kaggle (private datasets)
 data/*
 !data/README.md
 outputs/

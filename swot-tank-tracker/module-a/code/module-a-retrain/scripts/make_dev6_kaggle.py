@@ -4,7 +4,9 @@ r"""Makes series 2's development Kaggle files (5 Nov 2026, ../PROTOCOL-6.md part
   ../s1s2water-check/kernel/;
 - kaggle-notebooks/kernel6-dev-control/, -long/, -lovasz/: three private notebooks, one variant each (folds 1
   and 2 at once on two T4s), run by a teammate from their own Kaggle account (shared with them as a collaborator).
-  They are pushed without a GPU, so the first version only prints how to run them.
+  They are pushed without a GPU, so the first version only prints how to run them;
+- kaggle-notebooks/kernel6-dev-ens/: development batch 2 (DEV-6's addendum of 10 Nov 2026): the control again, then
+  score_ens6.py on its 6 models. Pushed with a GPU, so it runs when pushed.
 Run from the project folder:
     temp\feasibility-check\.venv\Scripts\python.exe -I temp\module-a-retrain\scripts\make_dev6_kaggle.py
 """
@@ -24,7 +26,7 @@ SOURCES = [f"{OWNER}/{d}" for d in ("is4990-module-a-run4-inputs", "is4990-s1s2w
                                     "is4990-s1s2water-gee", CODE)]
 
 
-def cells(variant, what, hours):
+def cells(variant, what, hours, extra=""):
     return [
         ("markdown", f"""# IS4990 Module A: series 2 development, variant "{variant}"
 
@@ -53,7 +55,7 @@ print(GPUS or "No GPU in this session, so nothing will run. To run: Accelerator:
 VARIANT = "{variant}"
 if GPUS:
     script = next(Path("/kaggle/input").rglob("run6_dev.py"))
-    p = subprocess.Popen([sys.executable, "-u", str(script), "--variant", VARIANT, "--folds", "1,2"],
+    p = subprocess.Popen([sys.executable, "-u", str(script), "--variant", VARIANT, "--folds", "1,2"{extra}],
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
     for line in p.stdout:
         print(line, end="", flush=True)
@@ -81,7 +83,7 @@ def main():
     shutil.copyfile(ROOT.parent / "s1s2water-check/kernel/score_s1s2.py", ROOT / "kernel6-dev/score_s1s2.py")
     code = ROOT / "dev6-code"
     code.mkdir(exist_ok=True)
-    for f in ("retrain6.py", "run6_dev.py", "score_s1s2.py", "split_dates.csv"):
+    for f in ("retrain6.py", "run6_dev.py", "score_ens6.py", "score_s1s2.py", "split_dates.csv"):
         shutil.copyfile(ROOT / "kernel6-dev" / f, code / f)
     (code / "dataset-metadata.json").write_text(json.dumps({
         "title": "IS4990 Module A dev6 code", "id": f"{OWNER}/{CODE}",
@@ -99,6 +101,17 @@ def main():
             "enable_gpu": False, "enable_tpu": False, "enable_internet": True, "dataset_sources": SOURCES,
             "competition_sources": [], "kernel_sources": [], "model_sources": []}, indent=2), encoding="utf-8")
         print("wrote", d)
+    d = ROOT / "kaggle-notebooks" / "kernel6-dev-ens"
+    d.mkdir(exist_ok=True)
+    parts = cells("control", "run 5's recipe again, then combines its 6 models at inference (batch 2)",
+                  "about 1.5 hours", ', "--ens"')
+    (d / "dev6-ens.ipynb").write_text(json.dumps(notebook(parts), indent=1), encoding="utf-8")
+    (d / "kernel-metadata.json").write_text(json.dumps({
+        "id": f"{OWNER}/is4990-module-a-dev6-ens", "title": "IS4990 Module A dev6 ens",
+        "code_file": "dev6-ens.ipynb", "language": "python", "kernel_type": "notebook", "is_private": True,
+        "enable_gpu": True, "enable_tpu": False, "enable_internet": True, "dataset_sources": SOURCES,
+        "competition_sources": [], "kernel_sources": [], "model_sources": []}, indent=2), encoding="utf-8")
+    print("wrote", d)
 
 
 if __name__ == "__main__":
