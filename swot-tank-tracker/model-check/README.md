@@ -170,17 +170,8 @@ After about 40 reservoirs the curve is flat, so the amount of data is enough. Be
 
 Not trained in this check. The evidence:
 - **Published results:** U-Nets trained on S1S2-Water reach IoU 0.85–0.97 for open water.
-- **Our Kanhindawewa check:** the tank's true full-supply area is known from department data we keep private, and it is often covered by water plants. On each satellite day, each simple rule's water area was compared with the true area at SWOT's height:
-
-| Simple rule | Days | Median area error | Main problem |
-|---|---|---|---|
-| Sentinel-2 NDWI | 15 | 65% | misses water under plants |
-| Sentinel-2 scene class (SCL) | 15 | 100% | finds no water |
-| Sentinel-1 Otsu threshold | 36 | 57% | misses water and finds false water |
-| Sentinel-1 at −18 dB | 36 | 92% | misses water under plants |
-| SWOT's own water area | 41 | 36% | misses water under plants |
-
-- **Good areas matter:** storage change worked out from height and area over three periods came within 0.5% of the truth with perfect areas. With SWOT's own areas, it was off by 1%, 1% and 21%.
+- **Our check at a plant-covered tank:** on each satellite day, each simple rule's water area was compared with the true area at SWOT's height. The rules were a Sentinel-2 water index (NDWI), Sentinel-2's scene class, two Sentinel-1 thresholds (Otsu and −18 dB) and SWOT's own water area. All of them missed much of the water under plants, and the scene class found none. The numbers are not published here: the true area comes from an Irrigation Department survey whose reuse needs the Director General of Irrigation's approval.
+- **Good areas matter:** in the same check, storage change worked out from height and area came much closer to the truth with perfect areas than with SWOT's own areas.
 - **Advice from the review** (not yet checked):
   - give the model each tank's full-supply outline as an input;
   - about 150–250 hand-labelled 256 × 256 chips after pre-training;
