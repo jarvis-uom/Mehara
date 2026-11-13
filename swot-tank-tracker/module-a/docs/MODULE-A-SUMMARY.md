@@ -143,6 +143,7 @@ Fitted on the first quarter of each reservoir's history, judged on the second. W
 | 2. Smoothing over time | None; mean over 12 days; median over 24 days | None (no clear help) |
 | 3. The morning passes | Not used; added to the curve; scaled first; averaged with the latest morning reading | **Not used.** They carry the same information, though alone they are about as accurate (a reading every 6 days instead of 12 would be possible) |
 | 4. A fix from an outside review | **The bending line, never bending down** | **Chosen as Curve 2** (L4c): same score; physically impossible curves 18 to 1; error near full about 9 to 8 |
+| 5. A season correction (13 Nov) | A blend with the usual storage for the time of year (everywhere; only where the curve reads 60% or more); a yearly wave inside the curve | **None kept** (best +0.03, needed +0.1) |
 
 The morning passes were measured by Model 3's test models on Kaggle's free CPU (6 hours, 13,808 passes, no GPU used).
 
@@ -154,6 +155,8 @@ The morning passes were measured by Model 3's test models on Kaggle's free CPU (
 | Gain over Curve 1, reservoir by reservoir (Hodges-Lehmann, 95% range) | - | **0.32 points** (0.19 to 0.74) |
 
 The fair number to quote is the paired gain, 0.32 points: the two medians differ by about 1 point, but reservoir by reservoir the typical gain is smaller.
+
+**One more try, 13 Nov: a season correction, not kept.** The idea: near full the area says little, so add what the season says (the reservoir's usual storage at that time of year, from its own earlier years). Three forms were fixed before scoring. The best gained 0.03 points, where 0.1 and a paired test were needed, and it did not help in November to January. With one or two earlier years, the season says too little: storage differs too much from year to year. **Curve 2 stays, and no further curve is tried before February.**
 
 ### Step 8. The T1 scorer, written and tried now (`scripts/score_t1.py`)
 
@@ -187,13 +190,12 @@ Outside reviews on 5, 7 and 9 Nov. Every claim was checked against the files bef
 ## What is left
 
 1. **Water under plants (RQ1):** find a trustworthy way to get examples without hand labelling, then train and test.
-2. **Decide on one more curve try:** a season correction near full (laptop, about 1 day, kept only if it beats Curve 2 by 0.1), or stop and hand over.
-3. Scorers for T2 and T3, tried on development data (no fresh data touched).
-4. Prepare T3: Kuro Siwo masks and Earth Engine radar, by 15 Jan 2027.
-5. Fix PROTOCOL-6 part 2 by 15 Jan 2027 (the new curve fixed; C2 = Model 3's recipe with longer training, from batch 3, trained on all 5 folds).
-6. After 31 Jan 2027: download the window's passes, measure them with Model 3's test models (Kaggle CPU), and run `score_t1.py --window`.
-7. Hand over to Module B: Model 3's areas for the 103 reservoirs, Model 3 final for new passes, and the curve findings.
-8. The supervisor note on Model 3 (formal register).
+2. Scorers for T2 and T3, tried on development data (no fresh data touched).
+3. Prepare T3: Kuro Siwo masks and Earth Engine radar, by 15 Jan 2027.
+4. Fix PROTOCOL-6 part 2 by 15 Jan 2027 (the new curve fixed; C2 = Model 3's recipe with longer training, from batch 3, trained on all 5 folds).
+5. After 31 Jan 2027: download the window's passes, measure them with Model 3's test models (Kaggle CPU), and run `score_t1.py --window`.
+6. Hand over to Module B: Model 3's areas for the 103 reservoirs, Model 3 final for new passes, and the curve findings.
+7. The supervisor note on Model 3 (formal register).
 
 ## The honest limits
 

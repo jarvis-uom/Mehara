@@ -222,7 +222,7 @@ Two new reviews (read-only, development data only) were checked by recomputing t
 
 **Rejected:** a rainfall term. PROTOCOL-6 part 1 lists what a pipeline may use: radar, plus the reservoir's history of radar, storage and clear photos. Rain is not on the list.
 
-**Open option (not started):** one season-aware correction near full, using only the date and the reservoir's history, both allowed. It would be laptop only, with a fixed addendum before scoring and a hard stop unless it beats L4c by 0.1. The team has not decided.
+**Open option (not started):** one season-aware correction near full, using only the date and the reservoir's history, both allowed. It would be laptop only, with a fixed addendum before scoring and a hard stop unless it beats L4c by 0.1. The team has not decided. *(Run on 13 Nov: not kept; see "Curve study step 5" at the end.)*
 
 ## Development batch 2 (addendum, fixed 10 Nov 2026, before any run): all fold models together, and flips
 
@@ -447,3 +447,31 @@ What it shows:
 - The stated caveat stands: R4's scores had been seen before these rules were written, so this is weaker evidence than a first look. Only T2 and T3 can confirm it.
 
 **Consequence (as fixed above).** C2's map recipe is **R4: 9,000 steps with the weights' moving average, plain maps** (no grown maps, labels as stored, turns and flips only). Part 2's confirmatory run trains it on all 5 folds and all 29 S1S2-Water training scenes. T1's "no loss" rule is then a real test for C2; C2's differences on T2 and T3 are reported with their intervals and not claimed. The development weights of this batch stay in the three notebooks' outputs on Kaggle until part 2 is fixed.
+
+## Curve study step 5 (13 Nov 2026): the season-aware correction is not kept
+
+As fixed in `PROTOCOL-CURVE.md`'s step 5 addendum (commit 4d3afc1) before any candidate was scored. `scripts/curve_season.py`, outputs `runs/e1/e1_season_*.csv`. First half, first quarter to second, 103 reservoirs; L4c scores 5.64 again.
+
+| Candidate | Overall (median, % of capacity) | Against L4c | Better / worse (of 103) | One-sided p |
+|---|---|---|---|---|
+| Z0 = L4c | 5.635 | - | - | - |
+| **Z1** blend with the seasonal value, everywhere | 5.608 | +0.03 | 31 / 26 | 0.16 |
+| **Z2** blend where L4c reads 60% or more | 5.608 | +0.03 | 22 / 20 | 0.23 |
+| **Z3** yearly wave inside the curve | 6.157 | -0.52 | 43 / 58 | 0.94 |
+| The seasonal value alone | 14.20 | -8.57 | 17 / 86 | - |
+
+- **The rule:** the best is Z1, and it is also the simplest. It is 0.03 points better than L4c, where 0.1 was needed, and the paired test does not hold (p 0.16; Hodges-Lehmann gain 0.00, interval 0.00 to +0.04). **Not kept.**
+- **Consequence (as fixed):** C1's storage method stays **L4c on the main orbit with no smoothing**, and no further curve candidate is tried before T1.
+
+Beside the rule:
+- **The weights are small.** Z1's weight is 0 at 42 reservoirs and its median is 0.01; it is above 0.1 at 37. Z2's is 0 at 50. Where the first quarter says the seasonal value helps, it gets some weight; at most reservoirs it says it does not.
+- **By L4c's own reading** (pooled second-quarter passes, median absolute error): under 60%, 3.29 for L4c and 3.24 for Z1; 60 to 85%, 8.23 and 7.57; 85% and over, 5.15 and 5.02. The blend helps a little where the curve scatters most, as hoped, but not enough to move the reservoirs' medians.
+- **November to January** (102 reservoirs with at least 3 such passes): L4c 4.66, Z1 4.82, Z2 4.77, Z3 6.35. No gain in T1's own season.
+- **A few reservoirs move a lot:** Z1's largest gain is 17.1 points and its largest loss 8.7; the mean gain is 0.49, the median 0. On the T1 scorer's trial (100 reservoirs) Z1 reads 5.70 against L4c's 5.82, and its Hodges-Lehmann gain over today's method is 0.59 (0.29 to 1.11) against L4c's 0.33. That comes from those few reservoirs: against L4c itself the paired test has p 0.22. It is not a reason to keep Z1, and the rule was fixed so that it could not become one.
+- **The yearly wave (Z3) overfits:** fitted at 101 reservoirs, worse at 58. Two extra numbers per reservoir are too many for one or two years of passes.
+- **The record has a hole.** The department's record holds no storage from April to September 2021, so 759 of the 3,703 second-quarter passes (a fifth) had no seasonal value and read L4c. Elsewhere the seasonal value rests on one or two earlier years.
+
+What it shows:
+- With one or two years of history, the season says too little about a reservoir's storage to correct the curve: the seasonal value alone is off by 14 points, against 5.6 for the curve. Storage differs too much from year to year.
+- The limit stated before the run stands: part 2 would have 6 years of history, so a seasonal value could be worth more there. That cannot be tested on development data, and by the fixed stop it is not tried before T1. It can be looked at after February, on data that T1 does not use.
+- Near full, the remaining error needs information the area does not carry: water height (Module B).

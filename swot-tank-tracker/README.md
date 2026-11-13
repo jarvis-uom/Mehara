@@ -78,6 +78,7 @@ Work for the IS4990 project "SWOT Tank Water Tracker for Sri Lanka" (Group 6, JA
 - A storage curve that bends near full reads storage within about 6% of capacity, against about 7% for a straight line. The morning passes add nothing.
 - One map from all five fold models, with or without turns and flips at inference, did not pass its rules (10 Nov).
 - Judged scene by scene, longer training passes its rules (13 Nov): the water IoU over the 10 development scenes rises from 85.4 to 88.4, with no loss on floods, reservoirs or storage. It is the candidate for a new map model, still to be confirmed on the fresh tests. Run 5's maps stay until then.
+- A correction from the season (the reservoir's usual storage at that time of year) was tried by rules fixed first and is not kept (13 Nov): +0.03 points, where 0.1 was needed. The curve work is closed until the February test.
 - Water under plants is still part of RQ1, but it is not trained or tested yet.
 
 ## Not included
