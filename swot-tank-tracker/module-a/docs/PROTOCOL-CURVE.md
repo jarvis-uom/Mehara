@@ -75,6 +75,52 @@ The readings come from the curve fitted on the first quarter. Earlier passes of 
 - **Reported beside it:** how many reservoirs have a downhill upper segment under L4 and under L4c, and the error and signed error at 85% full or more.
 - **A note on wording.** "One-SE rule" here means the fixed 0.1-point margin of PROTOCOL-6, not a standard error estimated from the data (about 0.2 points over 103 reservoirs).
 
+## Step 5: one season-aware correction (addendum, fixed 13 Nov 2026 before any candidate is scored)
+
+**Why.** The 9 Nov correction (`DEV-6.md`) showed that the problem near full is scatter: there the water area barely changes while storage still does, so the area alone cannot tell 85% full from 100%. The date is allowed information (PROTOCOL-6 part 1), and so is the reservoir's own storage history. T1's window, November to January, is the season when the reservoirs are most often near full. The option was recorded on 9 Nov as one try with a hard stop; the team chose it on 13 Nov. None of the candidates below has been scored on any data.
+
+**Data and score.** Exactly as steps 1 and 4: run 5's out-of-fold areas on the main orbit, each reservoir's first half, the curve fitted on the first quarter and scored on the second, the median absolute error in % of capacity per reservoir, then the median over the 103 reservoirs. The comparison is L4c (5.64).
+
+**The seasonal value m(d)** of a reservoir for a date d: the median of its recorded daily storage on the history days whose day of the year is within 15 days of d's, leaving out every day within 182 days of d. So it comes from other years only, and it carries no "last known storage".
+- The history is the reservoir's daily storage record before `q2_from` (in part 2: to 31 Oct 2026), as read and cleaned by rule 3's code (`kernel3/retrain.py` `sheet`). Every recorded day is used, not only the pass days. Days of the year are compared around the year's end (1 January is 1 day from 31 December).
+- If no history day qualifies, the date has no seasonal value, and every candidate reads L4c for it.
+
+**The candidates,** from the simplest. All are capped to between 0 and capacity, and all read L4c wherever they cannot be fitted.
+
+| Code | Reading |
+|---|---|
+| **Z0** | L4c (the comparison) |
+| **Z1** | A blend everywhere: (1 - w) x L4c's reading + w x m(d), with one weight w per reservoir |
+| **Z2** | The same blend, only where L4c's own reading is 60% of capacity or more; L4c's reading below that |
+| **Z3** | A seasonal term inside the curve: L4c's form plus one yearly wave, log storage = c + b1 x + b2 max(0, x - h) + p sin(2 pi t) + q cos(2 pi t), x = log area, t = day of the year / 365.25 |
+
+- **The weight w (Z1, Z2)** is fitted on the first quarter only, by least squares of the true storage on the blend, and clipped to between 0 and 1: w = sum((s - c)(m - c)) / sum((m - c)^2), where c is L4c's capped reading and m the seasonal value of each first-quarter pass. Z1 uses every first-quarter pass that has a seasonal value; Z2 only those where c is 60% of capacity or more. With fewer than 5 such passes, w = 0.
+  - Both c and m are in-sample or near it on the first quarter (the curve was fitted there; m leaves out the 182 days around each pass). That is accepted: the score is taken on the second quarter.
+- **Z3** is fitted on the first quarter by least squares, with the hinge chosen as in L4c (the same percentiles, at least 3 passes on each side, the least squared error) and b2 >= 0 kept as in L4c (a hinge whose unconstrained b2 is negative is fitted without the hinge term). Where no hinge qualifies, it is the plain log-log line plus the wave. It needs at least 12 first-quarter passes that span at least 365 days; otherwise the reservoir reads L4c.
+- **The 60% limit** is fixed here from what is already known (9 Nov: by L4c's own reading, the absolute error is 3.3 below 60% and 6 to 9 between 60 and 95%). It is not tuned.
+
+**The rule (the hard stop).** The candidate with the best overall score is looked at first; if a simpler candidate is within 0.1 points of it, the simplest such candidate is taken instead (Z1, Z2, Z3 in that order). It is **kept only if both** hold:
+- its overall score is at least 0.1 points better than L4c's on the same reservoirs;
+- reservoir by reservoir, a one-sided Wilcoxon on (L4c's error - the candidate's error) > 0 has p < 0.05.
+
+Otherwise nothing is kept, **C1's storage method stays L4c on the main orbit with no smoothing, and no further curve candidate is tried before T1.**
+
+**If one is kept,** it becomes C1's storage method in part 2: the curve and the weight fitted once per reservoir on all history passes to 31 Oct 2026, the seasonal value taken from the daily storage record to that date, nothing refitted in the window.
+
+**Stated openly, before the run.**
+- Development has at most 2 years of storage history before the second quarter (the record starts on 1 Oct 2020), so the seasonal value rests on one or two earlier years. Part 2 would have 6. Development may therefore undervalue the seasonal value; it cannot be made to look better than it is.
+- The second quarter has been scored many times with other curves. This is a choice on development data, and nothing can be claimed from it.
+- The margin is 0.1 points while the overall score's own standard error is about 0.2; this is why the paired test is required as well.
+
+**Reported beside the rule (not rules):**
+- each candidate's Hodges-Lehmann gain over L4c with its interval, and how many reservoirs are better and worse;
+- the fitted weights (median, how many are 0), and how many reservoirs fell back to L4c;
+- the error on the second quarter's November to January passes, and by L4c's own reading (under 60%, 60 to 85%, 85% and over);
+- the seasonal value alone, read as a method;
+- for the taken candidate: the T1 scorer's development trial (`score_t1.py --dev` rules: gap-free passes, T1's truth rule).
+
+Code: `scripts/curve_season.py`. Its outputs go to `runs/e1/` (`e1_season_*.csv`).
+
 ## Reported beside the choice (not part of it)
 
 - The paired difference from L0 by reservoir: its median, and how many reservoirs improve.
@@ -85,4 +131,5 @@ The readings come from the curve fitted on the first quarter. Earlier passes of 
 - The winner of steps 1 and 2 becomes C1's storage method in PROTOCOL-6 part 2, fitted there on all passes to 31 Oct 2026.
 - The winner of step 3 decides how C1 uses the morning passes. If it is O0, C1 does not use them.
 - Step 4 decides whether C1's curve is L4 or L4c.
+- Step 5 decides whether C1 adds a seasonal correction to L4c. **Result (13 Nov, `DEV-6.md`): none is kept; C1 stays L4c on the main orbit with no smoothing, and no further curve is tried before T1.**
 - Code: `scripts/curve_study.py`. Its outputs go to `runs/e1/`.
