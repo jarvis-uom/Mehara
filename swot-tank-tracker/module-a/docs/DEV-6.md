@@ -306,3 +306,144 @@ What it shows:
 - Flips do not help this model, and hurt on two scene types.
 
 **Consequence (as fixed above).** No C2 from this batch: Model 3's map product stays as it is (for T2 and T3, the mean of the folds' scores). `score_ens6.py` stays in the code for any later batch. The 6 development weights are in the private Kaggle dataset `is4990-module-a-dev6-weights` until part 2 is fixed.
+
+## Development batch 3 (addendum, fixed 11 Nov 2026, before any run): cleaner labels at the water's edge, radar augmentation, longer training, grown maps
+
+**Why.** `PLAN-ACCURACY.md` section 7 (the wider search of 11 Nov) found that Model 3 is at the published level for radar alone, and that what is left to try cheaply lies in our own training recipe:
+- the reservoirs' labels are weak at the water's edge. Three of four training images carry a label from a photo taken 1 to 5 days before or after the radar, and plants are labelled land also where they stand in the water;
+- the only augmentation is turns and flips, which batch 2 and two published studies found useless on radar;
+- longer training removed most of the false water on the forest and dry scenes in batch 1, but batch 1's rules pooled all pixels (one scene held half of them) and it was not kept.
+
+The team chose this batch on 11 Nov ("do your best"). It is the last map batch planned before part 2.
+
+**The recipes.** Each is trained on folds 1 and 2 with 3 seeds each, by `kernel6-dev/retrain6.py`, with everything else as the control (the same seeds, starts, batch mix 10/4/2, 24 S1S2-Water training scenes, learning rate).
+
+| Code | Variant in the code | Reservoir labels | Augmentation | Steps |
+|---|---|---|---|---|
+| **R0** | `control` (batch 2's 6 models, not trained again) | As stored | Turns and flips | 3,000 |
+| **R1** | `edge` | Cleaned at the edge | Turns and flips | 3,000 |
+| **R2** | `aug` | As stored | Turns, flips and radar augmentation | 3,000 |
+| **R3** | `edgeaug` | Cleaned at the edge | Turns, flips and radar augmentation | 3,000 |
+| **R4** | `long` (batch 1's run; its score files are used, nothing is trained) | As stored | Turns and flips | 9,000, moving average |
+| **R5** | `longedgeaug` | Cleaned at the edge | Turns, flips and radar augmentation | 9,000, moving average |
+
+**The edge clean-up** (training labels of our reservoirs only; photos and dates only, no storage record):
+1. Inside the outline, a pixel that the photo shows as plants and that lies within 3 pixels (30 m) of the photo's open water becomes "unsure" (it was "land"). Floating and standing plants sit beside the open water; plants further away stay land.
+2. When the label's photo is 1 day or more from the radar image, the pixels within a short distance of the line between the label's open water and its land become "unsure", on both sides: 1 pixel for 1 or 2 days, 2 pixels for 3 to 5 days. Same-day labels keep their edge.
+
+Both parts are taken from the label as stored. On a sample of 30 photos (labels only, no model), part 1 moves about 4% of the outlines' pixels to "unsure", a 1-pixel band about 3% and a 2-pixel band about 8%. The code checks that it rebuilds every stored label exactly from its photo before it changes anything.
+
+**The radar augmentation** (every training crop, in dB, before normalising; its random numbers come from their own generator, so every recipe sees the same crops in the same order):
+- contrast: each band's distance from the training mean is multiplied by one factor, uniform from 0.9 to 1.1;
+- brightness: one shift for both bands, uniform from -2 to +2 dB, plus a shift per band, uniform from -0.5 to +0.5 dB;
+- speckle, for half of the crops: the power of every pixel is multiplied by gamma noise with L looks, L uniform from 8 to 32.
+
+**Grown maps (G), an inference rule scored beside every recipe.** The plain map is water where p(land) is under 0.5. The grown map adds every pixel with p(land) under 0.7 that is joined to plain water (8 neighbours). The one threshold, 0.7, is fixed here and not tuned.
+
+**Data (development only, PROTOCOL-6 B):** the 10 S1S2-Water development scenes, Sen1Floods11's validation split (89 chips, 10 events), the 42 held-out reservoirs' first-half Dynamic World chips and first-half passes. Nothing else is read.
+
+**Scores,** each paired with R0's, unit by unit, on unrounded values:
+
+| Code | Score | Units |
+|---|---|---|
+| **S** | Water IoU of each development scene; a scene's value is the mean of the two folds' IoUs | 10 scenes |
+| **F** | Water IoU pooled over the 89 flood chips, the mean of the two folds | 1 number |
+| **H** | Dynamic World IoU of each reservoir, pooled over its first-half clear chips (the whole chip, as M2) | 42 reservoirs |
+| **T** | Storage error of each reservoir with Curve 2, exactly as the T1 scorer's development trial (`score_t1.py --dev`: fitted on the first quarter, scored on the second quarter's main-orbit passes with no radar gap), on the recipe's own areas | About 40 reservoirs |
+
+**Keep rules** (each recipe against R0). The "no loss" rules are PROTOCOL-6's own step 2 rules, with their margins, tried on the development data. Their p-values are used here only as fixed decision limits. They are not tests of anything, and nothing here can be claimed.
+
+- **No loss (all of):**
+  - S: a one-sided Wilcoxon on (recipe - R0 + 2) > 0 over the 10 scenes has p < 0.05 (T2's rule);
+  - F: down by less than 1.0 (as batches 1 and 2);
+  - H: a one-sided Wilcoxon on (recipe - R0 + 1) > 0 over the reservoirs has p < 0.05;
+  - T: a one-sided Wilcoxon on (R0's error + 0.5 - the recipe's error) > 0 over the reservoirs has p < 0.05 (T1's rule).
+- **Gain (at least one of):**
+  - S: the Hodges-Lehmann estimate of the 10 scene differences is +0.5 points or more;
+  - F: up by 1.0 or more;
+  - H: the Hodges-Lehmann estimate of the reservoir differences is +0.5 points or more.
+
+A recipe is **kept** if it gains somewhere and loses nowhere.
+
+**The choice.** Among the kept recipes, the one with the highest mean IoU over the 10 scenes is taken, unless a simpler kept recipe is within 0.5 points of it; then the simplest such recipe is taken (simplest first: R1, R2, R3, R4, R5). If none is kept, the recipe stays R0.
+
+**Then the grown maps.** G is judged on the chosen recipe (on R0 if none was kept): its grown maps against its plain maps, by the same four "no loss" rules and the same gains. If R4 is chosen, it is first trained again by the same code, because batch 1's weights are gone; batch 2 showed that the training repeats exactly on Kaggle's T4s.
+
+**What a kept result means for part 2.**
+- C2's map recipe would be the chosen recipe, with grown maps if G is kept. The confirmatory run trains it on all 5 folds and all 29 S1S2-Water training scenes, as PROTOCOL-6 says.
+- Unlike batch 2's candidates, C2's reservoir areas would then differ from C1's, so T1's "no loss" rule is a real test for it.
+- By PROTOCOL-6's fixed order, a gain on T2 or T3 is tested only after both T1 gains hold. A new map cannot move the storage error by 0.5 points (`PLAN-ACCURACY.md` section 1). So C2's differences on T2 and T3 would be reported with their intervals and not claimed, and the "no loss" rules decide whether C2 becomes Module A's map.
+
+**Stated openly, before the run.**
+- **R4's scores have been seen.** They are batch 1's "long", which batch 1's rules did not keep. The rules above were written after that, knowing that long is far better on scenes 39 and 54 and lower on scene 11 in one fold. They follow PROTOCOL-6's margins and the 7 Nov review's request to judge per scene, and they were not fitted to make R4 pass. Even so, a "kept" for R4 on this data is weaker evidence than for the other recipes, and only T2 and T3 can confirm it.
+- R0, R1, R2, R3 and R5 have no batch 3 score yet. R0's plain scores are batch 2's (equal to batch 1's control byte for byte).
+- Development has 2 folds (6 models per recipe), 10 scenes and 42 reservoirs. Two recipes differ by a whole retraining, so a scene-level difference under about 1 point is noise.
+- H is scored against Dynamic World, which disagrees with our photo labels at the edge by about as much as the model does (`PLAN-ACCURACY.md` section 2).
+
+**Reported beside the rules (not rules):**
+- per-fold scores, precision and recall;
+- the flood IoU per event (R4 has only the pooled value);
+- Dynamic World inside the outline only;
+- the storage error with Curve 1 (batch 1's M4);
+- every Hodges-Lehmann estimate with its interval;
+- a check that R0's plain score files from this run equal batch 1's byte for byte (so the new scoring code changed nothing);
+- how many label pixels the clean-up changed.
+
+**How it runs.**
+1. A tiny check of the new code on Kaggle without a GPU (`--quick`: 2 steps, a handful of chips). Its numbers are not scores and are not looked at as such.
+2. Two private Kaggle notebooks (two T4s each): one scores R0's saved models and trains R1, R2 and R3; the other trains R5. About 5.5 GPU hours in all.
+3. The outputs are downloaded to `runs/dev6c/` and scored on the laptop by `scripts/score_dev6c.py`.
+4. The weights stay in the notebooks' outputs until part 2 is fixed.
+
+### Batch 3: the result (13 Nov 2026)
+
+Run on Kaggle on 13 Nov: the quick check first (no GPU, all three variants ended without error), then three private notebooks on two T4s each: `dev6 batch3a` (R0 scored again; R1, R2 and R3 trained), `batch3b` (R5) and `batch3c` (R4 trained again, for its grown maps). All folds finished with no problem. The outputs, without the weights, are in `runs/dev6c/`; `scripts/score_dev6c.py` wrote `dev6c_scenes.csv`, `dev6c_floods.csv`, `dev6c_reservoirs.csv` and `dev6c_verdict.csv` there. Everything below is development data: nothing can be claimed from it.
+
+**The checks.** R0's plain score files from this run equal batch 2's byte for byte (48 of 48), so the new scoring code changed nothing. R4 trained again equals batch 1's "long" byte for byte (48 of 48), so the training repeated exactly once more.
+
+| Scene (S, water IoU) | R0 | R1 | R2 | R3 | R4 | R5 |
+|---|---|---|---|---|---|---|
+| Asian 6 | 83.70 | 83.86 | 85.95 | 86.27 | 86.69 | 85.62 |
+| Asian 7 | 75.96 | 76.15 | 75.10 | 75.84 | 74.26 | 75.15 |
+| Asian 11 | 97.93 | 97.92 | 97.94 | 97.95 | 95.54 | 97.51 |
+| Asian 12 | 93.00 | 92.82 | 92.67 | 92.66 | 94.14 | 93.74 |
+| Asian 52 | 94.20 | 94.06 | 94.22 | 94.08 | 94.11 | 93.87 |
+| Held-out 39 | 70.90 | 75.90 | 68.25 | 70.22 | 91.28 | 89.07 |
+| Held-out 49 | 81.23 | 81.40 | 80.99 | 81.21 | 81.93 | 81.54 |
+| Held-out 54 | 80.22 | 81.32 | 77.39 | 78.11 | 87.05 | 84.97 |
+| Held-out 76 | 96.26 | 96.35 | 96.04 | 96.22 | 96.15 | 96.21 |
+| Held-out 83 | 80.85 | 80.24 | 79.80 | 79.82 | 82.89 | 81.69 |
+| Mean of the 10 scenes | 85.42 | 86.00 | 84.83 | 85.24 | 88.40 | 87.94 |
+| **F**, floods (89 chips) | 66.15 | 66.08 | 64.97 | 65.63 | 67.21 | 66.31 |
+| **H**, median reservoir | 86.00 | 86.93 | 85.97 | 86.33 | 86.27 | 87.67 |
+| **T**, median error, Curve 2 | 5.74 | 5.95 | 7.19 | 7.16 | 5.87 | 6.34 |
+
+Each recipe against R0, by the fixed rules (HL = Hodges-Lehmann estimate; H on 38 reservoirs, T on 39):
+
+| Recipe | S: HL (interval), lowest scene, no-loss p | F | H: HL (interval), no-loss p | T: HL gain (interval), no-loss p | Gains | Losses | Verdict |
+|---|---|---|---|---|---|---|---|
+| **R1** edge | +0.13 (-0.16 to +2.20), -0.60, 0.001 | -0.07 | +0.74 (+0.57 to +0.95), < 0.001 | +0.01 (-0.17 to +0.09), 0.002 | H | none | **kept** |
+| **R2** aug | -0.51 (-1.53 to +0.01), -2.83, 0.005 | -1.18 | -0.24 (-0.47 to -0.01), < 0.001 | -0.07 (-0.39 to +0.10), 0.011 | none | F | not kept |
+| **R3** edgeaug | -0.19 (-1.03 to +0.23), -2.11, 0.002 | -0.52 | +0.25 (-0.11 to +0.54), < 0.001 | -0.11 (-0.44 to +0.09), 0.013 | none | none | not kept |
+| **R4** long | +1.37 (-0.50 to +8.99), -2.40, 0.003 | +1.07 | +0.04 (-0.52 to +0.76), < 0.001 | -0.06 (-0.40 to +0.24), 0.005 | S, F | none | **kept** |
+| **R5** longedgeaug | +0.75 (-0.19 to +8.68), -0.81, 0.001 | +0.16 | +0.82 (+0.22 to +1.53), < 0.001 | -0.32 (-0.81 to +0.18), 0.230 | S, H | T | not kept |
+
+- **Kept: R1 and R4. The choice: R4** (the highest mean over the scenes, 88.40; R1, the only simpler kept recipe, is 2.40 below it, more than the 0.5 allowed).
+- **Grown maps (G) on R4, against R4's plain maps: not kept.** S: mean 86.37 (-2.03), HL -1.72 (-3.99 to -0.30), up at 2 of 10 scenes, lowest -8.54 (scene 39: 91.28 to 82.73), no-loss p 0.42: a loss. F +0.68; H HL +2.21 (+1.74 to +2.78), up at 35 of 38; T HL -0.05 (no-loss p < 0.001).
+
+Beside the rules:
+- **Where R4 gains.** False water on the forest and dry scenes: precision at scene 39 goes from 73 to 94 (recall 96 to 97), at scene 54 from 84 to 92, at Asian 6 from 89 to 93. The two folds also agree better (scene 39: 73.9 and 67.9 for R0, 91.1 and 91.5 for R4).
+- **Where R4 loses.** Asian 11 falls from 97.93 to 95.54, from one fold only (97.95 and 93.13; recall 98 to 96), and Asian 7 from 75.96 to 74.26 (72.67 and 75.84). Both were known before the rules were written.
+- **Floods per event** (R4 has only the pooled value). R5: Ghana 51.3 to 56.3, Nigeria 86.4 to 81.3, the others within 2 points. R2: Ghana falls to 45.0.
+- **The edge clean-up** moved about 3.2% of the outlines' pixels to "unsure" (2.5 and 2.0 million pixels in the two folds), and rebuilt every stored label exactly before it changed anything. It lifts H at 36 of 38 reservoirs. H is scored against Dynamic World, which has its own edge error.
+- **The radar augmentation does not help:** alone it lowers the scenes and the floods, and it takes away the clean-up's gain (R3).
+- **R5** has R4's gain on the scenes and R1's on H, but its storage error is less steady: the no-loss rule on T fails (p 0.23; HL -0.32, better at 15 of 39).
+- **Storage error.** No recipe moves it: R4's median is 5.87 against 5.74, HL -0.06 (-0.40 to +0.24). With Curve 1 the same (-0.06, -0.30 to +0.24). This agrees with E0: the map is not the main limit of the storage estimate.
+- **Grown maps on the other recipes** behave as on R4: the scenes fall by 2.5 to 3.4 points on average (lowest -10.5 to -13.1), while H rises by about 2. Growing adds water at the edge that Dynamic World also calls water but the scene labels do not.
+
+What it shows:
+- Longer training with the moving average is the one map change that holds across the scenes by the per-scene rules: +3.0 on average, most of it from two scenes with false water, and no loss anywhere by PROTOCOL-6's margins.
+- Cleaner edge labels are a real but small gain on our own reservoirs, and only against Dynamic World.
+- The stated caveat stands: R4's scores had been seen before these rules were written, so this is weaker evidence than a first look. Only T2 and T3 can confirm it.
+
+**Consequence (as fixed above).** C2's map recipe is **R4: 9,000 steps with the weights' moving average, plain maps** (no grown maps, labels as stored, turns and flips only). Part 2's confirmatory run trains it on all 5 folds and all 29 S1S2-Water training scenes. T1's "no loss" rule is then a real test for C2; C2's differences on T2 and T3 are reported with their intervals and not claimed. The development weights of this batch stay in the three notebooks' outputs on Kaggle until part 2 is fixed.

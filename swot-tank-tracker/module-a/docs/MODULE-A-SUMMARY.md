@@ -114,6 +114,7 @@ Two try-outs of Model 3's recipe, run on Kaggle GPUs by a teammate:
 
 - Both help floods but hurt the reservoir maps, and neither helps storage. **Model 3 stays.**
 - **Limitation found later:** one big scene dominates one score, and another rests on few chips. It does not change the outcome, because storage did not improve either.
+- **Two later batches, judged scene by scene (10 and 13 Nov):** putting all the models into one map (batch 2) was not kept. Batch 3 tried cleaner labels at the water's edge, radar augmentation and longer training again. By the per-scene rules, fixed before the run, **longer training is kept**: the 10 development scenes rise from 85 to 88 on average (the forest scene from 71 to 91), with no loss on floods, reservoirs or storage. It becomes the new-maps method (C2), still to be confirmed on T2 and T3; its scores had been seen once before the rules were written, which `DEV-6.md` states. Model 3 stays the delivered model until then. The storage error does not move (about 6 before and after).
 
 ### Step 6. Where does the storage error come from? (the error budget, E0)
 
@@ -189,7 +190,7 @@ Outside reviews on 5, 7 and 9 Nov. Every claim was checked against the files bef
 2. **Decide on one more curve try:** a season correction near full (laptop, about 1 day, kept only if it beats Curve 2 by 0.1), or stop and hand over.
 3. Scorers for T2 and T3, tried on development data (no fresh data touched).
 4. Prepare T3: Kuro Siwo masks and Earth Engine radar, by 15 Jan 2027.
-5. Fix PROTOCOL-6 part 2 by 15 Jan 2027 (the new curve fixed; C2 not run).
+5. Fix PROTOCOL-6 part 2 by 15 Jan 2027 (the new curve fixed; C2 = Model 3's recipe with longer training, from batch 3, trained on all 5 folds).
 6. After 31 Jan 2027: download the window's passes, measure them with Model 3's test models (Kaggle CPU), and run `score_t1.py --window`.
 7. Hand over to Module B: Model 3's areas for the 103 reservoirs, Model 3 final for new passes, and the curve findings.
 8. The supervisor note on Model 3 (formal register).

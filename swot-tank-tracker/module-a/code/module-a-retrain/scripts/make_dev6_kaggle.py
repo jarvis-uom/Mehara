@@ -6,7 +6,12 @@ r"""Makes series 2's development Kaggle files (5 Nov 2026, ../PROTOCOL-6.md part
   and 2 at once on two T4s), run by a teammate from their own Kaggle account (shared with them as a collaborator).
   They are pushed without a GPU, so the first version only prints how to run them;
 - kaggle-notebooks/kernel6-dev-ens/: development batch 2 (DEV-6's addendum of 10 Nov 2026): the control again, then
-  score_ens6.py on its 6 models. Pushed with a GPU, so it runs when pushed.
+  score_ens6.py on its 6 models. Pushed with a GPU, so it runs when pushed;
+- kaggle-notebooks/kernel6-dev-batch3a/, -batch3b/ and -batch3-quick/: development batch 3 (DEV-6's addendum of
+  11 Nov 2026). 3a scores the control's saved models again (R0, with the grown maps) and trains edge, aug and
+  edgeaug (R1 to R3); 3b trains longedgeaug (R5); 3c trains long again (R4: batch 1's weights are gone, and its
+  grown maps need them); all three are pushed with a GPU. The quick one is pushed without a GPU: a tiny check of the
+  new code on Kaggle's own folders.
 Run from the project folder:
     temp\feasibility-check\.venv\Scripts\python.exe -I temp\module-a-retrain\scripts\make_dev6_kaggle.py
 """
@@ -24,6 +29,15 @@ SOURCES = [f"{OWNER}/{d}" for d in ("is4990-module-a-run4-inputs", "is4990-s1s2w
                                     "is4990-sen1floods11-radar", "is4990-module-a-dynamic-world",
                                     "is4990-module-a-first-check-chips", "is4990-module-a-pass-chips",
                                     "is4990-s1s2water-gee", CODE)]
+WEIGHTS = f"{OWNER}/is4990-module-a-dev6-weights"  # batch 2's control models (R0 of batch 3)
+BATCH3 = {"batch3a": ([("control", ["--reuse"]), ("edge", []), ("aug", []), ("edgeaug", [])], True,
+                      "scores the control's saved models again and trains the variants edge, aug and edgeaug"),
+          "batch3b": ([("longedgeaug", [])], True, "trains the variant longedgeaug"),
+          "batch3c": ([("long", [])], True, "trains the variant long again (batch 1's recipe), for its grown maps"),
+          "batch3-quick": ([("control", ["--reuse", "--quick", "--folds", "1"]), ("edgeaug", ["--quick"]),
+                            ("longedgeaug", ["--quick", "--folds", "1"])], False,
+                           "is a tiny check of the new code (2 steps, a handful of chips, no GPU); its numbers are "
+                           "not scores")}
 
 
 def cells(variant, what, hours, extra=""):
@@ -61,6 +75,37 @@ if GPUS:
         print(line, end="", flush=True)
     p.wait()
     print("exit code", p.returncode)"""),
+    ]
+
+
+def cells3(name, runs, gpu, what):
+    return [
+        ("markdown", f"""# IS4990 Module A: series 2 development, batch 3 ({name})
+
+This notebook {what}, on folds 1 and 2 (PROTOCOL-6 part 1, section B; DEV-6's addendum of 11 Nov 2026).
+Development data only. Each variant writes to its own folder in /kaggle/working."""),
+        ("code", """import subprocess
+import sys
+from pathlib import Path
+try:
+    GPUS = subprocess.run(["nvidia-smi", "-L"], capture_output=True, text=True).stdout.strip()
+except OSError:
+    GPUS = ""
+print(GPUS or "No GPU in this session.")"""),
+        ("code", f"""RUNS = {runs!r}
+NEEDS_GPU = {gpu!r}
+if GPUS or not NEEDS_GPU:
+    script = next(Path("/kaggle/input").rglob("run6_dev.py"))
+    for variant, extra in RUNS:
+        p = subprocess.Popen([sys.executable, "-u", str(script), "--variant", variant, "--folds", "1,2",
+                              "--out", f"/kaggle/working/{{variant}}"] + extra,
+                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        for line in p.stdout:
+            print(line, end="", flush=True)
+        p.wait()
+        print("exit code", p.returncode, flush=True)
+else:
+    print("Nothing was run: this notebook needs Accelerator: GPU T4 x2.")"""),
     ]
 
 
@@ -112,6 +157,18 @@ def main():
         "enable_gpu": True, "enable_tpu": False, "enable_internet": True, "dataset_sources": SOURCES,
         "competition_sources": [], "kernel_sources": [], "model_sources": []}, indent=2), encoding="utf-8")
     print("wrote", d)
+    for name, (runs, gpu, what) in BATCH3.items():
+        d = ROOT / "kaggle-notebooks" / f"kernel6-dev-{name}"
+        d.mkdir(exist_ok=True)
+        (d / f"dev6-{name}.ipynb").write_text(json.dumps(notebook(cells3(name, runs, gpu, what)), indent=1),
+                                              encoding="utf-8")
+        (d / "kernel-metadata.json").write_text(json.dumps({
+            "id": f"{OWNER}/is4990-module-a-dev6-{name}", "title": f"IS4990 Module A dev6 {name}",
+            "code_file": f"dev6-{name}.ipynb", "language": "python", "kernel_type": "notebook", "is_private": True,
+            "enable_gpu": gpu, "enable_tpu": False, "enable_internet": True,
+            "dataset_sources": SOURCES + ([WEIGHTS] if name in ("batch3a", "batch3-quick") else []),
+            "competition_sources": [], "kernel_sources": [], "model_sources": []}, indent=2), encoding="utf-8")
+        print("wrote", d)
 
 
 if __name__ == "__main__":
